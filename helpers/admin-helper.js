@@ -75,7 +75,7 @@ module.exports = {
                 oldCategory.status = true
                 resolve(oldCategory);
             }
-            else {  
+            else {
                 db.get().collection(collection.CATEGORYCOLLECTION).insertOne(category);
                 resolve({ status: false })
             }
@@ -130,6 +130,30 @@ module.exports = {
         })
     },
 
+    unlistProduct: (productId) => {
+        return new Promise((resolve, reject) => {
+            db.get().collection(collection.PRODUCTCOLLECTION).updateOne({_id: objectId(productId)},
+                {
+                    $set: { status: 'Unlisted' }
+                }).then((response) => {
+                    console.log(response);
+                    resolve();
+                });
+    })
+    },
+
+    listBackProduct: (productId)=>{
+        return new Promise((resolve, reject)=>{
+            db.get().collection(collection.PRODUCTCOLLECTION).updateOne({_id: objectId(productId)},
+            {
+                $set: {status: 'Listed'}
+            }).then((response)=>{
+                console.log(response);
+                resolve();
+            })
+        })
+    },
+
     getProductDetails: (proId) => {
         console.log(proId);
         return new Promise((resolve, reject) => {
@@ -169,18 +193,18 @@ module.exports = {
         })
     },
 
-    getAllOrders: ()=>{
-        return new Promise(async(resolve, reject)=>{
+    getAllOrders: () => {
+        return new Promise(async (resolve, reject) => {
             let orders = await db.get().collection(collection.ORDERCOLLECTION).find().toArray();
             resolve(orders);
         })
     },
 
-    getOrderDetails: (orderId)=>{
-        return new Promise(async(resolve, reject)=>{
+    getOrderDetails: (orderId) => {
+        return new Promise(async (resolve, reject) => {
             let orderItems = await db.get().collection(collection.ORDERCOLLECTION).aggregate([
                 {
-                    $match: {_id: objectId(orderId)}
+                    $match: { _id: objectId(orderId) }
                 },
                 {
                     $unwind: '$products'
@@ -206,29 +230,29 @@ module.exports = {
                 },
                 {
                     $project: {
-                        item:1, 
+                        item: 1,
                         quantity: 1,
                         deliveryDetails: 1,
                         paymentMethod: 1,
                         totalAmount: 1,
                         status: 1,
-                        date: 1, 
-                        product: {$arrayElemAt: ['$product', 0]}
-                        
+                        date: 1,
+                        product: { $arrayElemAt: ['$product', 0] }
+
                     }
                 }
-                
-                
+
+
             ]).toArray()
             console.log(orderItems, ' -ORDERED PRODUCTS DISPLAY in ADMIN');
             resolve(orderItems);
         })
     },
 
-    updateOrderStatus: (orderId, orderStatus)=>{
+    updateOrderStatus: (orderId, orderStatus) => {
         console.log(orderStatus, ' ORDER STATUS');
-        return new Promise((resolve, reject)=>{
-            db.get().collection(collection.ORDERCOLLECTION).updateOne({_id: objectId(orderId)}, {
+        return new Promise((resolve, reject) => {
+            db.get().collection(collection.ORDERCOLLECTION).updateOne({ _id: objectId(orderId) }, {
                 $set: {
                     status: orderStatus.orderStatus
                 }

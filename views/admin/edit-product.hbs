@@ -1,6 +1,6 @@
 <section class="content-main">
     <div class="row">
-        <form action="/admin/edit-product/{{product._id}}" method="post" enctype="multipart/form-data">
+        <form action="/admin/edited-product/{{product._id}}" method="post">
             <div class="col-9">
                 <div class="content-header">
                     <h2 class="content-title">Edit Product.</h2>
@@ -79,10 +79,9 @@
                         </div>
                         <div class="mb-4">
                             <label class="form-label">Status</label>
-                            <select class="form-select">
-                                <option>Published</option>
-                                <option>Draft</option>
-                            </select>
+                            <p class="form-select">
+                                <span>Listed</span>
+                            </p>
                         </div>
 
                         <hr>

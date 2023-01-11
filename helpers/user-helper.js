@@ -102,27 +102,28 @@ module.exports = {
         }
 
         console.log(proId + " - PRODUCT ID");
-        console.log(userId._id + " - USER ID");
+        console.log(userId+ " - USER ID");
 
-        let userID = userId._id;
+        // let userID = userId._id;
+
+        console.log(userId, 'User ID in Add to Cart');
 
         return new Promise(async (resolve, reject) => {
 
-            let userCart = await db.get().collection(collection.CARTCOLLECTION).findOne({ user: objectId(userID) });
+            let userCart = await db.get().collection(collection.CARTCOLLECTION).findOne({ user: objectId(userId) });
             console.log(userCart);
 
             if (userCart) {
                 let proExist = userCart.products.findIndex(product => product.item == proId);
-                console.log(proExist);
                 if (proExist != -1) {
-                    db.get().collection(collection.CARTCOLLECTION).updateOne({ user: objectId(userID), 'products.item': objectId(proId) },
+                    db.get().collection(collection.CARTCOLLECTION).updateOne({ user: objectId(userId), 'products.item': objectId(proId) },
                         {
                             $inc: { 'products.$.quantity': 1 }
                         }).then((response) => {
                             resolve(response)
                         });
                 } else {
-                    db.get().collection(collection.CARTCOLLECTION).updateOne({ user: objectId(userID) },
+                    db.get().collection(collection.CARTCOLLECTION).updateOne({ user: objectId(userId) },
                         {
                             $push: { products: proObj }
                         }
@@ -133,7 +134,7 @@ module.exports = {
 
             } else {
                 let cartObj = {
-                    user: objectId(userID),
+                    user: objectId(userId),
                     products: [proObj]
                 }
                 db.get().collection(collection.CARTCOLLECTION).insertOne(cartObj).then((response) => {
@@ -229,7 +230,7 @@ module.exports = {
             } else {
                 db.get().collection(collection.CARTCOLLECTION).updateOne({ _id: objectId(details.cart), 'products.item': objectId(details.product) },
                     {
-                        $inc: { 'products.$.quantity': parseInt(details.count) }
+                        $inc: { 'products.$.quantity': details.count }
                     }).then((response) => {
                         resolve({ removeProducts: false });
                     })
@@ -324,7 +325,7 @@ module.exports = {
                 products: products,
                 totalAmount: totalAmount,
                 status: status,
-                date: new Date()
+                date: new Date().toLocaleDateString('en-US')
             }
 
             db.get().collection(collection.ORDERCOLLECTION).insertOne(orderObj).then((response)=>{

@@ -172,6 +172,7 @@ module.exports = {
 
     const product = req.body;
     product.productImage = filename;
+    product.status = 'Listed';
 
     console.log(product.productImage);
     adminHelper.addProduct(req.body).then((product) => {
@@ -202,10 +203,31 @@ module.exports = {
 
   },
 
+  unlistProduct: async(req, res)=>{
+    if (req.session.loggedInad) {
+      let products = await adminHelper.getAllProducts();
+      let productId = req.params.id;
+      console.log(productId);
+      adminHelper.unlistProduct(productId).then((response) => {
+        res.render('admin/products-list', {layout: 'adminlayout', products, unlisted: true});
+      })
+    }
+  },
+
+  listBackProduct:(req, res)=>{
+    if (req.session.loggedInad) {
+      let products = await adminHelper.getAllProducts();
+      let productId = req.params.id;
+      console.log(productId);
+      adminHelper.listBackProduct(productId).then((response) => {
+        res.render('admin/products-list', {layout: 'adminlayout', products, listBack: true});
+      })
+    }
+  }, 
+
   editProduct: async (req, res) => {
     let product = await adminHelper.getProductDetails(req.params.id);
     console.log(req.params.id);
-    console.log(product);
     if (req.session.loggedInad) {
       res.render('admin/edit-product', { layout: 'adminlayout', product });
     } else {
@@ -215,7 +237,7 @@ module.exports = {
 
   editProductPost: (req, res) => {
     adminHelper.updateProduct(req.params.id, req.body).then(() => {
-      console.log(req.body);
+      console.log(req.body, 'Edited Product Body');
       res.render('admin/edit-product', {layout: 'adminlayout'});
     })
 
@@ -246,10 +268,11 @@ module.exports = {
     res.render('admin/view-order', {layout: 'adminlayout', order})
   },
 
-  editOrderStatus: (req, res)=>{
+  editOrderStatus: async(req, res)=>{
     console.log(req.params.id, ' ORDER ID IN asdflkjsadifsadjhkasfd');
+    let orders = await adminHelper.getAllOrders();
     adminHelper.updateOrderStatus(req.params.id, req.body);
-    res.redirect('/view-order');
+    res.render('admin/order-management', {layout: 'adminlayout', orders});
   }
 
 }

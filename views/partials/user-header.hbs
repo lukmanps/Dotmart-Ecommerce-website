@@ -90,16 +90,44 @@
 
 
                     <div class="header-right">
-                        <div class="account">
-                            <a href="dashboard.html" title="My account">
+                        {{#if user}}
+                        <div class="dropdown cart-dropdown">
+                            <a href="" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
                                 <div class="icon">
                                     <i class="icon-user"></i>
                                 </div>
                                 <p>Account</p>
                             </a>
-                        </div><!-- End .compare-dropdown -->
 
-                        {{#if user}}
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <div class="dropdown-cart-products">
+                                    <div class="product">
+                                        <div class="product-cart-details">
+                                            <h4 class="product-title">
+                                                <a href="/orders">Orders</a>
+                                            </h4>
+                                        </div><!-- End .product-cart-details -->
+                                    </div><!-- End .product -->
+
+                                    <div class="product">
+                                        <div class="product-cart-details">
+                                            <h4 class="product-title">
+                                                <a href="product.html">Edit Profile</a>
+                                            </h4>
+                                        </div><!-- End .product-cart-details -->
+                                    </div><!-- End .product -->
+                                    <div class="product">
+                                        <div class="product-cart-details">
+                                            <h4 class="product-title">
+                                                <a href="/logout">Logout</a>
+                                            </h4>
+                                        </div><!-- End .product-cart-details -->
+                                    </div><!-- End .product -->
+                                </div><!-- End .cart-product -->
+                            </div><!-- End .dropdown-menu -->
+                        </div><!-- End .cart-dropdown -->
+
+                        
                         <div class="wishlist">
                             <a href="wishlist.html" title="Wishlist">
                                 <div class="icon">

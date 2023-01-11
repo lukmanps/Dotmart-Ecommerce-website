@@ -145,11 +145,10 @@ module.exports = {
   },
 
   addToCart: (req, res) => {
-    console.log("API CALLED");
-    userHelper.addToCart(req.params.id, req.session.user).then(() => {
+    console.log("ADD TO CART BUTTON CLICKED");
+    userHelper.addToCart(req.params.id, req.session.user._id).then(() => {
       console.log(req.params.id+ ' This is Product ID when Add Product Clicked');
       res.json({status: true});
-      // res.redirect('/');
     });
     
     
@@ -183,6 +182,9 @@ module.exports = {
   },
 
   ordersPage: async(req, res)=>{
+    // let date = new Date().toLocaleString('en-US');
+    let date = new Date().toLocaleDateString('en-US');
+    console.log(date, 'Todays Date')
     let user = req.session.user;
     console.log(user._id);
     let orders = await userHelper.getUserOrders(req.session.user._id);

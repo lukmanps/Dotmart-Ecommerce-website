@@ -51,9 +51,9 @@
                                         <td class="price-col">&#x20B9;{{this.product.productPrice}}</td>
                                         <td class="quantity-col">
 
-                                            <button class="btn-remove" onclick="changeQuantity('{{../user._id}}','{{this._id}}','{{this.product._id}}',-1)"><i class="icon-minus"></i></button>
+                                            <button class="btn-remove" onclick="changeQuantity('{{../user._id}}','{{this._id}}','{{this.product._id}}', -1)"><i class="icon-minus"></i></button>
                                             <span id="{{this.product._id}}">{{this.quantity}}</span> 
-                                            <button class="btn-remove" onclick="changeQuantity('{{../user._id}}','{{this._id}}','{{this.product._id}}',1)"><i class="icon-plus"></i></button>
+                                            <button class="btn-remove" onclick="changeQuantity('{{../user._id}}','{{this._id}}','{{this.product._id}}', 1)"><i class="icon-plus"></i></button>
 
                                         </td>
                                         <td class="total-col mx-3">&#x20B9;{{this.product.productPrice}}</td>

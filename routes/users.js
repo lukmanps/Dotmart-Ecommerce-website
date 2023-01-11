@@ -52,14 +52,14 @@ router.get('/logout', userController.logout); //LOGOUT
 
 router.get('/product-view/:id', userController.productView); //Product View Page
 
-router.get('/cart', verifyLogin, userController.cartPage);
+router.get('/add-to-cart/:id', userController.addToCart); //Add to Cart Button
 
-router.get('/add-to-cart/:id', userController.addToCart);
+router.get('/cart', verifyLogin, userController.cartPage); //Cart Page
 
-router.post('/change-product-quantity',(req, res)=>{
-  userHelper.changeProductQuantity(req.body).then(async (response)=>{
+router.post('/change-product-quantity', (req, res)=>{
+ userHelper.changeProductQuantity(req.body).then(async (response)=>{
     response.total = await userHelper.getTotalAmount(req.body.user);
-    console.log(response);
+    console.log(response, "Response In change Quantity");
     res.json(response)
   })
 })

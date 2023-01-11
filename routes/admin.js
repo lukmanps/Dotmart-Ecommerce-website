@@ -33,8 +33,6 @@ const verifyLogin = (req, res, next)=>{
 /* GET home page. */
 router.get('/', adminController.adminPage);
 
-router.post('/add-products', upload.array('productImage', 4), adminController.addProductPost);
-
 router.get('/dashboard', adminController.dashboard);
 
 router.get('/products', adminController.productView);
@@ -63,15 +61,19 @@ router.get('/delete-category/:id', adminController.deleteCategory);
 
 // router.post('/edit-user/:id', adminController.editUserPost);
 
-router.get('/add-products', adminController.addProduct);
+router.get('/add-products', adminController.addProduct); //Add Products Page
 
-
+router.post('/add-products', upload.array('productImage', 4), adminController.addProductPost); //Added Product
 
 router.get('/products-list', adminController.productsList);
 
-router.get('/edit-product/:id', adminController.editProduct);
+router.get('/unlist-product/:id', adminController.unlistProduct);
 
-router.post('/edit-product/:id', adminController.editProductPost);
+router.get('/listBack-product/:id', adminController.listBackProduct);
+
+router.get('/edit-product/:id', adminController.editProduct); //Edit Product Page
+
+router.post('/edited-product/:id', adminController.editProductPost);
 
 router.get('/delete-product/:id', adminController.deleteProduct);
 
