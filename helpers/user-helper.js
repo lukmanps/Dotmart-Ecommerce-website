@@ -88,9 +88,11 @@ module.exports = {
         return new Promise((resolve, reject)=>{
             db.get().collection(collection.USERCOLLECTION).updateOne({_id: objectId(userId)},
             {$set: {
-                
+                registerPassword: changedPwd.changedPassword
             }})
+            resolve({status: true});
         })
+        
     },
     
     addToCart: (proId, userId) => {

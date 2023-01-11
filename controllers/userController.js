@@ -11,6 +11,7 @@ const serviceSID = 'VAfbf72f3bfe969b61faf5df7fe2d1e856';
 
 const client = require('twilio')(accountSID, authToken);
 const twilio = require('twilio');
+const { response } = require('express');
 
 
 module.exports = {
@@ -242,7 +243,12 @@ module.exports = {
 
   changePasswordPost: async(req, res)=>{
     let user = req.session.user;
-   await userHelper.changePassword(req.body, user._id);
+    await userHelper.changePassword(req.body, user._id).then((response)=>{
+      if(response.status){
+        res.render('index', {user});
+      }
+    });
+
   }
 
 }

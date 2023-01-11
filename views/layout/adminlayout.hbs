@@ -1,0 +1,51 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+
+<!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:32:35 GMT -->
+<head>
+    <meta charset="utf-8">
+    <title>Dotmart Admin</title>
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:title" content="">
+    <meta property="og:type" content="">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+    <!-- Favicon -->
+    {{!-- <link rel="shortcut icon" type="image/png" href="../../adminassets///imgs/theme/favicon.svg"> --}}
+    <link rel="icon" type="image/png" sizes="32x32" href="../adminassets/dotmart-monogram.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../adminassets/dotmart-monogram.png">
+    <!-- Template CSS -->
+    <link href="../../adminassets///css/main.css" rel="stylesheet" type="text/css" />
+    
+</head>
+
+<body>
+    {{#if loginPage}}
+
+    {{else}}
+    {{>admin-sidebar}}
+    
+    <main class="main-wrap">
+        {{>admin-header}}
+        {{/if}}
+        {{{body}}}
+    </main>
+
+    {{!-- SCRIPTS --}}
+    <script src="../adminassets///js/vendors/jquery-3.6.0.min.js"></script>
+    <script src="../adminassets///js/vendors/bootstrap.bundle.min.js"></script>
+    <script src="../adminassets///js/vendors/select2.min.js"></script>
+    <script src="../adminassets///js/vendors/perfect-scrollbar.js"></script>
+    <script src="../adminassets///js/vendors/jquery.fullscreen.min.js"></script>
+    <script src="../adminassets///js/vendors/chart.js"></script>
+    <!-- Main Script -->
+    <script src="../adminassets///js/main.js" type="text/javascript"></script>
+    <script src="../adminassets///js/custom-chart.js" type="text/javascript"></script>
+</body>
+
+
+<!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:32:57 GMT -->
+</html>

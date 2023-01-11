@@ -1,0 +1,147 @@
+<header>
+    <div class="page-wrapper">
+        <header class="header header-2 header-intro-clearance">
+            {{#if home}}
+            <div class="header-top">
+                <div class="container">
+                    <!-- <div class="header-left">
+                        <p>Special collection already available.</p><a href="#">&nbsp;Read more ...</a>
+                    </div>End .header-left -->
+
+                    <div class="header-right">
+
+                        <ul class="top-menu">
+                            <li>
+                                <a href="#">Links</a>
+                                <ul>
+                                    {{!-- <li>
+                                        <div class="header-dropdown">
+                                            <a href="#">USD</a>
+                                            <div class="header-menu">
+                                                <ul>
+                                                    <li><a href="#">Eur</a></li>
+                                                    <li><a href="#">Usd</a></li>
+                                                </ul>
+                                            </div><!-- End .header-menu -->
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="header-dropdown">
+                                            <a href="#">English</a>
+                                            <div class="header-menu">
+                                                <ul>
+                                                    <li><a href="#">English</a></li>
+                                                    <li><a href="#">French</a></li>
+                                                    <li><a href="#">Spanish</a></li>
+                                                </ul>
+                                            </div><!-- End .header-menu -->
+                                        </div>
+                                    </li> --}}
+                                    <li><a>
+                                            {{#if user}}
+                                            Hello
+                                            {{user.registerName}}
+                                            ,
+                                            {{/if}}
+                                        </a></li>
+                                    <li>
+                                        {{#if user}}
+                                        <a href="/logout">Logout</a>
+                                        {{else}}
+                                        <a href="/signup">Login / Register</a>
+                                        {{/if}}
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul><!-- End .top-menu -->
+                    </div><!-- End .header-right -->
+
+                </div><!-- End .container -->
+            </div><!-- End .header-top -->
+            {{/if}}
+
+            <div class="header-middle">
+                <div class="container">
+                    <div class="header-left">
+                        <button class="mobile-menu-toggler">
+                            <span class="sr-only">Toggle mobile menu</span>
+                            <i class="icon-bars"></i>
+                        </button>
+
+                        <a href="/" class="logo">
+                            <img src="/assets/dotmart.png" alt="Dotmart Logo" width="200" height="50">
+                        </a>
+                    </div><!-- End .header-left -->
+
+                    <div class="header-center">
+                        <div
+                            class="header-search header-search-extended header-search-visible header-search-no-radius d-none d-lg-block">
+                            <a href="#" class="search-toggle" role="button"><i class="icon-search"></i></a>
+                            <form action="#" method="get">
+                                <div class="header-search-wrapper search-wrapper-wide">
+                                    <label for="q" class="sr-only">Search</label>
+                                    <input type="search" class="form-control" name="q" id="q"
+                                        placeholder="Search product ..." required>
+                                    <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
+                                </div><!-- End .header-search-wrapper -->
+                            </form>
+                        </div><!-- End .header-search -->
+                    </div>
+
+
+                    <div class="header-right">
+                        <div class="account">
+                            <a href="dashboard.html" title="My account">
+                                <div class="icon">
+                                    <i class="icon-user"></i>
+                                </div>
+                                <p>Account</p>
+                            </a>
+                        </div><!-- End .compare-dropdown -->
+
+                        {{#if user}}
+                        <div class="wishlist">
+                            <a href="wishlist.html" title="Wishlist">
+                                <div class="icon">
+                                    <i class="icon-heart-o"></i>
+
+                                </div>
+                                <p>Wishlist</p>
+                            </a>
+                        </div><!-- End .compare-dropdown -->
+
+                        {{!-- <div class="wishlist">
+                            <a href="/cart" title="cart">
+                                <div class="icon">
+                                    <i class="icon-shopping-cart"></i>
+                                    <span class='badge badge-info' id="cart-count">{{cartCount}}</span>
+                                </div>
+                                <p>Cart</p>
+                            </a>
+                        </div><!-- End .compare-dropdown --> --}}
+                        
+                        <div class="dropdown cart-dropdown">
+                            <a href="/cart" class="dropdown-toggle" role="button"  aria-haspopup="true"  data-display="static">
+                                <div class="icon">
+                                    <i class="icon-shopping-cart"></i>
+                                    {{!-- <span class="cart-count">{{cartCount}}</span> --}}
+                                </div>
+                                <p>Cart</p>
+                            </a>
+                        </div><!-- End .cart-dropdown -->
+
+                        {{else}}
+                        <a href="/login" class="btn btn-outline-primary-2 mx-3">
+                            <span>LOGIN</span>
+                            {{!-- <i class="icon-long-arrow-right"></i> --}}
+                        </a>
+                        {{/if}}
+
+                    </div><!-- End .header-right -->
+                </div><!-- End .container -->
+            </div><!-- End .header-middle -->
+
+
+
+
+        </header>
