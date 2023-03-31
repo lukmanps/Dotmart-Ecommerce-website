@@ -12,9 +12,9 @@
                         <div class="dropdown-menu">
                             <nav class="side-nav">
                                 <ul class="menu-vertical sf-arrows">
-                                    <li><a href="#">Men</a></li>
-                                    <li><a href="#">Women</a></li>
-                                    <li><a href="#">Accessories</a></li>
+                                    <li><a href="/men">Men</a></li>
+                                    <li><a href="/women">Women</a></li>
+                                    <li><a href="/accessories">Accessories</a></li>
 
                                 </ul><!-- End .menu-vertical -->
                             </nav><!-- End .side-nav -->
@@ -25,7 +25,7 @@
                 {{!-- <div class="header-center">
                     <nav class="main-nav">
                         <ul class="menu sf-arrows">
-                            <li class="megamenu-container active">
+                            <li class="megamenu-container">
                                 <a href="index.html" class="sf-with-ul">Men</a>
                             </li>
                             <li>
@@ -48,7 +48,8 @@
 
     <main class="main">
         <div class="intro-slider-container mb-4">
-                <div class="intro-slider owl-carousel owl-simple owl-nav-inside" data-toggle="owl" data-owl-options='{
+            {{#each banners}}
+            <div class="intro-slider owl-carousel owl-simple owl-nav-inside" data-toggle="owl" data-owl-options='{
                         "nav": false, 
                         "dots": true,
                         "responsive": {
@@ -58,33 +59,37 @@
                             }
                         }
                     }'>
-                    <div class="intro-slide" style="background-image: url(assets/images/Web-banner.jpg);">
-                        <div class="container intro-content">
-                            <h3 class="intro-subtitle text-primary">2022-23 Season</h3><!-- End .h3 intro-subtitle -->
-                            <h1 class="intro-title">Winter<br>Collection</h1><!-- End .intro-title -->
 
-                            <a href="/" class="btn btn-outline-primary-2">
-                                <span>DISCOVER MORE</span>
-                                <i class="icon-long-arrow-right"></i>
-                            </a>
-                        </div><!-- End .intro-content -->
-                    </div><!-- End .intro-slide -->
+                <div class="intro-slide" style="background-image: url(db/banner-images/{{this._id}}.jpg);">
+                    <div class="container intro-content">
+                        <h3 class="intro-subtitle text-primary">2022-23 Season</h3><!-- End .h3 intro-subtitle -->
+                        <h1 class="intro-title">Winter<br>Collection</h1><!-- End .intro-title -->
 
-                    <div class="intro-slide" style="background-image: url(assets/images/demos/demo-11/slider/slide-2.jpg);">
-                        <div class="container intro-content">
-                            <h3 class="intro-subtitle text-primary">all at 50% off</h3><!-- End .h3 intro-subtitle -->
-                            <h1 class="intro-title text-white">The Most Beautiful <br>Novelties In Our Shop</h1><!-- End .intro-title -->
+                        <a href="/shop" class="btn btn-outline-primary-2">
+                            <span>SHOP NOW</span>
+                            <i class="icon-long-arrow-right"></i>
+                        </a>
+                    </div><!-- End .intro-content -->
+                </div><!-- End .intro-slide -->
+                {{/each}}
+                {{!-- <div class="intro-slide"
+                    style="background-image: url(assets/images/demos/demo-11/slider/slide-2.jpg);">
+                    <div class="container intro-content">
+                        <h3 class="intro-subtitle text-primary">all at 50% off</h3><!-- End .h3 intro-subtitle -->
+                        <h1 class="intro-title text-white">The Most Beautiful <br>Novelties In Our Shop</h1>
+                        <!-- End .intro-title -->
 
-                            <a href="category.html" class="btn btn-outline-primary-2 min-width-sm">
-                                <span>SHOP NOW</span>
-                                <i class="icon-long-arrow-right"></i>
-                            </a>
-                        </div><!-- End .intro-content -->
-                    </div><!-- End .intro-slide -->
-                </div><!-- End .intro-slider owl-carousel owl-simple -->
+                        <a href="/shop" class="btn btn-outline-primary-2 min-width-sm">
+                            <span>SHOP NOW</span>
+                            <i class="icon-long-arrow-right"></i>
+                        </a>
+                    </div><!-- End .intro-content -->
+                </div><!-- End .intro-slide --> --}}
+            </div><!-- End .intro-slider owl-carousel owl-simple -->
 
-                <span class="slider-loader"></span><!-- End .slider-loader -->
-            </div><!-- End .intro-slider-container -->
+            <span class="slider-loader"></span><!-- End .slider-loader -->
+
+        </div><!-- End .intro-slider-container -->
 
         <div class="brands-border owl-carousel owl-simple mt-3" data-toggle="owl" data-owl-options='{
                     "nav": false, 
@@ -141,12 +146,12 @@
             </a>
         </div><!-- End .owl-carousel -->
 
-        
+
         <div class="container mt-3">
             <div class="row justify-content-center">
                 <div class="col-md-6 col-lg-4">
                     <div class="banner banner-cat">
-                        <a href="">
+                        <a href="/women">
                             <img src="/assets/images/category/3cols/banner-1.jpg" alt="Banner">
                         </a>
 
@@ -160,7 +165,7 @@
 
                 <div class="col-md-6 col-lg-4">
                     <div class="banner banner-cat">
-                        <a href="">
+                        <a href="/men">
                             <img src="/assets/images/category/3cols/banner-2.jpg" alt="Banner">
                         </a>
 
@@ -174,7 +179,7 @@
 
                 <div class="col-md-6 col-lg-4">
                     <div class="banner banner-cat">
-                        <a href="">
+                        <a href="/accessories">
                             <img src="/assets/images/category/3cols/banner-3.jpg" alt="Banner">
                         </a>
 
@@ -194,7 +199,7 @@
 
         <div class="mb-5"></div><!-- End .mb-5 -->
 
-        
+
 
         <div class="mb-6"></div><!-- End .mb-6 -->
 
@@ -202,35 +207,103 @@
             <div class="heading heading-center mb-3">
                 <h2 class="title">All Products</h2><!-- End .title -->
 
-                {{!-- <ul class="nav nav-pills nav-border-anim justify-content-center" role="tablist">
+                <ul class="nav nav-pills nav-border-anim justify-content-center" role="tablist">
                     <li class="nav-item">
                         <a class="nav-link active" id="top-all-link" data-toggle="tab" href="#top-all-tab" role="tab"
                             aria-controls="top-all-tab" aria-selected="true">All</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" id="top-fur-link" data-toggle="tab" href="#top-fur-tab" role="tab"
-                            aria-controls="top-fur-tab" aria-selected="false">Furniture</a>
+                            aria-controls="top-fur-tab" aria-selected="false">Men</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" id="top-decor-link" data-toggle="tab" href="#top-decor-tab" role="tab"
-                            aria-controls="top-decor-tab" aria-selected="false">Decoration</a>
+                            aria-controls="top-decor-tab" aria-selected="false">Women</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" id="top-light-link" data-toggle="tab" href="#top-light-tab" role="tab"
-                            aria-controls="top-light-tab" aria-selected="false">Lighting</a>
+                            aria-controls="top-light-tab" aria-selected="false">Accessories</a>
                     </li>
-                </ul> --}}
+                </ul>
             </div><!-- End .heading -->
-                
+
             <div class="tab-content">
                 <div class="tab-pane p-0 fade show active" id="top-all-tab" role="tabpanel"
                     aria-labelledby="top-all-link">
                     <div class="products">
-                        
+
                         <div class="row justify-content-center">
                             {{#each products}}
+                            {{#if this.status}}
                             <div class="col-6 col-md-4 col-lg-3 col-xl-5col">
-                                
+
+                                <div class="product product-11 text-left">
+                                    <figure class="product-media">
+                                        <a href="/product-view/{{this._id}}">
+                                            <img src="/db/product-images/{{this.productImage.[0]}}" alt="Product image"
+                                                class="product-image">
+                                        </a>
+
+                                        <div class="product-action-vertical">
+                                            <button class="btn-product-icon btn-wishlist" onclick="addToWishlist('{{this._id}}')"><span>add to
+                                                    wishlist</span></button>
+                                        </div><!-- End .product-action-vertical -->
+                                    </figure><!-- End .product-media -->
+
+                                    <div class="product-body">
+                                        <div class="product-cat">
+                                            <a href="#">{{this.productBrand}}</a>
+                                        </div><!-- End .product-cat -->
+                                        <h3 class="product-title"><a
+                                                href="/product-view/{{this._id}}">{{this.productTitle}}</a></h3>
+                                        <!-- End .product-title -->
+                                        <div class="product-price">
+                                            &#x20B9;{{this.productPrice}}
+                                        </div><!-- End .product-price -->
+                                    </div><!-- End .product-body -->
+                                    <div class="product-action">
+                                        <button class="btn-product btn-cart" onclick="addToCart('{{this._id}}')">add to
+                                            cart</button>
+                                        {{!-- <a href="/add-to-cart/{{this._id}}" class="btn-product btn-cart"><span>add
+                                                to
+                                                cart</span></a> --}}
+                                    </div><!-- End .product-action -->
+                                </div><!-- End .product -->
+                            </div><!-- End .col-sm-6 col-md-4 col-lg-3 -->
+                            {{/if}}
+                            {{/each}}
+                        </div><!-- End .row -->
+                    </div><!-- End .products -->
+
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination justify-content-center">
+                            <li class="page-item">
+                                {{!-- <a class="page-link" href="#" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a> --}}
+                            </li>
+                            {{#each pages}}
+                            <li class="page-item"><a class="page-link" href="/?page={{this}}"
+                                    aria-label="page {{this}}">{{this}}</a></li>
+                            {{/each}}
+                            <li class="page-item">
+                                {{!-- <a class="page-link" href="#" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a> --}}
+                            </li>
+                        </ul>
+                    </nav>
+
+                </div><!-- .End .tab-pane -->
+
+                <div class="tab-pane p-0 fade" id="top-fur-tab" role="tabpanel" aria-labelledby="top-fur-link">
+                    <div class="products">
+
+                        <div class="row justify-content-center">
+                            {{#each mensProducts}}
+                            {{#if this.status}}
+                            <div class="col-6 col-md-4 col-lg-3 col-xl-5col">
+
                                 <div class="product product-11 text-left">
                                     <figure class="product-media">
                                         <a href="/product-view/{{this._id}}">
@@ -256,21 +329,117 @@
                                         </div><!-- End .product-price -->
                                     </div><!-- End .product-body -->
                                     <div class="product-action">
-                                        <button class="btn-product btn-cart" onclick="addToCart('{{this._id}}')">add to cart</button>
-                                        {{!-- <a href="/add-to-cart/{{this._id}}" class="btn-product btn-cart"><span>add to
+                                        <button class="btn-product btn-cart" onclick="addToCart('{{this._id}}')">add to
+                                            cart</button>
+                                        {{!-- <a href="/add-to-cart/{{this._id}}" class="btn-product btn-cart"><span>add
+                                                to
                                                 cart</span></a> --}}
                                     </div><!-- End .product-action -->
                                 </div><!-- End .product -->
-                                
                             </div><!-- End .col-sm-6 col-md-4 col-lg-3 -->
+                            {{/if}}
                             {{/each}}
                         </div><!-- End .row -->
-                        
                     </div><!-- End .products -->
-                </div><!-- .End .tab-pane -->  
+                </div><!-- .End .tab-pane -->
+
+                <div class="tab-pane p-0 fade" id="top-decor-tab" role="tabpanel" aria-labelledby="top-decor-link">
+                    <div class="products">
+
+                        <div class="row justify-content-center">
+                            {{#each womenProducts}}
+                            {{#if this.status}}
+                            <div class="col-6 col-md-4 col-lg-3 col-xl-5col">
+
+                                <div class="product product-11 text-left">
+                                    <figure class="product-media">
+                                        <a href="/product-view/{{this._id}}">
+                                            <img src="/db/product-images/{{this.productImage.[0]}}" alt="Product image"
+                                                class="product-image">
+                                        </a>
+
+                                        <div class="product-action-vertical">
+                                            <a href="#" class="btn-product-icon btn-wishlist"><span>add to
+                                                    wishlist</span></a>
+                                        </div><!-- End .product-action-vertical -->
+                                    </figure><!-- End .product-media -->
+
+                                    <div class="product-body">
+                                        <div class="product-cat">
+                                            <a href="#">{{this.productBrand}}</a>
+                                        </div><!-- End .product-cat -->
+                                        <h3 class="product-title"><a
+                                                href="/product-view/{{this._id}}">{{this.productTitle}}</a></h3>
+                                        <!-- End .product-title -->
+                                        <div class="product-price">
+                                            &#x20B9;{{this.productPrice}}
+                                        </div><!-- End .product-price -->
+                                    </div><!-- End .product-body -->
+                                    <div class="product-action">
+                                        <button class="btn-product btn-cart" onclick="addToCart('{{this._id}}')">add to
+                                            cart</button>
+                                        {{!-- <a href="/add-to-cart/{{this._id}}" class="btn-product btn-cart"><span>add
+                                                to
+                                                cart</span></a> --}}
+                                    </div><!-- End .product-action -->
+                                </div><!-- End .product -->
+                            </div><!-- End .col-sm-6 col-md-4 col-lg-3 -->
+                            {{/if}}
+                            {{/each}}
+                        </div><!-- End .row -->
+                    </div><!-- End .products -->
+                </div><!-- .End .tab-pane -->
+
+
+                <div class="tab-pane p-0 fade" id="top-light-tab" role="tabpanel" aria-labelledby="top-light-link">
+                    <div class="products">
+
+                        <div class="row justify-content-center">
+                            {{#each accessories}}
+                            {{#if this.status}}
+                            <div class="col-6 col-md-4 col-lg-3 col-xl-5col">
+
+                                <div class="product product-11 text-left">
+                                    <figure class="product-media">
+                                        <a href="/product-view/{{this._id}}">
+                                            <img src="/db/product-images/{{this.productImage.[0]}}" alt="Product image"
+                                                class="product-image">
+                                        </a>
+
+                                        <div class="product-action-vertical">
+                                            <a href="#" class="btn-product-icon btn-wishlist"><span>add to
+                                                    wishlist</span></a>
+                                        </div><!-- End .product-action-vertical -->
+                                    </figure><!-- End .product-media -->
+
+                                    <div class="product-body">
+                                        <div class="product-cat">
+                                            <a href="#">{{this.productBrand}}</a>
+                                        </div><!-- End .product-cat -->
+                                        <h3 class="product-title"><a
+                                                href="/product-view/{{this._id}}">{{this.productTitle}}</a></h3>
+                                        <!-- End .product-title -->
+                                        <div class="product-price">
+                                            &#x20B9;{{this.productPrice}}
+                                        </div><!-- End .product-price -->
+                                    </div><!-- End .product-body -->
+                                    <div class="product-action">
+                                        <button class="btn-product btn-cart" onclick="addToCart('{{this._id}}')">add to
+                                            cart</button>
+                                        {{!-- <a href="/add-to-cart/{{this._id}}" class="btn-product btn-cart"><span>add
+                                                to
+                                                cart</span></a> --}}
+                                    </div><!-- End .product-action -->
+                                </div><!-- End .product -->
+                            </div><!-- End .col-sm-6 col-md-4 col-lg-3 -->
+                            {{/if}}
+                            {{/each}}
+                        </div><!-- End .row -->
+                    </div><!-- End .products -->
+                </div><!-- .End .tab-pane -->
+
             </div><!-- End .tab-content -->
-            
-        </div> {{!-- End - Container --}}
+        </div><!-- End .container -->
 
     </main><!-- End .main -->
 
@@ -394,9 +563,9 @@
                             <h4 class="widget-title">Information</h4><!-- End .widget-title -->
 
                             <ul class="widget-list">
-                                <li><a href="about.html">About Dotmart</a></li>
-                                <li><a href="#">How to shop on Dotmart</a></li>
-                                <li><a href="#">FAQ</a></li>
+                                <li><a href="">About Dotmart</a></li>
+                                <li><a href="">How to shop on Dotmart</a></li>
+                                <li><a href="">FAQ</a></li>
                                 <li><a href="contact.html">Contact us</a></li>
                                 <li><a href="login.html">Log in</a></li>
                             </ul><!-- End .widget-list -->
@@ -423,11 +592,10 @@
                             <h4 class="widget-title">My Account</h4><!-- End .widget-title -->
 
                             <ul class="widget-list">
-                                <li><a href="#">Sign In</a></li>
-                                <li><a href="cart.html">View Cart</a></li>
-                                <li><a href="#">My Wishlist</a></li>
-                                <li><a href="#">Track My Order</a></li>
-                                <li><a href="#">Help</a></li>
+                                <li><a href="/signup">Sign In</a></li>
+                                <li><a href="/cart">View Cart</a></li>
+                                <li><a href="/wishlist">My Wishlist</a></li>
+                                <li><a href="/orders">Track My Order</a></li>
                             </ul><!-- End .widget-list -->
                         </div><!-- End .widget -->
                     </div><!-- End .col-sm-64 col-lg-3 -->
@@ -437,11 +605,11 @@
 
         <div class="footer-bottom">
             <div class="container">
-                <p class="footer-copyright">Copyright © 2019 Molla Store. All Rights Reserved.</p>
+                <p class="footer-copyright">Copyright © 2023 Dotmart. All Rights Reserved. Developed by Lukman.</p>
                 <!-- End .footer-copyright -->
                 <ul class="footer-menu">
-                    <li><a href="#">Terms Of Use</a></li>
-                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="">Terms Of Use</a></li>
+                    <li><a href="">Privacy Policy</a></li>
                 </ul><!-- End .footer-menu -->
 
                 <div class="social-icons social-icons-color">
@@ -579,7 +747,7 @@
                                             <li><a href="contact-2.html">Contact 02</a></li>
                                         </ul>
                                     </li>
-                                    <li><a href="login.html">Login</a></li>
+                                    <li><a href="/login">Login</a></li>
                                     <li><a href="faq.html">FAQs</a></li>
                                     <li><a href="404.html">Error 404</a></li>
                                     <li><a href="coming-soon.html">Coming Soon</a></li>

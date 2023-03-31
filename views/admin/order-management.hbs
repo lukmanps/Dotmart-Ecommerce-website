@@ -50,9 +50,22 @@
                                 <tr>
                                     <td>{{this._id}}</td>
                                     <td><b>{{this.deliveryDetails.name}}</b></td>
-                                    <td>&#x20B9;{{this.totalAmount}}</td>
+                                    <td>{{this.totalAmount}}</td>
                                     <td>{{this.paymentMethod}}</td>
-                                    <td><span class="badge rounded-pill alert-warning">{{this.status}}</span></td>
+
+                                    {{#if placed}}
+                                    <td><span class="badge rounded-pill alert-warning" id="orderStatus">{{this.status}}</span></td>
+                                    {{/if}}
+                                    {{#if shipped}}
+                                    <td><span class="badge rounded-pill alert-modern" id="orderStatus">{{this.status}}</span></td>
+                                    {{/if}}
+                                    {{#if cancelled}}
+                                    <td><span class="badge rounded-pill alert-error" id="orderStatus">{{this.status}}</span></td>
+                                    {{/if}}
+                                    {{#if delivered}}
+                                    <td><span class="badge rounded-pill alert-success" id="orderStatus">{{this.status}}</span></td>
+                                    {{/if}}
+
                                     <td>{{this.date}}</td>
                                     <td class="text-end">
                                         <a href="/admin/view-order/{{this._id}}" class="btn btn-md rounded font-sm">View Order</a>

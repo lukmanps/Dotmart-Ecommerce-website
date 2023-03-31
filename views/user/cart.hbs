@@ -15,6 +15,28 @@
             </div><!-- End .container -->
         </nav><!-- End .breadcrumb-nav -->
 
+
+        {{#if cartEmpty}}
+        <div class="empty-cart">
+            <img class="header-center" src="assets/images/emptyCart.png" alt="Empty Cart"
+                style="width: 50rem; height:auto"><br>
+            <div class="container">
+                <h1 class="text-center" style="font-weight: 600; color: #3c0d51">Your Cart is Empty!</h1>
+                <h5 class="text-center" style="color: #3c0d51">Please add products to purchase!</h5>
+                
+                <div class="header-center col-6 col-lg-8 col-xl-3">
+                    <div class="btn-wrap">
+                        <a href="/" class="btn btn-primary btn-round"><span>Continue Shopping</span><i
+                                class="icon-long-arrow-right"></i></a>
+                    </div><!-- End .btn-wrap -->
+                </div><!-- End .col-md-4 col-lg-2 -->
+            </div>
+
+
+        </div>
+
+        {{else}}
+
         <div class="page-content">
             <div class="cart">
                 <div class="container">
@@ -48,38 +70,27 @@
                                                 </h3><!-- End .product-title -->
                                             </div><!-- End .product -->
                                         </td>
-                                        <td class="price-col">&#x20B9;{{this.product.productPrice}}</td>
+                                        <td class="price-col" id="item-price">&#x20B9;{{this.product.productPrice}}</td>
                                         <td class="quantity-col">
 
-                                            <button class="btn-remove" onclick="changeQuantity('{{../user._id}}','{{this._id}}','{{this.product._id}}', -1)"><i class="icon-minus"></i></button>
-                                            <span id="{{this.product._id}}">{{this.quantity}}</span> 
-                                            <button class="btn-remove" onclick="changeQuantity('{{../user._id}}','{{this._id}}','{{this.product._id}}', 1)"><i class="icon-plus"></i></button>
+                                            <button class="btn-remove"
+                                                onclick="changeQuantity('{{../user._id}}','{{this._id}}','{{this.product._id}}', -1)"><i
+                                                    class="icon-minus"></i></button>
+                                            <span id="{{this.product._id}}">{{this.quantity}}</span>
+                                            <button class="btn-remove"
+                                                onclick="changeQuantity('{{../user._id}}','{{this._id}}','{{this.product._id}}', 1)"><i
+                                                    class="icon-plus"></i></button>
 
                                         </td>
-                                        <td class="total-col mx-3">&#x20B9;{{this.product.productPrice}}</td>
-                                        <td class="remove-col"><button class="btn-remove" onclick="removeCartProduct('{{this._id}}', '{{this.product._id}}', '{{this.product.productTitle}}')"><i
+                                        <td class="total-col mx-3" id="item-subtotal">&#x20B9;{{this.product.productPrice}}</td>
+                                        <td class="remove-col"><button class="btn-remove"
+                                                onclick="removeCartProduct('{{this._id}}', '{{this.product._id}}', '{{this.product.productTitle}}')"><i
                                                     class="icon-close"></i></button></td>
                                     </tr>
                                     {{/each}}
                                 </tbody>
                             </table><!-- End .table table-wishlist -->
 
-                            {{!-- <div class="cart-bottom">
-                                <div class="cart-discount">
-                                    <form action="#">
-                                        <div class="input-group">
-                                            <input type="text" class="form-control" required placeholder="coupon code">
-                                            <div class="input-group-append">
-                                                <button class="btn btn-outline-primary-2" type="submit"><i
-                                                        class="icon-long-arrow-right"></i></button>
-                                            </div><!-- .End .input-group-append -->
-                                        </div><!-- End .input-group -->
-                                    </form>
-                                </div><!-- End .cart-discount -->
-
-                                <a href="#" class="btn btn-outline-dark-2"><span>UPDATE CART</span><i
-                                        class="icon-refresh"></i></a>
-                            </div><!-- End .cart-bottom --> --}}
                         </div><!-- End .col-lg-9 -->
                         <aside class="col-lg-3">
                             <div class="summary summary-cart">
@@ -89,7 +100,7 @@
                                     <tbody>
                                         <tr class="summary-subtotal">
                                             <td>Subtotal:</td>
-                                            <td><span id="subtotalPrice">&#x20B9;{{totalPrice}}</span></td>
+                                            <td>&#x20B9;<span id="totalPrice">{{totalPrice}}</span></td>
                                         </tr><!-- End .summary-subtotal -->
                                         <tr class="summary-shipping">
                                             <td>Shipping:</td>
@@ -133,14 +144,14 @@
                                         </tr><!-- End .summary-shipping-row -->
 
                                         <tr class="summary-shipping-estimate">
-                                            <td>Estimate for Your Country<br> <a href="dashboard.html">Change
+                                            <td>Estimate for Your Country<br> <a href="/addresses">Change
                                                     address</a></td>
                                             <td>&nbsp;</td>
                                         </tr><!-- End .summary-shipping-estimate -->
 
                                         <tr class="summary-total">
                                             <td>Total:</td>
-                                            <td><span id="subtotalPrice">&#x20B9;{{totalPrice}}</span></td>
+                                            <td><span id="totalPrice">&#x20B9;{{totalPrice}}</span></td>
                                         </tr><!-- End .summary-total -->
                                     </tbody>
                                 </table><!-- End .table table-summary -->
@@ -156,10 +167,8 @@
                 </div><!-- End .container -->
             </div><!-- End .cart -->
         </div><!-- End .page-content -->
+        {{/if}}
     </main><!-- End .main -->
 
 
 </section>
-
-
-

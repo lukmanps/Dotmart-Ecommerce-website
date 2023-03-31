@@ -1,4 +1,4 @@
-<link href="../adminassets/css/main.css" rel="stylesheet" type="text/css" />
+
 <section class="content-main">
     <div class="content-header">
         <div>
@@ -6,6 +6,35 @@
             <p>Details for Order ID: {{order.[0]._id}}</p>
         </div>
     </div>
+
+    <div class="col-lg-3">
+
+                    <p>Status: <span class="badge rounded-pill alert-success text-success"
+                            id="show-order-status">{{order.[0].status}}</span></p>
+
+                        <div class="box shadow-sm bg-light">
+
+                            <div class="mb-4">
+                                <input type="text" id="orderId" value="{{order.[0]._id}}" hidden>
+                                <label class="mb-2 form-check form-check-inline" style="width: 45%;">
+                                    <input class="form-check-input" name="status" id="shipped" type="radio" value="Shipped">
+                                    <span class="form-check-label">Shipped</span>
+                                </label>
+                                <label class="mb-2 form-check form-check-inline" style="width: 45%;">
+                                    <input class="form-check-input" name="status" id="delivered" type="radio" value="Delivered">
+                                    <span class="form-check-label">Delivered</span>
+                                </label>
+                                <label class="mb-2 form-check form-check-inline" style="width: 45%;">
+                                    <input class="form-check-input" name="status" id="cancelled" type="radio" value="Cancelled">
+                                    <span class="form-check-label">Cancel</span>
+                                </label>
+                            </div>
+                            <button class="btn btn-primary" type="button" onclick="validateForm()">Change Status</button>
+                        </div> <!-- col// -->
+                        
+                </div>
+
+
     <div class="card">
         <header class="card-header">
             <div class="row align-items-center">
@@ -133,36 +162,27 @@
                         </table>
                     </div> <!-- table-responsive// -->
                 </div> <!-- col// -->
-                <div class="col-lg-1"></div>
-                <div class="col-lg-3">
-                    <form action="/admin/view-order/{{order.[0]._id}}" method="post">
-                        <div class="box shadow-sm bg-light">
-                            <div class="mb-4">
-                                <label class="mb-2 form-check form-check-inline" style="width: 45%;">
-                                    <input class="form-check-input" name="orderStatus" type="radio" value="Shipped">
-                                    <span class="form-check-label">Shipped</span>
-                                </label>
-                                <label class="mb-2 form-check form-check-inline" style="width: 45%;">
-                                    <input class="form-check-input" name="orderStatus" type="radio" value="Delivered">
-                                    <span class="form-check-label">Delivered</span>
-                                </label>
-                                <label class="mb-2 form-check form-check-inline" style="width: 45%;">
-                                    <input class="form-check-input" name="orderStatus" type="radio" value="Cancelled">
-                                    <span class="form-check-label">Cancel</span>
-                                </label>
-                            </div>
-                            <button class="btn btn-primary" type="submit">Change Status</button>
-                        </div> <!-- col// -->
-                    </form>
-                </div>
+                
             </div> <!-- card-body end// -->
         </div> <!-- card end// -->
 </section> <!-- content-main end// -->
 
-<script src="assets/js/vendors/jquery-3.6.0.min.js"></script>
-<script src="assets/js/vendors/bootstrap.bundle.min.js"></script>
-<script src="assets/js/vendors/select2.min.js"></script>
-<script src="assets/js/vendors/perfect-scrollbar.js"></script>
-<script src="assets/js/vendors/jquery.fullscreen.min.js"></script>
-<!-- Main Script -->
-<script src="assets/js/main.js" type="text/javascript"></script>
+<script>
+function validateForm(){
+    let orderId = document.getElementById('orderId').value
+    if(document.getElementById('shipped').checked){
+        let status = document.getElementById('shipped').value;
+        updateOrderStatus(status, orderId);
+    }else if(document.getElementById('delivered').checked){
+        let status = document.getElementById('delivered').value;
+        updateOrderStatus(status, orderId);
+    }else if(document.getElementById('cancelled').checked){
+        let status = document.getElementById('cancelled').value;
+        updateOrderStatus(status, orderId);
+    }else{
+        alert("Select Order status to update");
+    }
+	
+}	
+</script>
+

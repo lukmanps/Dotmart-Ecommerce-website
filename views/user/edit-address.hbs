@@ -1,0 +1,96 @@
+<section>
+    <main class="main">
+
+        <div class="page-content">
+            <div class="checkout">
+                <div class="container">
+                    {{!-- <div class="checkout-discount">
+                        <form action="#">
+                            <input type="text" class="form-control" required id="checkout-discount-input">
+                            <label for="checkout-discount-input" class="text-truncate">Have a coupon? <span>Click here
+                                    to
+                                    enter your code</span></label>
+                        </form>
+                    </div><!-- End .checkout-discount --> --}}
+
+
+                    <form action="/edit-address" method="post" id="checkout-form">
+                        <input type="text" name="userId" id="" value="{{user._id}}" hidden>
+                        <div class="row">
+                            <div class="col-lg-9">
+                                <h1 class="checkout-title">Edit Address</h1><!-- End .checkout-title -->
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <label>Full Name *</label>
+                                        <input type="text" class="form-control" name="addressName" required>
+                                    </div><!-- End .col-sm-6 -->
+
+                                    {{!-- <div class="col-sm-6">
+                                        <label>Last Name *</label>
+                                        <input type="text" class="form-control">
+                                    </div><!-- End .col-sm-6 --> --}}
+                                </div><!-- End .row -->
+
+
+                                <label>Personal Address *</label>
+                                <input type="text" class="form-control" placeholder="House number and Appartments"
+                                    name="addressHouseName" required>
+                                <input type="text" class="form-control" placeholder="Street name, Locality, Landmark"
+                                    name="addressStreet" required>
+
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <label>Town / City *</label>
+                                        <input type="text" class="form-control" name="addressTown" required>
+                                    </div><!-- End .col-sm-6 -->
+
+                                    <div class="col-sm-4">
+                                        <label>State *</label>
+                                        <input type="text" class="form-control" name="addressState" required>
+                                    </div><!-- End .col-sm-6 -->
+                                    <div class="col-sm-4">
+                                        <label>Country *</label>
+                                        <input type="text" class="form-control" name="addressCountry" required>
+                                    </div><!-- End .col-sm-6 -->
+                                </div><!-- End .row -->
+
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <label>Postcode / ZIP *</label>
+                                        <input type="text" class="form-control" name="addressPIN" required>
+                                    </div><!-- End .col-sm-6 -->
+
+                                    <div class="col-sm-6">
+                                        <label>Phone *</label>
+                                        <input type="tel" class="form-control" name="addressMob" required>
+
+                                    </div><!-- End .col-sm-6 -->
+                                </div><!-- End .row -->
+
+
+                                {{!-- <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="checkout-create-acc">
+                                    <label class="custom-control-label" for="checkout-create-acc">Create an
+                                        account?</label>
+                                </div><!-- End .custom-checkbox -->
+
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="checkout-diff-address">
+                                    <label class="custom-control-label" for="checkout-diff-address">Ship to a different
+                                        address?</label>
+                                </div><!-- End .custom-checkbox --> --}}
+
+                            </div><!-- End .col-lg-9 -->
+
+                        </div><!-- End .row -->
+                        <div class="btn-wrap mt-3">
+                            <button type="submit" class="btn btn-outline-primary-2 mx-3"><span>SAVE</span><i
+                                    class="icon"></i></a>
+                        </div><!-- End .btn-wrap -->
+
+                    </form>
+                </div><!-- End .container -->
+            </div><!-- End .checkout -->
+        </div><!-- End .page-content -->
+    </main><!-- End .main -->
+</section>

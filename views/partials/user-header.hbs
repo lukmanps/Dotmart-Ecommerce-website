@@ -77,11 +77,11 @@
                         <div
                             class="header-search header-search-extended header-search-visible header-search-no-radius d-none d-lg-block">
                             <a href="#" class="search-toggle" role="button"><i class="icon-search"></i></a>
-                            <form action="#" method="get">
+                            <form action="/product-search/?search" method="get">
                                 <div class="header-search-wrapper search-wrapper-wide">
                                     <label for="q" class="sr-only">Search</label>
-                                    <input type="search" class="form-control" name="q" id="q"
-                                        placeholder="Search product ..." required>
+                                    <input type="search" class="form-control" name="search" id="product-search"
+                                        placeholder="Search product ...">
                                     <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
                                 </div><!-- End .header-search-wrapper -->
                             </form>
@@ -112,14 +112,21 @@
                                     <div class="product">
                                         <div class="product-cart-details">
                                             <h4 class="product-title">
-                                                <a href="product.html">Edit Profile</a>
+                                                <a href="/user-profile">Edit Profile</a>
                                             </h4>
                                         </div><!-- End .product-cart-details -->
                                     </div><!-- End .product -->
                                     <div class="product">
                                         <div class="product-cart-details">
                                             <h4 class="product-title">
-                                                <a href="/logout">Logout</a>
+                                                <a href="/address">Address</a>
+                                            </h4>
+                                        </div><!-- End .product-cart-details -->
+                                    </div><!-- End .product -->
+                                    <div class="product">
+                                        <div class="product-cart-details">
+                                            <h4 class="product-title">
+                                                <a href="/logout" style="color: crimson;">Logout</a>
                                             </h4>
                                         </div><!-- End .product-cart-details -->
                                     </div><!-- End .product -->
@@ -129,7 +136,7 @@
 
                         
                         <div class="wishlist">
-                            <a href="wishlist.html" title="Wishlist">
+                            <a href="/wishlist" title="Wishlist">
                                 <div class="icon">
                                     <i class="icon-heart-o"></i>
 
@@ -152,7 +159,7 @@
                             <a href="/cart" class="dropdown-toggle" role="button"  aria-haspopup="true"  data-display="static">
                                 <div class="icon">
                                     <i class="icon-shopping-cart"></i>
-                                    {{!-- <span class="cart-count">{{cartCount}}</span> --}}
+                                    <span class="cart-count" id="cartCount">{{cartCount}}</span>
                                 </div>
                                 <p>Cart</p>
                             </a>

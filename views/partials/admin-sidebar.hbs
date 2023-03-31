@@ -2,7 +2,7 @@
 <aside class="navbar-aside" id="offcanvas_aside">
         <div class="aside-top">
             <a href="/" class="brand-wrap">
-                <img src="../adminassets/dotmart.png" class="logo" alt="Evara Dashboard">
+                <img src="../adminassets/dotmart.png" class="logo" alt="dotmart">
             </a>
             <div>
                 <button class="btn btn-icon btn-aside-minimize"> <i class="text-muted material-icons md-menu_open"></i> </button>
@@ -38,13 +38,37 @@
                 
                 <li class="menu-item">
                     <a class="menu-link" href="/admin/category"> <i class="icon material-icons md-store"></i>
-                        <span class="text">Category Management</span>
+                        <span class="text">Category</span>
                     </a>
                 </li>
 
                 <li class="menu-item">
                     <a class="menu-link" href="/admin/order-management"> <i class="icon material-icons md-shopping_cart"></i>
-                        <span class="text">Order Management</span>
+                        <span class="text">Orders</span>
+                    </a>
+                    
+                </li>
+                <li class="menu-item has-submenu">
+                    <a class="menu-link" href="/admin/add-coupon"> <i class="icon material-icons md-stars"></i>
+                        <span class="text">Coupon</span> </a>
+                    </a>
+                    <div class="submenu">
+                        <a href="/admin/view-coupon">Coupon List</a>
+                        <a href="/admin/add-coupon">Add Coupon</a>
+                    </div>
+                </li>
+                <li class="menu-item has-submenu">
+                    <a class="menu-link" href="/admin/add-banner"> <i class="icon material-icons md-local_offer"></i>
+                        <span class="text">Banner</span>
+                    </a>
+                    <div class="submenu">
+                         <a href="/admin/add-banner">Add Banner</a>
+                        <a href="/admin/banner-list">Banner List</a>
+                    </div>
+                </li>
+                <li class="menu-item">
+                    <a class="menu-link" href="/admin/report">  <i class="icon material-icons md-pie_chart"></i>
+                        <span class="text">Report</span>
                     </a>
                     
                 </li>
@@ -103,7 +127,7 @@
                     </a>
                 </li> --}}
             </ul>
-            <hr>
+            {{!-- <hr>
             <ul class="menu-aside">
                 <li class="menu-item has-submenu">
                     <a class="menu-link" href="#"> <i class="icon material-icons md-settings"></i>
@@ -119,7 +143,7 @@
                         <span class="text"> Starter page </span>
                     </a>
                 </li>
-            </ul>
+            </ul> --}}
             <br>
             <br>
         </nav>

@@ -4,8 +4,9 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var hbs = require("express-handlebars");
-const db = require('./config/connection');
+const db = require('./model/connection');
 var session = require('express-session');
+var fileUpload = require('express-fileupload');
 
 var adminRouter = require('./routes/admin');
 var usersRouter = require('./routes/users');
@@ -33,6 +34,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public/adminassets')));
+app.use(fileUpload());
 
 
 app.use(function(req, res, next) { 

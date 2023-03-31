@@ -1,8 +1,8 @@
 var express = require('express');
 var router = express.Router();
 const adminController = require('../controllers/adminController');
-const adminHelper = require('../helpers/admin-helper');
-const session = require('express-session');
+// const adminHelper = require('../model/helpers/admin-helper');
+// const session = require('express-session');
 const { category } = require('../controllers/adminController');
 const multer = require('multer');
 const path = require('path');
@@ -33,7 +33,7 @@ const verifyLogin = (req, res, next)=>{
 /* GET home page. */
 router.get('/', adminController.adminPage);
 
-router.get('/dashboard', adminController.dashboard);
+router.get('/dashboard', verifyLogin, adminController.dashboard);
 
 router.get('/products', adminController.productView);
 
@@ -79,8 +79,30 @@ router.get('/delete-product/:id', adminController.deleteProduct);
 
 router.get('/order-management', verifyLogin, adminController.orderManagement);
 
-router.get('/view-order/:id', adminController.viewOrder);
+router.get('/view-order/:id', verifyLogin, adminController.viewOrder);
 
-router.post('/view-order/:id', adminController.editOrderStatus);
+router.post('/update-order-status', adminController.updateOrderStatus);
+
+
+//COUPON
+router.route('/add-coupon')
+      .get(verifyLogin, adminController.addCouponPage)
+      .post(adminController.addCouponPost);
+
+router.get('/view-coupon', verifyLogin, adminController.couponViewPage); //Coupon 
+
+router.post('/remove-coupon', adminController.removeCoupon);
+
+
+//BANNER
+router.get('/add-banner', verifyLogin, adminController.addBannerPage);
+
+router.post('/add-banner', adminController.addBannerPost);
+
+router.get('/banner-list', verifyLogin, adminController.bannerViewPage);
+
+router.post('/remove-banner', adminController.deleteBanner);
+
+router.get('/report', verifyLogin, adminController.reportPage);
 
 module.exports = router;

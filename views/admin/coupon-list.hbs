@@ -1,0 +1,49 @@
+<section class="content-main">
+    <div class="content-header">
+        <div>
+                    <h2 class="content-title card-title">Coupons.</h2>
+                    </div>
+        
+    </div>
+    <div class="card mb-4">
+        
+        <!-- card-header end// -->
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>#ID</th>
+                            <th>Coupon Code</th>
+                            <th>Discount</th>
+                            <th>Max Discount</th>
+                            <th>Expiry Date</th>
+                            <th class="text-end">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each coupons}}
+                        <tr>
+                            <td>{{@index}}</td>
+                            <td><b>{{this.couponCode}}</b></td>
+                            <td>{{this.couponDiscount}}</td>
+                            <td>{{this.maxDiscount}}</td>
+                            <td>{{this.expiryDate}}</td>
+                            <td class="text-end">
+                                <input type="hidden" id="couponId" value="{{this._id}}">
+                                <button class="btn btn-md rounded font-sm" type="button" onclick="removeCoupon('{{this._id}}')">Remove</button>
+                                {{!-- <a href="/admin/remove-coupon/{{this._id}}" class="btn btn-md rounded font-sm">Remove</a> --}}
+                            </td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div> <!-- table-responsive//end -->
+        </div>
+        <!-- card-body end// -->
+    </div>
+    
+</section> <!-- content-main end// -->
+<script>
+    
+</script>

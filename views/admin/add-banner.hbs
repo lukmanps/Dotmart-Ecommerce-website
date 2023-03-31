@@ -1,0 +1,59 @@
+<section class="content-main">
+    <div class="row">
+        <form action="/admin/add-banner" method="post" enctype="multipart/form-data">
+            <div class="col-9">
+                <div class="content-header">
+                    <h2 class="content-title">Add Banner.</h2>
+                    <div>
+                        <button class="btn btn-md rounded font-sm hover-up" type="submit">Publish</button><br>
+                        {{#if bannerUpload}}
+                        <label class="text-center" style="color:rgb(22, 131, 22)">Banner Successfully Uploaded</label>
+                        {{else}}
+                        <label class="text-center" style="color:rgb(180, 17, 17)">{{err}}</label>
+                        {{/if}}
+                        {{#if bannerUploaded}}
+                        <label class="text-center" style="color:rgb(180, 17, 17)">Banner listed already!</label>
+                        {{/if}}
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h4>Basic</h4>
+                    </div>
+                    <div class="card-body">
+
+                        <div class="mb-4">
+                            <label for="product_name" class="form-label">Banner title</label>
+                            <input type="text" placeholder="Banner Title" class="form-control" id="banner_name"
+                                name="bannerTitle" required>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label">Full description</label>
+                            <textarea placeholder="Type here" class="form-control" rows="4"
+                                name="bannerDescription"></textarea>
+                        </div>
+
+                    </div>
+                </div> <!-- card end// -->
+
+            </div>
+            <div class="col-lg-3">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h4>Media</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="input-upload">
+                            <img src="" alt="Display Banner">
+                            <input class="form-control" type="file" name="bannerImage" required>
+                        </div>
+                    </div>
+                </div> <!-- card end// -->
+
+            </div>
+        </form>
+    </div>
+</section> <!-- content-main end// -->

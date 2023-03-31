@@ -31,10 +31,11 @@
 
 
                             <form action="/verify-otp" method="post">
-
+                                
                                 <div class="form-group">
                                     <label for="loginotp">Enter OTP</label>
                                     <input type="tel" class="form-control" id="loginotp" name="loginotp" required>
+                                    <input type="tel" class="form-control" id="mobNo" name="mobNo" value="{{mobNo}}" hidden>
                                 </div><!-- End .form-group -->
                                 <div class="float-right">
                                     <label class="text-end" for="register-policy-2" style="font-size: smaller;">
@@ -60,7 +61,7 @@
 
                                 </div><!-- End .form-footer -->
                                 {{#if loginErr}}
-                                <p class="text-center" style="color:rgb(180, 17, 17)">Please Enter Valid Details</p>
+                                <p class="text-center" style="color:rgb(180, 17, 17)">Invalid OTP/p>
                                 {{/if}}
 
                             </form>

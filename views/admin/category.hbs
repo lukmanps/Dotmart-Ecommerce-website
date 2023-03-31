@@ -15,7 +15,7 @@
                     <form action="/admin/add-category" method="post">
                         <div class="mb-4">
                             <label for="product_name" class="form-label">Category</label>
-                            <input type="text" placeholder="Type here" class="form-control" id="product_name" name="catName" />
+                            <input type="text" placeholder="Type here" class="form-control" id="product_name" name="catName" onblur="checkError()" required>
                         </div>
 
                         {{!-- <div class="mb-4">
@@ -27,11 +27,11 @@
                         </div> --}}
                         <div class="mb-4">
                             <label class="form-label">Description</label>
-                            <textarea placeholder="Type here" class="form-control" name="catDescription"></textarea>
+                            <textarea placeholder="Type here" class="form-control" name="catDescription" required></textarea>
                         </div>
 
                         <div class="d-grid">
-                            <button class="btn btn-primary">Create category</button>
+                            <button class="btn btn-primary" onclick="checkForError()">Create category</button>
                         </div>
                     </form>
                 </div>
@@ -77,3 +77,9 @@
         </div> <!-- card body .// -->
     </div> <!-- card .// -->
 </section> <!-- content-main end// -->
+
+<script>
+    let checkForError = () =>{
+        let 
+    }
+</script>
