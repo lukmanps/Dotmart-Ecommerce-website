@@ -1,9 +1,6 @@
 var express = require('express');
 var router = express.Router();
 const adminController = require('../controllers/adminController');
-// const adminHelper = require('../model/helpers/admin-helper');
-// const session = require('express-session');
-const { category } = require('../controllers/adminController');
 const multer = require('multer');
 const path = require('path');
 const storage = multer.diskStorage({
@@ -13,13 +10,27 @@ const storage = multer.diskStorage({
                 
                 filename: (req, file, cb)=>{
                     console.log(file);
-                    const uniqueFileName = Date.now() + '-' + Math.round(Math.random() * 1E9) + '.jpg';
+                    let uniqueFileName = Date.now() + '-' + Math.round(Math.random() * 1E9) + '.jpg';
                     cb(null, uniqueFileName);
                 }
 
                 // Math.round(Math.random() * 1E9
 });
+
+const bannerStorage = multer.diskStorage({
+                      destination: (req, file, cb)=>{
+                        cb(null, './public/db/banner-images');
+                      },
+
+                      filename: (req, file, cb)=>{
+                        console.log(file);
+                        let uniqueFileName = Date.now() + '-' + Math.round(Math.random() * 1E9) + '.jpg';
+                        cb(null, uniqueFileName); 
+                      }
+});
 const upload = multer({storage: storage});
+const bannerUpload = multer({storage: bannerStorage});
+
 
 
 const verifyLogin = (req, res, next)=>{
@@ -97,7 +108,7 @@ router.post('/remove-coupon', adminController.removeCoupon);
 //BANNER
 router.get('/add-banner', verifyLogin, adminController.addBannerPage);
 
-router.post('/add-banner', adminController.addBannerPost);
+router.post('/add-banner', bannerUpload.single('bannerImage'),  adminController.addBannerPost);
 
 router.get('/banner-list', verifyLogin, adminController.bannerViewPage);
 

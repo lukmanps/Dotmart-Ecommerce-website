@@ -1,95 +1,67 @@
-<section>
-    <div class="main_container">
 
-        <div class="d-flex justify-content-center mb-4">
-            <button type="button" class="btn btn-primary rounded-pill btn_print me-3" id="rep"
-                value="Download as Pdf">Download PDF</button>
-            <button type="button" class="btn btn-primary rounded-pill" onclick="export_data()"
+
+<section class="content-main">
+    <div class="content-header">
+        <div>
+            <h2 class="content-title card-title">Report.</h2>
+            <p>Sales Report. Download PDF & Excell</p>
+        </div>
+        <div>
+
+            <button type="button" class="btn btn-md rounded font-sm" id="rep" value="Download as Pdf">Download
+                PDF</button>
+            <button type="button" class="btn btn-md rounded font-sm" onclick="export_data()"
                 value="Export to excel">Download as Excel</button>
-
-            <!-- <div>
-<form>
-<div> <input type="date" name="startdate" id="startdate"></div>
- 
-  <div><input type="date" name="enddate" id="enddate" ></div>
-</form> 
-</div>  
-     -->
-            <!-- <input class="ms-1" type="text" name="daterange" value="01/01/2022 - 12/01/2023" />  -->
-
         </div>
+    </div>
+    <div class="card mb-4">
+        <header class="card-header">
+            <div class="row gx-3">
+                <div class="col-lg-4 col-md-6 me-auto">
 
+                </div>
 
+                <div class="col-lg-2 col-6 col-md-3">
 
-        <div id="container_content">
-            <table class="table table-striped">
-
-                <thead>
-
-                    <tr>
-
-                        <th scope="col">OrderId</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">Ordered Date</th>
-                        <th scope="col">Status</th>
-                        <th scope="col">Price</th>
-                        <th scope="col">Payment-Method</th>
-                    </tr>
-                </thead>
-               {{#each orders}}
-                    <tbody>
-
-
+                </div>
+                <div class="col-lg-2 col-6 col-md-3">
+                    <h5 class="text-right">Total Earnings: &#x20B9; <span class="fw-bold">
+                            {{orders.revenue}}
+                        </span> </h5>
+                </div>
+            </div>
+        </header> <!-- card-header end// -->
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
                         <tr>
-                            <td>
-                                {{this._id}}
-                            </td>
-                            <td>
-                                {{this.deliveryDetails.name}}
-                            </td>
-                            <td>
-                                {{this.date}}
-                            </td>
-                            <td>
-                                {{this.status}}
-                            </td>
-                            <td>
-                                &#x20B9;{{this.totalAmount}}
-                            </td>
-                            <td>
-                                {{this.paymentMethod}}
-                            </td>
+                            <th>#ID</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Ordered Date</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Payment Method</th>
                         </tr>
-
-
+                    </thead>
+                    <tbody>
+                        {{#each orders}}
+                        <tr>
+                            <td>{{this._id}}</td>
+                            <td><b>{{this.deliveryDetails.name}}</b></td>
+                            <td>{{this.date}}</td>
+                            <td>{{this.status}}</td>
+                            <td>&#x20B9;{{this.totalAmount}}</td>
+                            <td>{{this.paymentMethod}}</td>
+                        </tr>
+                        {{/each}}
                     </tbody>
-                    {{/each}}
+                </table>
+            </div> <!-- table-responsive //end -->
+        </div> <!-- card-body end// -->
+    </div> <!-- card end// -->
 
-
-            </table>
-
-
-
-        </div>
-        <br>
-
-        <hr>
-        <h5 class="text-right">Total Earnings: &#x20B9; <span class="fw-bold">
-                {{orders.revenue}}
-            </span> </h5>
-
-        <hr>
-        <br>
-        <br>
-
-
-
-
-
-    </div>
-    </div>
-    </div>
-</section>
+</section> <!-- content-main end// -->
 
 <script>
     $(document).ready(function ($) {

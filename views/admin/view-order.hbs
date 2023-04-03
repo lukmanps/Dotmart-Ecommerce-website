@@ -1,4 +1,5 @@
-
+<link rel="icon" type="image/png" sizes="32x32" href="/dotmart-monogram.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/dotmart-monogram.png">
 <section class="content-main">
     <div class="content-header">
         <div>
@@ -6,33 +7,6 @@
             <p>Details for Order ID: {{order.[0]._id}}</p>
         </div>
     </div>
-
-    <div class="col-lg-3">
-
-                    <p>Status: <span class="badge rounded-pill alert-success text-success"
-                            id="show-order-status">{{order.[0].status}}</span></p>
-
-                        <div class="box shadow-sm bg-light">
-
-                            <div class="mb-4">
-                                <input type="text" id="orderId" value="{{order.[0]._id}}" hidden>
-                                <label class="mb-2 form-check form-check-inline" style="width: 45%;">
-                                    <input class="form-check-input" name="status" id="shipped" type="radio" value="Shipped">
-                                    <span class="form-check-label">Shipped</span>
-                                </label>
-                                <label class="mb-2 form-check form-check-inline" style="width: 45%;">
-                                    <input class="form-check-input" name="status" id="delivered" type="radio" value="Delivered">
-                                    <span class="form-check-label">Delivered</span>
-                                </label>
-                                <label class="mb-2 form-check form-check-inline" style="width: 45%;">
-                                    <input class="form-check-input" name="status" id="cancelled" type="radio" value="Cancelled">
-                                    <span class="form-check-label">Cancel</span>
-                                </label>
-                            </div>
-                            <button class="btn btn-primary" type="button" onclick="validateForm()">Change Status</button>
-                        </div> <!-- col// -->
-                        
-                </div>
 
 
     <div class="card">
@@ -161,7 +135,35 @@
                             </tbody>
                         </table>
                     </div> <!-- table-responsive// -->
+                    
                 </div> <!-- col// -->
+                <div class="col-lg-1"></div>
+                <div class="col-lg-3">
+
+                    <p>Status: <span class="badge rounded-pill alert-success text-success"
+                            id="show-order-status">{{order.[0].status}}</span></p>
+
+                        <div class="box shadow-sm bg-light">
+
+                            <div class="mb-4">
+                                <input type="text" id="orderId" value="{{order.[0]._id}}" hidden>
+                                <label class="mb-2 form-check form-check-inline" style="width: 45%;">
+                                    <input class="form-check-input" name="status" id="shipped" type="radio" value="Shipped">
+                                    <span class="form-check-label">Shipped</span>
+                                </label>
+                                <label class="mb-2 form-check form-check-inline" style="width: 45%;">
+                                    <input class="form-check-input" name="status" id="delivered" type="radio" value="Delivered">
+                                    <span class="form-check-label">Delivered</span>
+                                </label>
+                                <label class="mb-2 form-check form-check-inline" style="width: 45%;">
+                                    <input class="form-check-input" name="status" id="cancelled" type="radio" value="Cancelled">
+                                    <span class="form-check-label">Cancel</span>
+                                </label>
+                            </div>
+                            <button class="btn btn-primary" type="button" onclick="validateForm()">Change Status</button>
+                        </div> <!-- col// -->
+                        
+                </div>
                 
             </div> <!-- card-body end// -->
         </div> <!-- card end// -->

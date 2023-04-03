@@ -1,4 +1,4 @@
-const express = require('express');
+
 const adminHelper = require('../model/helpers/admin-helper');
 
 module.exports = {
@@ -231,7 +231,7 @@ module.exports = {
 
   addProductPost: (req, res) => {
       console.log(req.body, 'Add products content');
-      console.log(req.files.fileName, 'added files');
+      console.log(req.files, 'added files');
       const files = req.files;
       const filename = files.map((file) => {
         return file.filename;
@@ -345,8 +345,21 @@ module.exports = {
 
   orderManagement: async (req, res) => {
     try {
+      const pageCount = req.query.page || 1;
+      const pageNum = parseInt(pageCount);
+      const pages = [];
+      const limit = 10;
       let orders = await adminHelper.getAllOrders();
-      res.render('admin/order-management', { layout: 'adminlayout', orders });
+      
+      for(let i = 1; i<= Math.ceil(orders.length / limit) ; i++){
+        pages.push(i);
+      }
+
+      adminHelper.orderPagenation(pageNum, limit).then((orders)=>{
+        console.log(orders);
+        res.render('admin/order-management', { layout: 'adminlayout', orders, pages });
+      })
+      
     } catch (error) {
       res.render('error', { layout: 'adminlayout', message: error.message });
     }
@@ -443,22 +456,21 @@ module.exports = {
   },
 
   addBannerPost: (req, res) => {
+    console.log(req.file.filename);
     try {
-      adminHelper.addBanner(req.body).then((response) => {
-        let id = response.insertedId;
-        let image = req.files.bannerImage;
-        image.mv('./public/db/banner-images/' + id + '.jpg', (err) => {
+      const file = req.file.filename;
+      const banner = req.body;
+      banner.bannerImage = file;
+      banner.status = true;
+
+      adminHelper.addBanner(banner).then((response) => {
           if (response.status) {
-            if (!err) {
-              res.render('admin/add-banner', { layout: 'adminlayout', bannerUpload: true });
-            } else {
-              res.render('admin/add-banner', { layout: 'adminlayout', bannerUpload: false, err });
-            }
+            res.render('admin/add-banner', { layout: 'adminlayout', bannerUpload: true });
+            
           } else {
             res.render('admin/add-banner', { layout: 'adminlayout', bannerUploaded: true });
           }
         });
-      });
     } catch (error) {
       res.render('error', { layout: 'adminlayout', message: error.message });
     }

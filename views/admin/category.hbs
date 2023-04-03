@@ -12,10 +12,11 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-md-3">
-                    <form action="/admin/add-category" method="post">
+                    <form action="/admin/add-category" method="post" onsubmit="return validateForm()">
                         <div class="mb-4">
                             <label for="product_name" class="form-label">Category</label>
-                            <input type="text" placeholder="Type here" class="form-control" id="product_name" name="catName" onblur="checkError()" required>
+                            <input type="text" placeholder="Type here" class="form-control" id="category-name" name="catName"  required>
+                            <label for="category-name" id="catName-error" style="color:rgb(180, 17, 17)"></label>
                         </div>
 
                         {{!-- <div class="mb-4">
@@ -27,7 +28,8 @@
                         </div> --}}
                         <div class="mb-4">
                             <label class="form-label">Description</label>
-                            <textarea placeholder="Type here" class="form-control" name="catDescription" required></textarea>
+                            <textarea placeholder="Type here" class="form-control" id="category-description" name="catDescription" required></textarea>
+                            <label for="category-description" id="catDes-error" style="color:rgb(180, 17, 17)"></label>
                         </div>
 
                         <div class="d-grid">
@@ -79,7 +81,18 @@
 </section> <!-- content-main end// -->
 
 <script>
-    let checkForError = () =>{
-        let 
+    function validateForm(){
+        let catergoryName = document.getElementById('category-name').value;
+        let categoryDescription = document.getElementById('category-description').value;
+
+        if(!catergoryName || catergoryName === ""){
+            document.getElementById('catName-error').innerHTML = 'Enter Valid Category';
+            return false;
+        }else if(!categoryDescription || categoryDescription === "" || categoryDescription.length < 6){
+            document.getElementsById('catDes-error').innerHTML = 'Category description must contain atleast 6 characters';
+            return false;
+        }else{
+            return true;
+        }
     }
 </script>

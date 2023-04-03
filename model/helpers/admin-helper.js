@@ -201,6 +201,14 @@ module.exports = {
         })
     },
 
+    orderPagenation : (pageNum, limit)=>{
+        let skipNum = parseInt((pageNum-1) * limit);
+        return new Promise(async(resolve, reject)=>{
+            let orders = await db.get().collection(collection.ORDERCOLLECTION).find().skip(skipNum).limit(limit).toArray();
+            resolve(orders);
+        })
+    },
+
     getOrderDetails: (orderId) => {
         return new Promise(async (resolve, reject) => {
             let orderItems = await db.get().collection(collection.ORDERCOLLECTION).aggregate([

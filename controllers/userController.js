@@ -1,7 +1,6 @@
 const userHelper = require('../model/helpers/user-helper');
 const adminHelper = require('../model/helpers/admin-helper');
 const paypal = require('paypal-rest-sdk');
-const { Db } = require('mongodb');
 require('dotenv').config();
 console.log(process.env.ACCOUNT_SID, 'account sid');
 const client = require('twilio')(process.env.ACCOUNT_SID, process.env.AUTH_TOKEN);

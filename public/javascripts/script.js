@@ -185,7 +185,7 @@ let checkForErrors = () => {
     let maxDiscount = document.querySelector('#maxDiscount').value;
     let ToDate = new Date();
 
-    if (!code || code === ' ') {
+    if (!code || code === "") {
         Swal.fire({
             icon: 'error',
             title: 'Oops...',

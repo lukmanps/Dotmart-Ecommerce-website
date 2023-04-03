@@ -3,9 +3,7 @@ var express = require('express');
 var router = express.Router();
 const userController = require('../controllers/userController');
 const userHelper = require('../model/helpers/user-helper');
-// const adminHelper = require('../model/helpers/admin-helper')
-const session = require('express-session');
-const { loginPost } = require('../controllers/adminController');
+
 
 const verifyLogin = (req, res, next) => {
   if (req.session.loggedIn && req.session.user.status) {

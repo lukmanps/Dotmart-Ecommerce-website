@@ -46,9 +46,12 @@
                         <h4>Media</h4>
                     </div>
                     <div class="card-body">
+                        {{!-- <div class="d-flex gap-2 mb-3">
+                            <img class="img-sm img-thumbnail" id="file-ip-1-preview">
+                        </div> --}}
                         <div class="input-upload">
                             <img src="" alt="Display Banner">
-                            <input class="form-control" type="file" name="bannerImage" required>
+                            <input class="form-control" type="file" id="file-ip-1" accept="image/*" name="bannerImage" required>
                         </div>
                     </div>
                 </div> <!-- card end// -->
@@ -57,3 +60,11 @@
         </form>
     </div>
 </section> <!-- content-main end// -->
+
+<script>
+    function showPreview(event) {
+        let preview = document.getElementById('file-ip-1-preview');
+        preview.src = src;
+        preview.style.display = "block";
+    }
+</script>

@@ -1,11 +1,11 @@
 <section class="content-main">
     <div class="row">
-        <form action="/admin/add-products" method="post" enctype="multipart/form-data">
+        <form action="/admin/add-products" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
             <div class="col-9">
                 <div class="content-header">
                     <h2 class="content-title">Add New Product.</h2>
                     <div>
-                        <button class="btn btn-md rounded font-sm hover-up" type="submit">Add</button><br>
+                        <button type="submit" class="btn btn-md rounded font-sm hover-up">Add</button><br>
                         {{#if productFound}}
                         <label class="text-center" style="color:rgb(180, 17, 17)">Product listed already!</label>
                         {{/if}}
@@ -19,14 +19,16 @@
                 <div class="card mb-4">
                     <div class="card-body">
                         <div class="mb-4">
-                            <label for="product_brand" class="form-label">Brand</label>
-                            <input type="text" placeholder="Type here" class="form-control" id="product_brand"
+                            <label for="product-brand" class="form-label">Brand</label>
+                            <input type="text" placeholder="Type here" class="form-control" id="product-brand"
                                 name="productBrand" required>
+                                <label for="product-brand" id="brand-error" style="color:rgb(180, 17, 17)"></label>
                         </div>
                         <div class="mb-4">
-                            <label for="product_title" class="form-label">Product title</label>
-                            <input type="text" placeholder="Type here" class="form-control" id="product_title"
+                            <label for="product-title" class="form-label">Product title</label>
+                            <input type="text" placeholder="Type here" class="form-control" id="product-title"
                                 name="productTitle" required>
+                            <label for="product-title" id="title-error" style="color:rgb(180, 17, 17)"></label>
                         </div>
                         <div class="row gx-3">
                             <div class="col-md-4  mb-3">
@@ -37,7 +39,7 @@
                             <div class="col-md-4  mb-3">
                                 <label for="product_color" class="form-label">Color</label>
                                 <input type="text" placeholder="Type here" class="form-control" id="product_color"
-                                    name="productColor">
+                                    name="productColor" required>
                             </div>
                             <div class="col-md-4  mb-3">
                                 <label for="product_size" class="form-label">Size</label>
@@ -52,8 +54,9 @@
                     <div class="card-body">
                         <div>
                             <label class="form-label">Description</label>
-                            <textarea placeholder="Type here" class="form-control" rows="4"
-                                name="productDescription"></textarea>
+                            <textarea placeholder="Product Description" class="form-control" rows="4"
+                                name="productDescription" id="product-description" required></textarea>
+                                <label for="product-description" id="description-error" style="color:rgb(180, 17, 17)"></label>
                         </div>
                     </div>
                 </div> <!-- card end// -->
@@ -68,10 +71,14 @@
                         </div>
                         <div>
                             <label class="form-label">Images</label>
-                            <input class="form-control" type="file" id="file-ip-0" accept="image/*" onchange="showPreview(event)" name="productImage">
-                            <input class="form-control" type="file" id="file-ip-1" accept="image/*" onchange="showPreview(event)" name="productImage">
-                            <input class="form-control" type="file" id="file-ip-2" accept="image/*" onchange="showPreview(event)" name="productImage">
-                            <input class="form-control" type="file" id="file-ip-3" accept="image/*" onchange="showPreview(event)" name="productImage">
+                            <input class="form-control" type="file" id="file-ip-0" accept="image/*"
+                                onchange="showPreview(event)" name="productImage">
+                            <input class="form-control" type="file" id="file-ip-1" accept="image/*"
+                                onchange="showPreview(event)" name="productImage">
+                            <input class="form-control" type="file" id="file-ip-2" accept="image/*"
+                                onchange="showPreview(event)" name="productImage">
+                            <input class="form-control" type="file" id="file-ip-3" accept="image/*"
+                                onchange="showPreview(event)" name="productImage">
 
                         </div>
                     </div>
@@ -99,8 +106,9 @@
                         <hr>
                         <div class="mb-4">
                             <label class="form-label">Price</label>
-                            <input type="text" placeholder="Type here" class="form-control" name="productPrice"
+                            <input type="text" placeholder="Type here" class="form-control" name="productPrice" id="product-price"
                                 required>
+                                <label for="product-price" id="price-error" style="color:rgb(180, 17, 17)"></label>
                         </div>
 
                     </div>
@@ -111,7 +119,32 @@
 </section>
 
 
-<script defer src="https://cdn.crop.guide/loader/l.js?c=KMVWFY"></script>
+<script defer src="https://cdn.crop.guide/loader/l.js?c=LDGSKD"></script>
+
+<script>
+    function validateForm() {
+        let title = document.getElementById('product-title').value;
+        let brand = document.getElementById('product-brand').value;
+        let description = document.getElementById('product-description').value;
+        let price = document.getElementById('product-price').value;
+
+        if(!title || title === "" || title.length < 5){
+            document.getElementById('title-error').innerHTML = 'Product Title must contain atleast 5 Characters'
+            return false;
+        }else if(!brand || brand === "" || brand.length < 2){
+            document.getElementById('brand-error').innerHTML = 'Product Brand must contain atleast 2 characters'
+            return false;
+        }else if(!description || description === "" || description.length < 6){
+            document.getElementById('description-error').innerHTML = 'Description must contain atleast 6 characters'
+            return false;
+        }else if(!price || price === "" || price < 10){
+            document.getElementById('price-error').innerHTML = 'Amount should not be characters or less than 10'
+            return false;
+        }else{
+            return true;
+        }
+    }
+</script>
 
 <script>
     function showPreview(event) {
@@ -123,6 +156,5 @@
                 preview.style.display = "block";
             }
         }
-
     }
 </script>
