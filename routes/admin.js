@@ -46,7 +46,7 @@ router.get('/', adminController.adminPage);
 
 router.get('/dashboard', verifyLogin, adminController.dashboard);
 
-router.get('/products', adminController.productView);
+router.get('/products', verifyLogin, adminController.productView);
 
 router.get('/login', adminController.loginPage);
 
@@ -54,39 +54,43 @@ router.post('/login', adminController.loginPost);
 
 router.get('/logout', adminController.logout);
 
-router.get('/view-users', adminController.viewUsers);
+router.get('/view-users', verifyLogin, adminController.viewUsers);
 
-router.get('/block-user/:id', adminController.blockUser);
+router.get('/block-user/:id', verifyLogin, adminController.blockUser);
 
-router.get('/unblock-user/:id', adminController.unblockUser);
+router.get('/unblock-user/:id', verifyLogin, adminController.unblockUser);
 
-router.get('/delete-user/:id', adminController.deleteUser);
+router.get('/delete-user/:id',verifyLogin,  adminController.deleteUser);
 
-router.get('/category', adminController.category);
+router.get('/category', verifyLogin, adminController.category);
 
 router.post('/add-category', adminController.categoryPost);
 
-router.get('/delete-category/:id', adminController.deleteCategory);
+router.get('/delete-category/:id', verifyLogin, adminController.deleteCategory);
 
 // router.get('/edit-user/:id', adminController.editUser);
 
 // router.post('/edit-user/:id', adminController.editUserPost);
 
-router.get('/add-products', adminController.addProduct); //Add Products Page
+router.get('/add-products', verifyLogin, adminController.addProduct); //Add Products Page
 
 router.post('/add-products', upload.array('productImage', 4), adminController.addProductPost); //Added Product
 
-router.get('/products-list', adminController.productsList);
+router.get('/products-list', verifyLogin, adminController.productsList);
 
-router.get('/unlist-product/:id', adminController.unlistProduct);
+router.get('/unlist-product/:id', verifyLogin, adminController.unlistProduct);
 
-router.get('/listBack-product/:id', adminController.listBackProduct);
+router.get('/listBack-product/:id',verifyLogin, adminController.listBackProduct);
 
-router.get('/edit-product/:id', adminController.editProduct); //Edit Product Page
+router.get('/edit-product/:id', verifyLogin, adminController.editProduct); //Edit Product Page
 
-router.post('/edited-product/:id', adminController.editProductPost);
+router.post('/edited-product/:id', upload.fields([{name: 'productImage0', maxCount: 1},
+                                                  {name: 'productImage1', maxCount: 1},
+                                                  {name: 'productImage2', maxCount: 1},
+                                                  {name: 'productImage3', maxCount: 1}]),
+                                                   adminController.editProductPost);
 
-router.get('/delete-product/:id', adminController.deleteProduct);
+router.get('/delete-product/:id', verifyLogin, adminController.deleteProduct);
 
 router.get('/order-management', verifyLogin, adminController.orderManagement);
 

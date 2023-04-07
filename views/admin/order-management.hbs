@@ -31,20 +31,7 @@
                                     <td><b>{{this.deliveryDetails.name}}</b></td>
                                     <td>{{this.totalAmount}}</td>
                                     <td>{{this.paymentMethod}}</td>
-
-                                    {{#if placed}}
-                                    <td><span class="badge rounded-pill alert-warning" id="orderStatus">{{this.status}}</span></td>
-                                    {{/if}}
-                                    {{#if shipped}}
-                                    <td><span class="badge rounded-pill alert-modern" id="orderStatus">{{this.status}}</span></td>
-                                    {{/if}}
-                                    {{#if cancelled}}
-                                    <td><span class="badge rounded-pill alert-error" id="orderStatus">{{this.status}}</span></td>
-                                    {{/if}}
-                                    {{#if delivered}}
-                                    <td><span class="badge rounded-pill alert-success" id="orderStatus">{{this.status}}</span></td>
-                                    {{/if}}
-
+                                    <td>{{this.status}}</td>
                                     <td>{{this.date}}</td>
                                     <td class="text-end">
                                         <a href="/admin/view-order/{{this._id}}" class="btn btn-md rounded font-sm">View Order</a>

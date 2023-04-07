@@ -317,8 +317,10 @@ module.exports = {
 
   editProductPost: (req, res) => {
     try {
-      adminHelper.updateProduct(req.params.id, req.body).then(() => {
-        console.log(req.body, 'Edited Product Body');
+      console.log(req.body, 'COntents in edit product');
+      console.log(req.files, 'Image files content in product');
+      let image = req.files;
+      adminHelper.updateProduct(req.params.id, req.body, image).then(() => {
         res.render('admin/edit-product', { layout: 'adminlayout' });
       })
     } catch (error) {
@@ -357,6 +359,7 @@ module.exports = {
 
       adminHelper.orderPagenation(pageNum, limit).then((orders)=>{
         console.log(orders);
+        
         res.render('admin/order-management', { layout: 'adminlayout', orders, pages });
       })
       
@@ -368,11 +371,12 @@ module.exports = {
   viewOrder: (req, res) => {
     try {
       adminHelper.getOrderDetails(req.params.id).then((order) => {
-        if (order.status === 'Placed') {
+        console.log(order[0].status, "Ordre status");
+        if (order[0].status === 'Payment Pending') {
           res.render('admin/view-order', { layout: 'adminlayout', order, placed: true });
-        } else if (order.status === 'Shipped') {
+        } else if (order[0].status === 'Shipped') {
           res.render('admin/view-order', { layout: 'adminlayout', order, shipped: true });
-        } else if (order.status === 'Cancelled'){
+        } else if (order[0].status === 'Cancelled'){
           res.render('admin/view-order', { layout: 'adminlayout', order, cancelled: true });
         }else {
           res.render('admin/view-order', { layout: 'adminlayout', order, delivered: true });

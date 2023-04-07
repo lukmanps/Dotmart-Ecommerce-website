@@ -5,9 +5,17 @@ const userController = require('../controllers/userController');
 const userHelper = require('../model/helpers/user-helper');
 
 
-const verifyLogin = (req, res, next) => {
-  if (req.session.loggedIn && req.session.user.status) {
-    next();
+const verifyLogin = async(req, res, next) => {
+  if (req.session.loggedIn) {
+    let user = await userHelper.getUser(req.session.user._id);
+    if (user.status) {
+      console.log(true, 'USer STauts flasdkrekjkfksdjf')
+      next();
+    } else {
+      req.session.loggedIn = false;
+      req.session.user = null;
+      res.redirect('/login');
+    }
   } else {
     res.redirect('/login');
   }
@@ -15,13 +23,13 @@ const verifyLogin = (req, res, next) => {
 
 //**** SIGNUP ****
 router.route('/signup')
-      .get(userController.signupPage)
-      .post(userController.signupPost);
+  .get(userController.signupPage)
+  .post(userController.signupPost);
 
 //**** LOGIN ****
 router.route('/login') //Login Pag
-      .get(userController.loginPage)
-      .post(userController.loginPost); //Login Post
+  .get(userController.loginPage)
+  .post(userController.loginPost); //Login Post
 
 router.get('/otp-login', userController.otpLogin); //OTP Login Page
 
@@ -57,6 +65,8 @@ router.get('/add-to-wishlist/:id', userController.addToWishlist);
 
 router.get('/wishlist', verifyLogin, userController.wishlistPage);
 
+router.post('/remove-wishlist-product' , userController.removeWishlistProduct);
+
 //**** CART ****
 
 router.get('/add-to-cart/:id', userController.addToCart); //Add to Cart Button
@@ -76,9 +86,13 @@ router.post('/place-order', verifyLogin, userController.placeOrder)
 
 router.get('/order-success', userController.orderSuccess)
 
-router.get('/orders', verifyLogin,  userController.ordersPage)// Order Page
+router.get('/orders', verifyLogin, userController.ordersPage)// Order Page
 
-router.get('/view-order-products/:id', userController.viewOrder);
+router.get('/view-order-products/:id', verifyLogin, userController.viewOrder);
+
+router.post('/return-order', userController.returnOrder);
+
+router.post('/cancel-order', userController.cancelOrder);
 
 
 //**** ACCOUNT INFO *****/
@@ -91,20 +105,19 @@ router.post('/update-profile/:id', userController.updateProfile);
 router.get('/address', verifyLogin, userController.addressPage); //Address Page
 
 router.route('/add-address')
-      .get(verifyLogin, userController.addAddress)
-      .post(userController.addAddressPost);
+  .get(verifyLogin, userController.addAddress)
+  .post(userController.addAddressPost);
 
-router.get('/select-address/:id', userController.selectAddress);
+router.post('/select-address', userController.selectAddress);
 
-router.route('/edit-address/:id')
-      .get(verifyLogin, userController.editAddress);
+router.get('/edit-address/:id', verifyLogin, userController.editAddress);
 
-router.get('/all-coupons', verifyLogin, userController.allCoupons);   
+router.get('/all-coupons', verifyLogin, userController.allCoupons);
 
 router.post('/apply-coupon', userController.applyCoupon);
 
 
-      
+
 
 // router.get('/error', userController.errorPage);
 

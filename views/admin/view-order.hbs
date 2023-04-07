@@ -1,5 +1,5 @@
 <link rel="icon" type="image/png" sizes="32x32" href="/dotmart-monogram.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/dotmart-monogram.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/dotmart-monogram.png">
 <section class="content-main">
     <div class="content-header">
         <div>
@@ -18,17 +18,7 @@
                     </span> <br>
                     <small class="text-muted">Order ID: {{order.[0]._id}}</small>
                 </div>
-                <div class="col-lg-6 col-md-6 ms-auto text-md-end">
-                    <select class="form-select d-inline-block mb-lg-0 mb-15 mw-200">
-                        <option>Change status</option>
-                        <option>Awaiting payment</option>
-                        <option>Confirmed</option>
-                        <option>Shipped</option>
-                        <option>Delivered</option>
-                    </select>
-                    <a class="btn btn-primary" href="#">Save</a>
-                    <a class="btn btn-secondary print ms-2" href="#"><i class="icon material-icons md-print"></i></a>
-                </div>
+                
             </div>
         </header> <!-- card-header end// -->
         <div class="card-body">
@@ -112,7 +102,7 @@
                                         <article class="float-end">
                                             <dl class="dlist">
                                                 <dt>Subtotal:</dt>
-                                                <dd>$973.35</dd>
+                                                <dd>&#x20B9; {{totalAmount}}</dd>
                                             </dl>
                                             <dl class="dlist">
                                                 <dt>Shipping cost:</dt>
@@ -135,56 +125,76 @@
                             </tbody>
                         </table>
                     </div> <!-- table-responsive// -->
-                    
+
                 </div> <!-- col// -->
                 <div class="col-lg-1"></div>
                 <div class="col-lg-3">
 
+                    {{#if placed}}
+                    <p>Status: <span class="badge rounded-pill alert-warning text-warning"
+                    id="show-order-status">{{order.[0].status}}</span></p>
+                    {{/if}}
+                    {{#if shipped}}
+                    <p>Status: <span class="badge rounded-pill alert-warning text-warning"
+                    >{{order.[0].status}}</span></p>
+                    {{/if}}
+                    {{#if delivered}}
                     <p>Status: <span class="badge rounded-pill alert-success text-success"
-                            id="show-order-status">{{order.[0].status}}</span></p>
+                    >{{order.[0].status}}</span></p>
+                    {{/if}}
+                    {{#if cancelled}}
+                    <p>Status: <span class="badge rounded-pill alert-danger text-danger"
+                    >{{order.[0].status}}</span></p>
+                    {{/if}}
 
-                        <div class="box shadow-sm bg-light">
+                    <div class="box shadow-sm bg-light">
 
-                            <div class="mb-4">
-                                <input type="text" id="orderId" value="{{order.[0]._id}}" hidden>
-                                <label class="mb-2 form-check form-check-inline" style="width: 45%;">
-                                    <input class="form-check-input" name="status" id="shipped" type="radio" value="Shipped">
-                                    <span class="form-check-label">Shipped</span>
-                                </label>
-                                <label class="mb-2 form-check form-check-inline" style="width: 45%;">
-                                    <input class="form-check-input" name="status" id="delivered" type="radio" value="Delivered">
-                                    <span class="form-check-label">Delivered</span>
-                                </label>
-                                <label class="mb-2 form-check form-check-inline" style="width: 45%;">
-                                    <input class="form-check-input" name="status" id="cancelled" type="radio" value="Cancelled">
-                                    <span class="form-check-label">Cancel</span>
-                                </label>
-                            </div>
-                            <button class="btn btn-primary" type="button" onclick="validateForm()">Change Status</button>
-                        </div> <!-- col// -->
+                        <div class="mb-4">
+                            <input type="text" id="orderId" value="{{order.[0]._id}}" hidden>
+                            <label class="mb-2 form-check form-check-inline" style="width: 45%;">
+                                <input class="form-check-input" name="status" id="shipped" type="radio" value="Shipped">
+                                <span class="form-check-label">Shipped</span>
+                            </label>
+                            <label class="mb-2 form-check form-check-inline" style="width: 45%;">
+                                <input class="form-check-input" name="status" id="delivered" type="radio"
+                                    value="Delivered">
+                                <span class="form-check-label">Delivered</span>
+                            </label>
+                            <label class="mb-2 form-check form-check-inline" style="width: 45%;">
+                                <input class="form-check-input" name="status" id="cancelled" type="radio"
+                                    value="Cancelled">
+                                <span class="form-check-label">Cancel</span>
+                            </label>
+                        </div>
                         
+                        <button class="btn btn-primary" type="button" onclick="validateForm()">Change Status</button>
+                    </div> <!-- col// -->
+
                 </div>
-                
+
             </div> <!-- card-body end// -->
         </div> <!-- card end// -->
 </section> <!-- content-main end// -->
 
 <script>
-function validateForm(){
-    let orderId = document.getElementById('orderId').value
-    if(document.getElementById('shipped').checked){
-        let status = document.getElementById('shipped').value;
-        updateOrderStatus(status, orderId);
-    }else if(document.getElementById('delivered').checked){
-        let status = document.getElementById('delivered').value;
-        updateOrderStatus(status, orderId);
-    }else if(document.getElementById('cancelled').checked){
-        let status = document.getElementById('cancelled').value;
-        updateOrderStatus(status, orderId);
-    }else{
-        alert("Select Order status to update");
-    }
-	
-}	
-</script>
+    function validateForm() {
+        let orderId = document.getElementById('orderId').value;
+        if (document.getElementById('shipped').checked) {
+            let status = document.getElementById('shipped').value;
+            updateOrderStatus(status, orderId);
+        } else if (document.getElementById('delivered').checked) {
+            let status = document.getElementById('delivered').value;
+            updateOrderStatus(status, orderId);
+        } else if (document.getElementById('cancelled').checked) {
+            let status = document.getElementById('cancelled').value;
+            updateOrderStatus(status, orderId);
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Select a status to update!',
+            })
+        }
 
+    }	
+</script>

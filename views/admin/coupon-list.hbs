@@ -1,12 +1,15 @@
 <section class="content-main">
     <div class="content-header">
-        <div>
-                    <h2 class="content-title card-title">Coupons.</h2>
-                    </div>
-        
+        <div class="content-title card-title">
+            <h2 class="content-title card-title">Coupons.</h2>
+        </div>
+         <div>
+        <a href="/admin/add-coupon" class="btn btn-primary btn-sm rounded">Add</a>
     </div>
+    </div>
+   
     <div class="card mb-4">
-        
+
         <!-- card-header end// -->
         <div class="card-body">
             <div class="table-responsive">
@@ -31,8 +34,10 @@
                             <td>{{this.expiryDate}}</td>
                             <td class="text-end">
                                 <input type="hidden" id="couponId" value="{{this._id}}">
-                                <button class="btn btn-md rounded font-sm" type="button" onclick="removeCoupon('{{this._id}}')">Remove</button>
-                                {{!-- <a href="/admin/remove-coupon/{{this._id}}" class="btn btn-md rounded font-sm">Remove</a> --}}
+                                <button class="btn btn-md rounded font-sm" type="button"
+                                    onclick="removeCoupon('{{this._id}}')">Remove</button>
+                                {{!-- <a href="/admin/remove-coupon/{{this._id}}"
+                                    class="btn btn-md rounded font-sm">Remove</a> --}}
                             </td>
                         </tr>
                         {{/each}}
@@ -42,8 +47,8 @@
         </div>
         <!-- card-body end// -->
     </div>
-    
+
 </section> <!-- content-main end// -->
 <script>
-    
+
 </script>

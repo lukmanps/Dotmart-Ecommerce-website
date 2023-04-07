@@ -2,7 +2,6 @@ const userHelper = require('../model/helpers/user-helper');
 const adminHelper = require('../model/helpers/admin-helper');
 const paypal = require('paypal-rest-sdk');
 require('dotenv').config();
-console.log(process.env.ACCOUNT_SID, 'account sid');
 const client = require('twilio')(process.env.ACCOUNT_SID, process.env.AUTH_TOKEN);
 
 
@@ -68,14 +67,16 @@ module.exports = {
   loginPost: function (req, res) {
     try {
       userHelper.doLogin(req.body).then((response) => {
-
-        if (response.status) {
+        if(response.blocked == true){
+          res.render('user/login', { blocked: true});
+        } else if (response.status) {
           req.session.loggedIn = true;
           req.session.user = response.validUser;
           res.redirect('/');
         } else {
           res.render('user/login', { loginErr: true });
         }
+        
       });
     } catch (error) {
       res.render('error', { message: error.message });
@@ -277,7 +278,7 @@ module.exports = {
       const totalPrice = await userHelper.getTotalAmount(req.session.user._id);
       const cartCount = req.session.cartCount;
       console.log(products, 'Cart Products');
-      if (products.length === 0) {
+      if (!products) {
         res.render('user/cart', { user, cartCount, cartEmpty: true });
       } else {
         res.render('user/cart', { user, cartCount, products, totalPrice });
@@ -296,6 +297,30 @@ module.exports = {
     })
   },
 
+  addToCart: async (req, res) => {
+    const user = req.session.user;
+    if (user) {
+      userHelper.addToCart(req.params.id, user._id).then(async (response) => {
+        let cartCount = await userHelper.getCartCount(req.session.user._id);
+        console.log(cartCount, 'Cart COunt in when products added');
+        response.status = true;
+        response.cartCount = cartCount;
+        res.json(response);
+      });
+    } else {
+      let response = {};
+      response.status = false;
+      res.json(response);
+    }
+  },
+
+  removeCartPost: (req, res) => {
+    userHelper.removeCartProduct(req.body).then((response) => {
+      res.json(response);
+    })
+  },
+
+  //***** WISHLIST ******
   addToWishlist: (req, res) => {
     console.log('Wishlist button clicked');
     const user = req.session.user;
@@ -329,46 +354,31 @@ module.exports = {
     }
   },
 
-
-  addToCart: async (req, res) => {
-    const user = req.session.user;
-    if (user) {
-      userHelper.addToCart(req.params.id, user._id).then(async (response) => {
-        let cartCount = await userHelper.getCartCount(req.session.user._id);
-        console.log(cartCount, 'Cart COunt in when products added');
-        response.status = true;
-        response.cartCount = cartCount;
-        res.json(response);
-      });
-    } else {
-      let response = {};
-      response.status = false;
+  removeWishlistProduct: (req, res)=>{
+    console.log(req.body, 'details in remove wishlistproduct ');
+   userHelper.removeWishlistProduct(req.body).then((response)=>{
       res.json(response);
-    }
+   })
   },
 
-  removeCartPost: (req, res) => {
-    userHelper.removeCartProduct(req.body).then((response) => {
-      res.json(response);
-    })
-  },
+  
 
-
-  //CHECKOUT PAGE
+  //***** CHECKOUT PAGE *****
   checkout: async (req, res) => {
     try {
       const user = req.session.user;
+      const cartCount = req.session.cartCount;
       const total = await userHelper.getTotalAmount(user._id);
       const products = await userHelper.getCartProducts(user._id);
-      const address = user.address;
+      const address = req.session.user.address;
       const totalUSD = total / 81;
 
       console.log(Math.round(totalUSD));
 
-      if (products.length === 0) {
-        res.render('user/cart', { user });
+      if (!products === 0) {
+        res.redirect('/cart');
       } else {
-        res.render('user/checkout', { user, total, products, address });
+        res.render('user/checkout', { user, total, products, address, cartCount });
       }
 
     } catch (error) {
@@ -378,67 +388,119 @@ module.exports = {
 
   checkoutPost: async (req, res) => {
     try {
+      console.log(req.body, 'Checkout Details');
       const user = req.session.user;
       const address = user.address;
       const total = parseInt(req.body.totalAmount);
-      const products = await userHelper.getCartProductList(user._id);
-      userHelper.placeOrder(req.body, products, total).then((response) => {
-        console.log(response, "Response From Place Order");
-        if (response.status) {
-          if (response.order.paymentMethod === 'COD') {
-            res.render('user/order-success', { user });
-          } else if (response.order.paymentMethod === 'Paypal') {
-            let total = response.order.totalAmount / 81;
-            let totalUSD = Math.round(total);
+      const products = await userHelper.getCartProducts(user._id);
 
-            let create_payment_json = {
-              "intent": "sale",
-              "payer": {
-                "payment_method": "paypal"
-              },
-              "redirect_urls": {
-                "return_url": "http://localhost:3000/order-success",
-                "cancel_url": "http://localhost:3000/failed"
-              },
-              "transactions": [{
-                "item_list": {
-                  "items": [{
-                    "name": "item",
-                    "sku": "item",
-                    "price": totalUSD,
-                    "currency": "USD",
-                    "quantity": 1
-                  }]
-                },
-                "amount": {
-                  "currency": "USD",
-                  "total": totalUSD
-                },
-                "description": "This is the payment description."
+      if(!req.body.paymentMethod){
+        res.render('user/checkout', {user, products, total, address, paymentErr: true});
+      }else if(req.body.paymentMethod === 'wallet'){
+        let wallet = user.wallet;
+        if(wallet < total){
+          res.render('user/checkout', {user, products, total, address, walletErr: true});
+        }
+      } else if (req.body.paymentMethod === 'Paypal') {
+        let totalAmount = total / 81;
+        let totalUSD = Math.round(totalAmount);
+
+        let create_payment_json = {
+          "intent": "sale",
+          "payer": {
+            "payment_method": "paypal"
+          },
+          "redirect_urls": {
+            "return_url": "http://localhost:3000/order-success",
+            "cancel_url": "http://localhost:3000/failed"
+          },
+          "transactions": [{
+            "item_list": {
+              "items": [{
+                "name": "item",
+                "sku": "item",
+                "price": totalUSD,
+                "currency": "USD",
+                "quantity": 1
               }]
-            };
+            },
+            "amount": {
+              "currency": "USD",
+              "total": totalUSD
+            },
+            "description": "This is the payment description."
+          }]
+        };
 
-            paypal.payment.create(create_payment_json, function (error, payment) {
-              console.log('Online Payment API Called');
-              if (error) {
-                throw error;
-              } else {
-                for (let i = 0; i < payment.links.length; i++) {
-                  if (payment.links[i].rel === 'approval_url') {
-                    res.redirect(payment.links[i].href);
-                  }
-                }
-                console.log("Create Payment Response");
-                console.log(payment);
+        paypal.payment.create(create_payment_json, function (error, payment) {
+          console.log('Online Payment API Called');
+          if (error) {
+            throw error;
+          } else {
+            for (let i = 0; i < payment.links.length; i++) {
+              if (payment.links[i].rel === 'approval_url') {
+                res.redirect(payment.links[i].href);
               }
-            });
+            }
+            console.log("Create Payment Response");
           }
+        });
+      } else {
+
+      userHelper.placeOrder(req.body, products, total).then((response) => {
+        if (response.status) {
+            res.render('user/order-success', { user });
         } else {
           res.render('user/checkout', { user, total, products, address, paymentErr: true });
         }
       })
-    } catch (error) { }
+      }
+    } catch (error) {
+      res.render('error', { message: error.message });
+    }
   },
+
+   // paypal order success
+   paypalSucces: (req, res) => {
+    try {
+      console.log(req.query, 'Query in paypal success');
+        const payerId = req.query.PayerID;
+        const paymentId = req.query.paymentId;
+        let orderID = req.session.orderID;
+        user = req.session.user
+
+        const execute_payment_json = {
+
+            "payer_id": payerId,
+            "transactions": [{
+                "amount": {
+                    "currency": "USD",
+                    "total": req.session.total
+                }
+            }]
+        };
+
+        // Obtains the transaction details from paypal
+        paypal.payment.execute(paymentId, execute_payment_json, function (error, payment) {
+            //When error occurs when due to non-existent transaction, throw an error else log the transaction details in the console then send a Success string reposponse to the user.
+            if (error) {
+                throw error;
+            } else {
+
+                userHelper.paymentStatusChange(orderID, user._id).then((response) => {
+                    res.render('user/order-success', { user, orderID, cartCount: 0 })
+                    req.session.orderID = null
+                })
+
+
+            }
+        });
+    } catch (error) {
+        res.render('error', { message: error.message});
+    }
+
+}
+,
 
   placeOrder: async (req, res) => {
     let products = await userHelper.getCartProductList(req.body.userId);
@@ -454,7 +516,7 @@ module.exports = {
   },
 
 
-  //ORDERS PAGE
+  //***** ORDERS PAGE ******
   ordersPage: async (req, res) => {
     try {
       const date = new Date().toLocaleDateString('en-US');
@@ -465,21 +527,47 @@ module.exports = {
     } catch (error) {
       res.render('error', { message: error.message });
     }
-    // let date = new Date().toLocaleString('en-US');
-
   },
 
   viewOrder: async (req, res) => {
     try {
       const user = req.session.user;
       const products = await userHelper.getOrderProducts(req.params.id);
-      res.render('user/view-order-products', { user, products });
+      console.log(products, 'Order Details');
+      let orderDetails = products[0];
+      if(orderDetails.status === 'Delivered'){
+        res.render('user/view-order-products', { user, products, orderDetails, delivered: true});
+      }else{
+        res.render('user/view-order-products', { user, products, orderDetails });
+      }
+      
     } catch (error) {
       res.render('error', { message: error.message });
     }
 
   },
 
+  returnOrder: (req, res)=>{
+    try{
+      console.log(req.body.orderId, 'OrderID to change status');
+      let userId = req.session.user._id;
+    userHelper.returnOrder(req.body.orderId, userId).then((response)=>{
+      res.json(response);
+    })
+    }catch(error){
+      res.render('error', { message: error.message });
+    }
+  },
+
+  cancelOrder: (req, res)=>{
+    try{
+      userHelper.cancelOrder(req.body.orderId).then((response)=>{
+        res.json(response)
+      })
+    }catch(error){
+      res.render('error', { message: error.message });
+    }
+  },
 
   //USER PROFILE
   changePassword: (req, res) => {
@@ -504,7 +592,7 @@ module.exports = {
 
         if (response.status) {
           console.log("Mobile Number Found");
-          client.verify.v2.services(serviceSID)
+          client.verify.v2.services(process.env.SERVICE_SID)
             .verifications
             .create({
               to: `+91${mobNo}`,
@@ -625,8 +713,11 @@ module.exports = {
 
   selectAddress: (req, res) => {
     try {
-      userHelper.selectAddress(req.session.user._id, req.params.id).then(() => {
-        res.json({ status: true });
+      console.log(req.body, 'Select Address bUtton clicked');
+      let addressId = req.body.addressId;
+      let user = req.session.user;
+      userHelper.selectAddress(user._id, addressId).then((response) => {
+        res.json(response);
       })
     } catch (error) { }
     res.render('error', { message: error.message });
@@ -634,7 +725,7 @@ module.exports = {
 
   editAddress: async (req, res) => {
     try {
-      console.log(req.params.id, " Address ID in edit address");
+      console.log(req.params.id, "Address ID in edit address");
       let user = req.session.user;
       await userHelper.getEditAddress(user._id, req.params.id).then((response) => {
         console.log(response, " address in response")

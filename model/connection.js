@@ -5,8 +5,8 @@ const state={
 
 module.exports.connect=function (done) 
 {
-    const url="mongodb://0.0.0.0:27017";
-    const dbname="dotmart"; 
+    const url="mongodb+srv://luqmansha6:LukmanpsDot6@dotmart.sw6jazg.mongodb.net/test";
+    const dbname="Dotmart"; 
 
     MongoClient.connect(url,{ useNewUrlParser: true, useUnifiedTopology:true}, (err,data)=>
     {

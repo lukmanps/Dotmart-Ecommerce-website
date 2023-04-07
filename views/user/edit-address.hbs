@@ -4,17 +4,9 @@
         <div class="page-content">
             <div class="checkout">
                 <div class="container">
-                    {{!-- <div class="checkout-discount">
-                        <form action="#">
-                            <input type="text" class="form-control" required id="checkout-discount-input">
-                            <label for="checkout-discount-input" class="text-truncate">Have a coupon? <span>Click here
-                                    to
-                                    enter your code</span></label>
-                        </form>
-                    </div><!-- End .checkout-discount --> --}}
 
 
-                    <form action="/edit-address" method="post" id="checkout-form">
+                    <form action="/edit-address" method="post" id="checkout-form" onsubmit="return validateAddress()">
                         <input type="text" name="userId" id="" value="{{user._id}}" hidden>
                         <div class="row">
                             <div class="col-lg-9">
@@ -22,22 +14,15 @@
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <label>Full Name *</label>
-                                        <input type="text" class="form-control" name="addressName" required>
+                                        <input type="text" id="address-name" class="form-control" name="addressName" value="">
                                     </div><!-- End .col-sm-6 -->
-
-                                    {{!-- <div class="col-sm-6">
-                                        <label>Last Name *</label>
-                                        <input type="text" class="form-control">
-                                    </div><!-- End .col-sm-6 --> --}}
                                 </div><!-- End .row -->
 
 
                                 <label>Personal Address *</label>
-                                <input type="text" class="form-control" placeholder="House number and Appartments"
+                                <input type="text" id="address" class="form-control" placeholder="House number and Appartments"
                                     name="addressHouseName" required>
-                                <input type="text" class="form-control" placeholder="Street name, Locality, Landmark"
-                                    name="addressStreet" required>
-
+                                
                                 <div class="row">
                                     <div class="col-sm-4">
                                         <label>Town / City *</label>
@@ -57,28 +42,15 @@
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <label>Postcode / ZIP *</label>
-                                        <input type="text" class="form-control" name="addressPIN" required>
+                                        <input type="text" id="address-pin" class="form-control" name="addressPIN" required>
                                     </div><!-- End .col-sm-6 -->
 
                                     <div class="col-sm-6">
                                         <label>Phone *</label>
-                                        <input type="tel" class="form-control" name="addressMob" required>
+                                        <input type="text" id="address-phone" class="form-control" name="addressMob" required>
 
                                     </div><!-- End .col-sm-6 -->
                                 </div><!-- End .row -->
-
-
-                                {{!-- <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input" id="checkout-create-acc">
-                                    <label class="custom-control-label" for="checkout-create-acc">Create an
-                                        account?</label>
-                                </div><!-- End .custom-checkbox -->
-
-                                <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input" id="checkout-diff-address">
-                                    <label class="custom-control-label" for="checkout-diff-address">Ship to a different
-                                        address?</label>
-                                </div><!-- End .custom-checkbox --> --}}
 
                             </div><!-- End .col-lg-9 -->
 
@@ -94,3 +66,32 @@
         </div><!-- End .page-content -->
     </main><!-- End .main -->
 </section>
+
+<script>
+
+function validateAddress() {
+		console.log('Place ORder button clicked')
+		let orderName = document.getElementById('address-name').value;
+		let orderAddress = document.getElementById('address').value;
+		let orderPIN = document.getElementById('address-pin').value;
+		let orderMob = document.getElementById('address-phone').value;
+
+		if (!orderName || orderName === "" || orderName.length<5) {
+			alert('Name Should contain atleast 5 characters');
+			return false;
+		} else if (!orderAddress || orderAddress === "" || orderAddress.length < 7) {
+			alert('Address Should contain atleast 7 characters');
+			return false;
+		} else if (isNaN(orderPIN) || !orderPIN || orderPIN === "" || orderPIN.length < 6) {
+			alert('PIN Should contain 6 Digits');
+			return false;
+		} else if (isNaN(orderMob) || !orderMob || orderMob === "" || orderMob.length < 10) {
+			alert('Mobile Number Should contain 10 Digits');
+			return false;
+	    } else {
+			return true;
+		}
+		return true;
+	}
+
+</script>

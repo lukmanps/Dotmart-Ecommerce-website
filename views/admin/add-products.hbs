@@ -21,25 +21,25 @@
                         <div class="mb-4">
                             <label for="product-brand" class="form-label">Brand</label>
                             <input type="text" placeholder="Type here" class="form-control" id="product-brand"
-                                name="productBrand" required>
+                                name="productBrand" >
                                 <label for="product-brand" id="brand-error" style="color:rgb(180, 17, 17)"></label>
                         </div>
                         <div class="mb-4">
                             <label for="product-title" class="form-label">Product title</label>
                             <input type="text" placeholder="Type here" class="form-control" id="product-title"
-                                name="productTitle" required>
+                                name="productTitle">
                             <label for="product-title" id="title-error" style="color:rgb(180, 17, 17)"></label>
                         </div>
                         <div class="row gx-3">
                             <div class="col-md-4  mb-3">
                                 <label for="product_sku" class="form-label">Product ID</label>
                                 <input type="text" placeholder="Type here" class="form-control" id="product_sku"
-                                    name="productID" required>
+                                    name="productID" >
                             </div>
                             <div class="col-md-4  mb-3">
                                 <label for="product_color" class="form-label">Color</label>
                                 <input type="text" placeholder="Type here" class="form-control" id="product_color"
-                                    name="productColor" required>
+                                    name="productColor">
                             </div>
                             <div class="col-md-4  mb-3">
                                 <label for="product_size" class="form-label">Size</label>
@@ -55,7 +55,7 @@
                         <div>
                             <label class="form-label">Description</label>
                             <textarea placeholder="Product Description" class="form-control" rows="4"
-                                name="productDescription" id="product-description" required></textarea>
+                                name="productDescription" id="product-description"></textarea>
                                 <label for="product-description" id="description-error" style="color:rgb(180, 17, 17)"></label>
                         </div>
                     </div>
@@ -72,13 +72,13 @@
                         <div>
                             <label class="form-label">Images</label>
                             <input class="form-control" type="file" id="file-ip-0" accept="image/*"
-                                onchange="showPreview(event)" name="productImage">
+                                onchange="showPreview(event,0)" name="productImage">
                             <input class="form-control" type="file" id="file-ip-1" accept="image/*"
-                                onchange="showPreview(event)" name="productImage">
+                                onchange="showPreview(event,1)" name="productImage">
                             <input class="form-control" type="file" id="file-ip-2" accept="image/*"
-                                onchange="showPreview(event)" name="productImage">
+                                onchange="showPreview(event,2)" name="productImage">
                             <input class="form-control" type="file" id="file-ip-3" accept="image/*"
-                                onchange="showPreview(event)" name="productImage">
+                                onchange="showPreview(event,3)" name="productImage">
 
                         </div>
                     </div>
@@ -107,7 +107,7 @@
                         <div class="mb-4">
                             <label class="form-label">Price</label>
                             <input type="text" placeholder="Type here" class="form-control" name="productPrice" id="product-price"
-                                required>
+                                >
                                 <label for="product-price" id="price-error" style="color:rgb(180, 17, 17)"></label>
                         </div>
 
@@ -128,33 +128,35 @@
         let description = document.getElementById('product-description').value;
         let price = document.getElementById('product-price').value;
 
-        if(!title || title === "" || title.length < 5){
-            document.getElementById('title-error').innerHTML = 'Product Title must contain atleast 5 Characters'
-            return false;
-        }else if(!brand || brand === "" || brand.length < 2){
+        if(!brand || brand === "" || brand.length < 2){
             document.getElementById('brand-error').innerHTML = 'Product Brand must contain atleast 2 characters'
             return false;
+        }else if(!title || title === "" || title.length < 5){
+            document.getElementById('brand-error').innerHTML = ""
+            document.getElementById('title-error').innerHTML = 'Product Title must contain atleast 5 Characters'
+            return false;
         }else if(!description || description === "" || description.length < 6){
+            document.getElementById('title-error').innerHTML = ""
             document.getElementById('description-error').innerHTML = 'Description must contain atleast 6 characters'
             return false;
-        }else if(!price || price === "" || price < 10){
-            document.getElementById('price-error').innerHTML = 'Amount should not be characters or less than 10'
+        }else if(isNaN(price) || !price || price === "" || price < 10){
+             document.getElementById('description-error').innerHTML =""
+            document.getElementById('price-error').innerHTML = 'Amount should not be less than 10'
             return false;
         }else{
+            document.getElementById('price-error').innerHTML =""
             return true;
         }
     }
 </script>
 
 <script>
-    function showPreview(event) {
-        for (i = 0; i <= 3; i++) {
+    function showPreview(event,i) {
             if (event.target.files.length > 0) {
-                var src = URL.createObjectURL(event.target.files[i]);
+                var src = URL.createObjectURL(event.target.files[0]);
                 var preview = document.getElementById(`file-ip-${i}-preview`);
                 preview.src = src;
                 preview.style.display = "block";
             }
-        }
     }
 </script>

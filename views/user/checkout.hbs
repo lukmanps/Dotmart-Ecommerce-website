@@ -1,192 +1,277 @@
-<main class="main">
-	<div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
-		<div class="container">
-			<h1 class="page-title" style="font-weight: 500;">Checkout.</h1>
-		</div><!-- End .container -->
-	</div><!-- End .page-header -->
-	<nav aria-label="breadcrumb" class="breadcrumb-nav">
-		<div class="container">
-			<ol class="breadcrumb">
-				<li class="breadcrumb-item"><a href="/">Home</a></li>
-				<li class="breadcrumb-item"><a href="/cart">Shopping Cart</a></li>
-				<li class="breadcrumb-item active" aria-current="page">Checkout</li>
-			</ol>
-		</div><!-- End .container -->
-	</nav><!-- End .breadcrumb-nav -->
-
-	<div class="page-content">
-
-		<div class="checkout">
+<section>
+	<main class="main">
+		<div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
 			<div class="container">
+				<h1 class="page-title" style="font-weight: 500;">Checkout.</h1>
+			</div><!-- End .container -->
+		</div><!-- End .page-header -->
+		<nav aria-label="breadcrumb" class="breadcrumb-nav">
+			<div class="container">
+				<ol class="breadcrumb">
+					<li class="breadcrumb-item"><a href="/">Home</a></li>
+					<li class="breadcrumb-item"><a href="/cart">Shopping Cart</a></li>
+					<li class="breadcrumb-item active" aria-current="page">Checkout</li>
+				</ol>
+			</div><!-- End .container -->
+		</nav><!-- End .breadcrumb-nav -->
 
-				<form action="/checkout" method="post" onsubmit="return validateForm()" id="checkout-form">
-					<input type="text" name="userId" id="" value="{{user._id}}" hidden>
-					{{#each address}}
-					{{#if this.default}}
+		<div class="page-content">
 
-					<div class="row">
-						<div class="col-lg-9">
-							<h2 class="checkout-title">Billing Details</h2><!-- End .checkout-title -->
-							<div class="row">
-								<div class="col-sm-6">
-									<label>Full Name</label>
-									<input type="text" class="form-control" name="orderName" value="{{this.name}}"
-										required>
-								</div><!-- End .col-sm-6 -->
+			<div class="checkout">
+				<div class="container">
 
-							</div><!-- End .row -->
+					<form action="/checkout" method="post" id="checkout-form" onsubmit="return validateCheckout()">
+						<input type="text" name="userId" id="" value="{{user._id}}" hidden>
 
 
-							<label>Address *</label>
-							<input type="text" class="form-control" placeholder="House number and Street name"
-								name="orderAddress" value="{{this.address}}" required>
 
-							<div class="row">
-								<div class="col-sm-4">
-									<label>Town / City </label>
-									<input type="text" class="form-control" value="{{this.town}}">
-								</div><!-- End .col-sm-6 -->
+						<div class="row">
+							{{#if address}}
+							{{#each address}}
+							{{#if this.default}}
+							<div class="col-lg-9">
+								<h2 class="checkout-title">Billing Details</h2><!-- End .checkout-title -->
+								<div class="row">
+									<div class="col-sm-6">
+										<label>Full Name</label>
+										<input type="text" class="form-control" id="order-name" name="orderName" value="{{this.name}}">
+									</div><!-- End .col-sm-6 -->
 
-								<div class="col-sm-4">
-									<label>State</label>
-									<input type="text" class="form-control" value="{{this.state}}">
-								</div><!-- End .col-sm-6 -->
-								<div class="col-sm-4">
-									<label>County </label>
-									<input type="text" class="form-control" value="{{this.country}}">
-								</div><!-- End .col-sm-6 -->
-							</div><!-- End .row -->
+								</div><!-- End .row -->
 
-							<div class="row">
-								<div class="col-sm-6">
-									<label>Postcode / ZIP *</label>
-									<input type="text" class="form-control" name="orderPIN" value="{{this.pin}}"
-										required>
-								</div><!-- End .col-sm-6 -->
 
-								<div class="col-sm-6">
-									<label>Phone *</label>
-									<input type="tel" class="form-control" name="orderMob" value="{{this.phone}}"
-										required>
+								<label>Address *</label>
+								<input type="text" class="form-control" id="order-address" placeholder="House number and Street name"
+									name="orderAddress" value="{{this.address}}">
 
-								</div><!-- End .col-sm-6 -->
-							</div><!-- End .row -->
+								<div class="row">
+									<div class="col-sm-4">
+										<label>Town / City </label>
+										<input type="text" class="form-control" value="{{this.town}}">
+									</div><!-- End .col-sm-6 -->
 
-							<div class="link"><a href="/address">Change Address?</a></div>
+									<div class="col-sm-4">
+										<label>State</label>
+										<input type="text" class="form-control" value="{{this.state}}">
+									</div><!-- End .col-sm-6 -->
+									<div class="col-sm-4">
+										<label>County </label>
+										<input type="text" class="form-control" value="{{this.country}}">
+									</div><!-- End .col-sm-6 -->
+								</div><!-- End .row -->
 
+								<div class="row">
+									<div class="col-sm-6">
+										<label>Postcode / ZIP *</label>
+										<input type="text" class="form-control" id="order-pin" name="orderPIN" value="{{this.pin}}">
+									</div><!-- End .col-sm-6 -->
+
+									<div class="col-sm-6">
+										<label>Phone *</label>
+										<input type="tel" class="form-control" id="order-mob" name="orderMob" value="{{this.phone}}">
+
+									</div><!-- End .col-sm-6 -->
+								</div><!-- End .row -->
+
+								<div class="link"><a href="/address">Change Address?</a></div>
+							</div><!-- End .col-lg-9 -->
 							{{/if}}
 							{{/each}}
-						</div><!-- End .col-lg-9 -->
-						<aside class="col-lg-3">
-							<div class="checkout-discount">
-								<input type="text" class="form-control" id="couponCode"
-									placeholder="Have Coupon? Enter here">
-								<button type="button" class="btn btn-outline-primary-2 btn-order btn-block"
-									onclick="applyCoupon({{total}})">Apply</button>
-								<P for="couponErr" class="text-start" id="couponErr" style="color:rgb(180, 17, 17)"></P>
-								<p for="couponSuccess" class="text-start" id="couponSuccess"
-									style="color:rgb(22, 131, 22)"></p>
-								<p><a href="/all-coupons"><small><b>All Coupons ></b></small></a></p>
-							</div><!-- End .checkout-discount -->
-							<div class="summary">
-								<h3 class="summary-title">Your Order.</h3><!-- End .summary-title -->
+							{{else}}
+							<div class="col-lg-9">
+								<h2 class="checkout-title">Billing Details</h2><!-- End .checkout-title -->
+								<div class="row">
+									<div class="col-sm-6">
+										<label>Full Name</label>
+										<input type="text" class="form-control" id="order-name" name="orderName"
+											required>
+									</div><!-- End .col-sm-6 -->
 
-								<table class="table table-summary">
-									<thead>
-										<tr>
-											<th>Product</th>
-											<th>Quantity</th>
-										</tr>
-									</thead>
-
-									<tbody>
-										{{#each products}}
-										<tr>
-											<td><a href="#">{{this.product.productTitle}}</a></td>
-											<td>{{this.quantity}}</td>
-										</tr>
-										{{/each}}
-										<tr class="summary-subtotal">
-											<td>Subtotal:</td>
-											<td>&#x20B9;{{total}}</td>
-										</tr><!-- End .summary-subtotal -->
-										<tr>
-											<td>Total:</td>
-											<td id="netTotal">&#x20B9;{{total}}</td>
-										</tr>
-										<tr>
-											<td>Shipping:</td>
-											<td>Free</td>
-										</tr>
-										<tr>
-											<td>Coupon:</td>
-											<td id="couponApplied"></td>
-										</tr>
-										<tr>
-											<td>Discount:</td>
-											<td id="couponDisAmount">-</td>
-										</tr>
+								</div><!-- End .row -->
 
 
-										<tr class="summary-total">
-											<td>Total:</td>
-											<td id="totalPrice">&#x20B9;{{total}}</td> 
-										</tr><!-- End .summary-total -->
-									</tbody>
-								</table><!-- End .table table-summary -->
+								<label>Address *</label>
+								<input type="text" class="form-control" placeholder="House number and Street name"
+									name="orderAddress" id="order-address" value="" >
 
-								<div class="accordion-summary" id="accordion-payment">
-									<h5>Payment method</h5>
-									<div class="custom-control custom-radio">
+								<div class="row">
+									<div class="col-sm-4">
+										<label>Town / City </label>
+										<input type="text" class="form-control" value="">
+									</div><!-- End .col-sm-6 -->
 
-										<input id="cod" value="COD" name="paymentMethod" type="radio"
-											class="custom-control-input">
-										<label class="custom-control-label" for="cod">Cash On Delivery</label>
-									</div>
+									<div class="col-sm-4">
+										<label>State</label>
+										<input type="text" class="form-control" value="">
+									</div><!-- End .col-sm-6 -->
+									<div class="col-sm-4">
+										<label>County </label>
+										<input type="text" class="form-control" value="">
+									</div><!-- End .col-sm-6 -->
+								</div><!-- End .row -->
 
-									<div class="custom-control custom-radio">
-										<input id="online-payment" value="Paypal" name="paymentMethod" type="radio"
-											class="custom-control-input">
-										<label class="custom-control-label" for="online-payment">Paypal</label>
-										<input type="text" class="form-control" id="paypalAmount" name="totalAmount" value="{{total}}">
+								<div class="row">
+									<div class="col-sm-6">
+										<label>Postcode / ZIP *</label>
+										<input type="text" class="form-control" id="order-pin" name="orderPIN" value="" required>
+									</div><!-- End .col-sm-6 -->
 
-									</div>
+									<div class="col-sm-6">
+										<label>Phone *</label>
+										<input type="tel" class="form-control" id="order-mob" name="orderMob" value="" required>
+
+									</div><!-- End .col-sm-6 -->
+								</div><!-- End .row -->
+
+								<div class="link"><a href="/address">Change Address?</a></div>
+							</div><!-- End .col-lg-9 -->
+							{{/if}}
+
+
+							<aside class="col-lg-3">
+								<div class="checkout-discount">
+									<input type="text" class="form-control" id="couponCode"
+										placeholder="Have Coupon? Enter here">
+									<button type="button" class="btn btn-outline-primary-2 btn-order btn-block"
+										onclick="applyCoupon({{total}})">Apply</button>
+									<P for="couponErr" class="text-start" id="couponErr" style="color:rgb(180, 17, 17)">
+									</P>
+									<p for="couponSuccess" class="text-start" id="couponSuccess"
+										style="color:rgb(22, 131, 22)"></p>
+									<p><a href="/all-coupons"><small><b>All Coupons ></b></small></a></p>
+								</div><!-- End .checkout-discount -->
+								<div class="summary">
+									<h3 class="summary-title">Your Order.</h3><!-- End .summary-title -->
+
+									<table class="table table-summary">
+										<thead>
+											<tr>
+												<th>Product</th>
+												<th>Quantity</th>
+											</tr>
+										</thead>
+
+										<tbody>
+											{{#each products}}
+											<tr>
+												<td><a href="#">{{this.product.productTitle}}</a></td>
+												<td>{{this.quantity}}</td>
+											</tr>
+											{{/each}}
+											<tr class="summary-subtotal">
+												<td>Subtotal:</td>
+												<td>&#x20B9;{{total}}</td>
+											</tr><!-- End .summary-subtotal -->
+											<tr>
+												<td>Total:</td>
+												<td id="netTotal">&#x20B9;{{total}}</td>
+											</tr>
+											<tr>
+												<td>Shipping:</td>
+												<td>Free</td>
+											</tr>
+											<tr>
+												<td>Coupon:</td>
+												<td id="couponApplied"></td>
+											</tr>
+											<tr>
+												<td>Discount:</td>
+												<td id="couponDisAmount">-</td>
+											</tr>
+
+
+											<tr class="summary-total">
+												<td>Total:</td>
+												<td id="totalPrice">&#x20B9;{{total}}</td>
+											</tr><!-- End .summary-total -->
+										</tbody>
+									</table><!-- End .table table-summary -->
+
+									<div class="accordion-summary" id="accordion-payment">
+										<h5>Payment method</h5>
+										<div class="custom-control custom-radio">
+											<input class="custom-control-input" id="COD" type="radio" value="COD" name="paymentMethod" >
+											<label class="custom-control-label" for="COD">Cash On Delivery</label>
+										</div>
+
+										<div class="custom-control custom-radio">
+											<input class="custom-control-input" id="wallet" type="radio" value="wallet" name="paymentMethod" >
+											<label class="custom-control-label" for="wallet">Wallet</label>
+											<span><p class="text-right" for="wallet">&#x20B9;{{user.wallet}}</p></span>
+										</div>
+
+										<div class="custom-control custom-radio">
+											<input class="custom-control-input" id="online-payment" type="radio" value="Paypal" name="paymentMethod">
+											<label class="custom-control-label" for="online-payment">Paypal</label>
+
+											<input type="text" class="form-control" id="paypalAmount" name="totalAmount"
+												value="{{total}}" readonly>
+
+												
+										</div>
 
 
 
-									<button type="submit" class="btn btn-outline-primary-2 btn-order btn-block"
-										id="order-button">
-										<span class="btn-text">Place Order</span>
-										<span class="btn-hover-text">Proceed to Checkout</span>
-									</button>
+										<button class="btn btn-outline-primary-2 btn-order btn-block" type="submit">
+											<span class="btn-text">Place Order</span>
+											<span class="btn-hover-text">Proceed to Checkout</span>
+										</button>
+										{{#if paymentErr}}
+										<p style="color:rgb(180, 17, 17)">Please Choose a payment method to place order.</p>
+										{{/if}}
+										{{#if walletErr}}
+										<p style="color:rgb(180, 17, 17)">Insufficient balance in wallet.</p>
+										{{/if}}
 
-									{{#if paymentErr}}
-									<label class="errorLabel text-danger">Enter Valid Payment Method</label>
-									{{/if}}
-								</div><!-- End .summary -->
-						</aside><!-- End .col-lg-3 -->
-					</div><!-- End .row -->
+									</div><!-- End .summary -->
+							</aside><!-- End .col-lg-3 -->
+						</div><!-- End .row -->
 
-				</form>
-			</div><!-- End .container -->
-		</div><!-- End .checkout -->
-	</div><!-- End .page-content -->
-</main><!-- End .main -->
+					</form>
+				</div><!-- End .container -->
+			</div><!-- End .checkout -->
+		</div><!-- End .page-content -->
+	</main><!-- End .main -->
+</section>
 <script>
-function validateForm(){
-	var radios = document.getElementsByName('paymentMethod');
-	var formValid = false;
+	function validateCheckout() {
+		console.log('Place ORder button clicked')
+		let orderName = document.getElementById('order-name').value;
+		let orderAddress = document.getElementById('order-address').value;
+		let orderPIN = document.getElementById('order-pin').value;
+		let orderMob = document.getElementById('order-mob').value;
 
-	var i = 0;
-	while(!formValid && i < radios.length){
-		if(radios[i].checked){
-			formValid = true;
-			i++;
+		if (!orderName || orderName === "" || orderName.length<5) {
+			alert('Name Should contain atleast 5 characters');
+			return false;
+		} else if (!orderAddress || orderAddress === "" || orderAddress.length < 7) {
+			alert('Address Should contain atleast 7 characters');
+			return false;
+		} else if (isNaN(orderPIN) || !orderPIN || orderPIN === "" || orderPIN.length < 6) {
+			alert('PIN Should contain 6 Digits');
+			return false;
+		} else if (isNaN(orderMob) || !orderMob || orderMob === "" || orderMob.length < 10) {
+			alert('Mobile Number Should contain 10 Digits');
+			return false;
+		} else if (validateRadio()) {
+			alert('Please choose a payment method to place Order');
+			return false;
+		} else {
+			return true;
 		}
-
-		if(!formValid) alert("Please Select a Payment Method");
-
-		return formValid;
+		return true;
 	}
-}	
+
+	function validateRadio() {
+		let paymentMethod = document.getElementByName('paymentMethod');
+
+		let selected = false;
+		for (let i = 0; i < paymentMethod.length; i++) {
+			if (paymentMethod[i].checked) {
+				selected = true;
+				break;
+			}
+		}
+		return selected;
+	}	
 </script>

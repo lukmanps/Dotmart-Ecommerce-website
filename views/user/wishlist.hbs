@@ -15,10 +15,10 @@
             </div><!-- End .container -->
         </nav><!-- End .breadcrumb-nav -->
 
-        {{#if cartEmpty}}
+        {{#if wishlistEmpty}}
         <div class="empty-cart">
             <img class="header-center" src="assets/images/wishlist-empty.png" alt="Empty Cart"
-                style="width: 50rem; height:auto"><br>
+                style="width: 35rem; height:auto"><br>
             <div class="container">
                 <h1 class="text-center" style="font-weight: 600; color: #3c0d51">Your Wishlist is Empty!</h1>
                 <h5 class="text-center" style="color: #3c0d51">Please add products to wishlist!</h5>
@@ -50,6 +50,9 @@
                                         <img src="/db/product-images/{{this.product.productImage.[0]}}" alt="Product image"
                                             class="product-image">
                                     </a>
+                                    <div class="product-action-vertical">
+                                        <button class="btn-product-icon " onclick="removeFromWishlist('{{this._id}}', '{{this.product._id}}')">X<span>Remove</span></button>
+                                    </div><!-- End .product-action -->
 
 
                                     <div class="product-action action-icon-top">
@@ -71,16 +74,14 @@
                             </div><!-- End .product -->
                         </div><!-- End .col-sm-6 col-lg-4 col-xl-3 -->
                         {{/each}}
-                        {{/if}}
-
-
-
                     </div><!-- End .row -->
                 </div><!-- End .products -->
                     </div><!-- End .sidebar-filter-wrapper -->
                 </aside><!-- End .sidebar-filter -->
             </div><!-- End .container -->
+            
         </div><!-- End .page-content -->
+        {{/if}}
     </main><!-- End .main -->
 
 </section>

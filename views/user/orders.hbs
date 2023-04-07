@@ -20,12 +20,10 @@
                     <thead>
                         <tr>
                             <th>Date</th>
-                            <th>Address</th>
-                            {{!-- <th>Pincode</th> --}}
-                            <th>Mobile</th>
-                            <th>Total Amount</th>
-                            <th>Payment Method</th>
-                            <th>Status</th>
+                            <th>Order ID</th>
+                            <th class="text-center">Total Amount</th>
+                            <th class="text-center">Payment Method</th>
+                            <th >Status</th>
                         </tr>
                     </thead>
 
@@ -41,15 +39,13 @@
                                 </div><!-- End .product -->
                             </td>
                             {{!-- <td class="stock-col ">{{this.date}}</td> --}}
-                            <td class="price-col">{{this.deliveryDetails.address}}</td>
+                            <td class="price-col">{{this._id}}</td>
                             {{!-- <td class="price-col">{{this.deliveryDetails.pincode}}</td> --}}
-                            <td class="price-col">{{this.deliveryDetails.mobile}}</td>
-                            <td class="price-col">&#x20B9;{{this.totalAmount}}</td>
-                            <td class="price-col">{{this.paymentMethod}}</td>
+                            <td class="price-col text-center">&#x20B9;{{this.totalAmount}}</td>
+                            <td class="price-col text-center">{{this.paymentMethod}}</td>
                             <td class="stock-col"><span class="in-stock">{{this.status}}</span></td>
                             <td class="action-col">
-                                <a class="btn btn btn-outline-primary mx-3" href="/view-order-products/{{this._id}}"><i class="icon-cart-plus"></i>View Products</a>
-                                <button class="btn btn-primary mx-3 my-3">Cancel<i class="icon-close"></i></button>
+                                <a class="btn btn btn-outline-primary mx-3" href="/view-order-products/{{this._id}}"><i class="icon-cart-plus"></i>View Order</a>
                             </td>
                             {{!-- <td class="remove-col"><button class="btn-remove"><i class="icon-close"></i></button></td> --}}
                         </tr>

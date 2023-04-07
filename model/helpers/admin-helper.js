@@ -164,9 +164,23 @@ module.exports = {
         })
     },
 
-    updateProduct: (proId, proDetails) => {
+    updateProduct: (proId, proDetails, image) => {
         console.log(proDetails);
-        return new Promise((resolve, reject) => {
+        return new Promise(async(resolve, reject) => {
+
+            let product =await db.get().collection(collection.PRODUCTCOLLECTION).findOne({_id:objectId(proId)});
+            if(image.productImage0){
+                product.productImage[0] = image.productImage0[0].filename;
+            }
+            if(image.productImage1){
+                product.productImage[1] = image.productImage1[0].filename;
+            }
+            if(image.productImage2){
+                product.productImage[2] = image.productImage2[0].filename;
+            }
+            if(image.productImage3){
+                product.productImage[3] = image.productImage3[0].filename;
+            }
             db.get().collection(collection.PRODUCTCOLLECTION).updateOne({ _id: objectId(proId) }, {
                 $set: {
                     productBrand: proDetails.productBrand,
@@ -175,8 +189,8 @@ module.exports = {
                     productColor: proDetails.productColor,
                     productSize: proDetails.productSize,
                     productDescription: proDetails.productDescription,
-                    productPrice: proDetails.productPrice
-
+                    productPrice: proDetails.productPrice, 
+                    productImage: product.productImage
                 }
             }).then((response) => {
                 resolve();
@@ -196,7 +210,7 @@ module.exports = {
 
     getAllOrders: () => {
         return new Promise(async (resolve, reject) => {
-            let orders = await db.get().collection(collection.ORDERCOLLECTION).find().toArray();
+            let orders = await db.get().collection(collection.ORDERCOLLECTION).find().sort({'date': -1}).toArray();
             resolve(orders);
         })
     },
@@ -204,7 +218,7 @@ module.exports = {
     orderPagenation : (pageNum, limit)=>{
         let skipNum = parseInt((pageNum-1) * limit);
         return new Promise(async(resolve, reject)=>{
-            let orders = await db.get().collection(collection.ORDERCOLLECTION).find().skip(skipNum).limit(limit).toArray();
+            let orders = await db.get().collection(collection.ORDERCOLLECTION).find().sort({'date': -1}).skip(skipNum).limit(limit).toArray();
             resolve(orders);
         })
     },
@@ -220,6 +234,7 @@ module.exports = {
                 },
                 {
                     $project: {
+                        orderID: '$orderID',
                         item: '$products.item',
                         quantity: '$products.quantity',
                         deliveryDetails: '$deliveryDetails',
@@ -239,6 +254,7 @@ module.exports = {
                 },
                 {
                     $project: {
+                        orderID: 1,
                         item: 1,
                         quantity: 1,
                         deliveryDetails: 1,

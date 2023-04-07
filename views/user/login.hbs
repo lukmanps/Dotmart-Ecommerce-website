@@ -64,6 +64,9 @@
                                 {{#if loginErr}}
                                 <p class="text-center" style="color:rgb(180, 17, 17)">Please Enter Valid Details</p>
                                 {{/if}}
+                                {{#if blocked}}
+                                <p class="text-center" style="color:rgb(180, 17, 17)">This User is Blocked by Admin</p>
+                                {{/if}}
 
                             </form>
 

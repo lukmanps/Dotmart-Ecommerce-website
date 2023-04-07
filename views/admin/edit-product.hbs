@@ -1,12 +1,12 @@
 <section class="content-main">
     <div class="row">
-        <form action="/admin/edited-product/{{product._id}}" method="post">
+        <form action="/admin/edited-product/{{product._id}}" method="post" onsubmit="return validateForm()" enctype="multipart/form-data">
             <div class="col-9">
                 <div class="content-header">
                     <h2 class="content-title">Edit Product.</h2>
                     <div>
                         {{!-- <button class="btn btn-light rounded font-sm mr-5 text-body hover-up">Save to draft</button> --}}
-                        <button class="btn btn-md rounded font-sm hover-up">Publish</button><br>
+                        <button type="submit" class="btn btn-md rounded font-sm hover-up">Update</button><br>
                         {{#if update}}
                         <label class="text-center" style="color:rgb(22, 131, 22)">Product Successfully Updated</label>
                         {{/if}}
@@ -18,19 +18,21 @@
                     <div class="card-body">
                         <div class="mb-4">
                             <label for="product_brand" class="form-label">Brand</label>
-                            <input type="text" placeholder="Type here" class="form-control" id="product_brand"
-                                name="productBrand" value="{{product.productBrand}}" required>
+                            <input type="text" placeholder="Type here" class="form-control" id="product-brand"
+                                name="productBrand" value="{{product.productBrand}}">
+                                <label for="product-brand" id="brand-error" style="color:rgb(180, 17, 17)"></label>
                         </div>
                         <div class="mb-4">
                             <label for="product_title" class="form-label">Product title</label>
-                            <input type="text" placeholder="Type here" class="form-control" id="product_title"
-                                name="productTitle" value="{{product.productTitle}}" required>
+                            <input type="text" placeholder="Type here" class="form-control" id="product-title"
+                                name="productTitle" value="{{product.productTitle}}" >
+                                <label for="product-brand" id="title-error" style="color:rgb(180, 17, 17)"></label>
                         </div>
                         <div class="row gx-3">
                             <div class="col-md-4  mb-3">
                                 <label for="product_sku" class="form-label">Product ID</label>
                                 <input type="text" placeholder="Type here" class="form-control" id="product_sku"
-                                    name="productID" value="{{product.productID}}" required>
+                                    name="productID" value="{{product.productID}}" >
                             </div>
                             <div class="col-md-4  mb-3">
                                 <label for="product_color" class="form-label">Color</label>
@@ -50,20 +52,27 @@
                     <div class="card-body">
                         <div>
                             <label class="form-label">Description</label>
-                            <textarea placeholder="Type here" class="form-control" rows="4"
+                            <textarea placeholder="Type here" id="product-description" class="form-control" rows="4"
                                 name="productDescription" value="{{product.productDescription}}"></textarea>
+                                <label for="product-brand" id="description-error" style="color:rgb(180, 17, 17)"></label>
                         </div>
                     </div>
                 </div> <!-- card end// -->
                 <div class="card mb-4">
                     <div class="card-body">
+                        <div class="d-flex gap-2 mb-3 ">
+
+                            <img src="/db/product-images/{{product.productImage.[0]}}" class="img-sm img-thumbnail" id="file-ip-0-preview">
+                            <img src="/db/product-images/{{product.productImage.[1]}}" class="img-sm img-thumbnail" id="file-ip-1-preview">
+                            <img src="/db/product-images/{{product.productImage.[2]}}" class="img-sm img-thumbnail" id="file-ip-2-preview">
+                            <img src="/db/product-images/{{product.productImage.[3]}}" class="img-sm img-thumbnail" id="file-ip-3-preview">
+                        </div>
                         <div>
                             <label class="form-label">Images</label><br>
-                            <img src="/db/product-images/{{product.productImage.[0]}}" alt="" style="width: 100px; height: auto">
-                            <input class="form-control" type="file" name="productImage">
-                            <input class="form-control" type="file" name="productImage">
-                            <input class="form-control" type="file" name="productImage">
-                            <input class="form-control" type="file" name="productImage">
+                            <input class="form-control" accept="image/*" type="file" onchange="showPreview(event,0);" name="productImage0">
+                            <input class="form-control" accept="image/*" type="file" onchange="showPreview(event,1);" name="productImage1">
+                            <input class="form-control" accept="image/*" type="file" onchange="showPreview(event,2);" name="productImage2">
+                            <input class="form-control" accept="image/*" type="file" onchange="showPreview(event,3);" name="productImage3">
                             
                             
                         </div>
@@ -73,22 +82,28 @@
             <div class="col-lg-3">
                 <div class="card mb-4">
                     <div class="card-body">
+
+                        <h5 class="mb-3">Categories</h5>
+                        <div class="mb-4">
+                            <label class="mb-2 form-check form-check-inline" style="width: 45%;">
+                                <input class="form-check-input" name="productCategory" type="radio" value="men">
+                                <span class="form-check-label">Men</span>
+                            </label>
+                            <label class="mb-2 form-check form-check-inline" style="width: 45%;">
+                                <input class="form-check-input" name="productCategory" type="radio" value="women">
+                                <span class="form-check-label">Women</span>
+                            </label>
+                            <label class="mb-2 form-check form-check-inline" style="width: 45%;">
+                                <input class="form-check-input" name="productCategory" type="radio" value="accessories">
+                                <span class="form-check-label">Accessories</span>
+                            </label>
+                        </div>
+                        <hr>
+
                         <div class="mb-4">
                             <label class="form-label">Price</label>
-                            <input type="text" placeholder="Type here" class="form-control" name="productPrice" value="{{product.productPrice}}"required>
-                        </div>
-                        <div class="mb-4">
-                            <label class="form-label">Status</label>
-                            <p class="form-select">
-                                <span>Listed</span>
-                            </p>
-                        </div>
-
-                        <hr>
-                        <h5 class="mb-3">Categories</h5>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="product-cat">
-                            <label class="form-check-label" for="product-cat"> Shirt </label>
+                            <input type="text" placeholder="Type here" id="product-price" class="form-control" name="productPrice" value="{{product.productPrice}}">
+                            <label for="product-brand" id="price-error" style="color:rgb(180, 17, 17)"></label>
                         </div>
 
                     </div>
@@ -97,3 +112,46 @@
         </form>
     </div>
 </section>
+
+<script>
+    function validateForm() {
+        console.log('Update Button Clicked')
+        let title = document.getElementById('product-title').value;
+        let brand = document.getElementById('product-brand').value;
+        let description = document.getElementById('product-description').value;
+        let price = document.getElementById('product-price').value;
+
+        if(!brand || brand === "" || brand.length < 2){
+            document.getElementById('brand-error').innerHTML = 'Product Brand must contain atleast 2 characters'
+            return false;
+        }else if(!title || title === "" || title.length < 5){
+            document.getElementById('brand-error').innerHTML = ""
+            document.getElementById('title-error').innerHTML = 'Product Title must contain atleast 5 Characters'
+            return false;
+        }else if(!description || description === "" || description.length < 6){
+            document.getElementById('title-error').innerHTML = ""
+            document.getElementById('description-error').innerHTML = 'Description must contain atleast 6 characters'
+            return false;
+        }else if(isNaN(price) || !price || price === "" || price < 10){
+             document.getElementById('description-error').innerHTML =""
+            document.getElementById('price-error').innerHTML = 'Amount should not be less than 10'
+            return false;
+        }else{
+            document.getElementById('price-error').innerHTML =""
+            return true;
+        }
+    }
+</script>
+<script>
+    function showPreview(event,i){
+      
+      if(event.target.files.length > 0){
+          var src = URL.createObjectURL(event.target.files[0]);
+          var preview = document.getElementById(`file-ip-${i}-preview`);
+          preview.src = src;
+          preview.style.display = "block";
+          }
+      }
+    
+  
+  </script>
