@@ -3,7 +3,7 @@ module.exports = {
     PRODUCTCOLLECTION:'products',
     ADMINCOLLECTION:'admin',
     CATEGORYCOLLECTION: 'category',
-    PRODUCTCOLLECTION: 'products',
+    PRODUCTCOLLECTION:'products',
     WISHLIST_COLLECTION: 'wishlist',
     CARTCOLLECTION: 'cart',
     ORDERCOLLECTION: 'orders',

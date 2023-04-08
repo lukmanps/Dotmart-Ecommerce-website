@@ -1,5 +1,7 @@
+
 const db = require('../connection');
 const collection = require('../collections');
+const { response } = require('express');
 const objectId = require('mongodb').ObjectId
 
 module.exports = {
@@ -122,8 +124,10 @@ module.exports = {
 
     getAllProducts: () => {
         return new Promise(async (resolve, reject) => {
-            let products = db.get().collection(collection.PRODUCTCOLLECTION).find().toArray()
-            resolve(products);
+            console.log('All products');
+            let products = await db.get().collection(collection.PRODUCTCOLLECTION).find().toArray();
+                resolve(products);
+            
         })
     },
 

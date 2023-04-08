@@ -2,11 +2,11 @@ const MongoClient = require("mongodb").MongoClient;
 const state={
     db:null
 }
-
+// mongodb+srv://lukman:Lukmanps6@dotmart.sw6jazg.mongodb.net/?retryWrites=true&w=majority
 module.exports.connect=function (done) 
 {
-    const url="mongodb+srv://luqmansha6:LukmanpsDot6@dotmart.sw6jazg.mongodb.net/test";
-    const dbname="Dotmart"; 
+    const url = "mongodb://0.0.0.0:27017";
+    const dbname = "Dotmart"; 
 
     MongoClient.connect(url,{ useNewUrlParser: true, useUnifiedTopology:true}, (err,data)=>
     {
@@ -21,7 +21,7 @@ module.exports.connect=function (done)
     done();
 }
 
-module.exports.get=function()
+module.exports.get = function()
 {
     return state.db
 }
