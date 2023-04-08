@@ -1,7 +1,6 @@
 const db = require('../connection');
 const collection = require('../collections');
 const bcrypt = require('bcrypt');
-const { response } = require('express');
 const objectId = require('mongodb').ObjectId;
 
 
