@@ -3,7 +3,6 @@ const collection = require('../collections');
 const bcrypt = require('bcrypt');
 const { response } = require('express');
 const objectId = require('mongodb').ObjectId;
-const paypal = require('paypal-rest-sdk');
 
 
 
@@ -824,7 +823,7 @@ module.exports = {
                     resolve(response);
                 }).catch((response) => {
                     response.status = false;
-                    resolve(response);
+                    reject(response);
                 })
 
         })

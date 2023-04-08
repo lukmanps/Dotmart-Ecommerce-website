@@ -183,7 +183,7 @@ let selectAddress = (addressID) => {
             addressId: addressID
         },
         success: (response) => {
-            if (response) {
+            if (response.status) {
                 Swal.fire({
                     title: 'Address Changed!',
                     text: 'Your address has been changed.',

@@ -56,9 +56,10 @@ module.exports = {
 
   loginPost: function (req, res) {
     try {
+      console.log(req.body);
       adminHelper.adminLogin(req.body).then((response) => {
-
         let adminIn = response.status;
+        
 
         if (adminIn) {
           req.session.loggedInad = true;

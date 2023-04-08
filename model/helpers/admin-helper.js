@@ -1,6 +1,5 @@
 const db = require('../connection');
 const collection = require('../collections');
-const bcrypt = require('bcrypt');
 const { response } = require('express');
 const objectId = require('mongodb').ObjectId
 
@@ -10,7 +9,6 @@ module.exports = {
         return new Promise(async (resolve, reject) => {
             let response = {}
             let validAdmin = await db.get().collection(collection.ADMINCOLLECTION).findOne({ adminEmail: adminData.adLogEmail, adminPassword: adminData.adLogPassword });
-            // console.log(validAdmin);
             if (validAdmin) {
                 console.log("login success")
                 response.validAdmin = validAdmin;
