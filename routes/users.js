@@ -61,38 +61,38 @@ router.get('/product-view/:id', userController.productView); //Product View Page
 router.get('/product-search', userController.productSearch); //Product Search
 
 //**** WISHLIST ****/
-router.get('/add-to-wishlist/:id', userController.addToWishlist);
+router.get('/add-to-wishlist/:id', verifyLogin, userController.addToWishlist);
 
 router.get('/wishlist', verifyLogin, userController.wishlistPage);
 
-router.post('/remove-wishlist-product' , userController.removeWishlistProduct);
+router.post('/remove-wishlist-product', verifyLogin, userController.removeWishlistProduct);
 
 //**** CART ****
 
-router.get('/add-to-cart/:id', userController.addToCart); //Add to Cart Button
+router.get('/add-to-cart/:id', verifyLogin, userController.addToCart); //Add to Cart Button
 
 router.get('/cart', verifyLogin, userController.cartPage); //Cart Page
 
-router.post('/change-product-quantity', userController.changeQuantity); //Change Cart Product Quantity
+router.post('/change-product-quantity', verifyLogin, userController.changeQuantity); //Change Cart Product Quantity
 
-router.post('/remove-cart-product', userController.removeCartPost) //Remove Cart Product
+router.post('/remove-cart-product', verifyLogin, userController.removeCartPost) //Remove Cart Product
 
 //**** CHECKOUT *****/
 router.route('/checkout')
   .get(verifyLogin, userController.checkout)
-  .post(userController.checkoutPost)
+  .post(verifyLogin, userController.checkoutPost)
 
 router.post('/place-order', verifyLogin, userController.placeOrder)
 
-router.get('/order-success', userController.orderSuccess)
+router.get('/order-success', verifyLogin, userController.orderSuccess)
 
 router.get('/orders', verifyLogin, userController.ordersPage)// Order Page
 
 router.get('/view-order-products/:id', verifyLogin, userController.viewOrder);
 
-router.post('/return-order', userController.returnOrder);
+router.post('/return-order', verifyLogin, userController.returnOrder);
 
-router.post('/cancel-order', userController.cancelOrder);
+router.post('/cancel-order', verifyLogin, userController.cancelOrder);
 
 
 //**** ACCOUNT INFO *****/
@@ -100,7 +100,7 @@ router.post('/change-password', userController.changePasswordPost);
 
 router.get('/user-profile', verifyLogin, userController.userProfile); //User Profile Page
 
-router.post('/update-profile/:id', userController.updateProfile);
+router.post('/update-profile/:id', verifyLogin, userController.updateProfile);
 
 router.get('/address', verifyLogin, userController.addressPage); //Address Page
 
@@ -108,13 +108,15 @@ router.route('/add-address')
   .get(verifyLogin, userController.addAddress)
   .post(userController.addAddressPost);
 
-router.post('/select-address', userController.selectAddress);
+router.post('/select-address', verifyLogin, userController.selectAddress);
 
 router.get('/edit-address/:id', verifyLogin, userController.editAddress);
 
+router.post('/edit-address', verifyLogin, userController.updateAddress);
+
 router.get('/all-coupons', verifyLogin, userController.allCoupons);
 
-router.post('/apply-coupon', userController.applyCoupon);
+router.post('/apply-coupon', verifyLogin, userController.applyCoupon);
 
 
 

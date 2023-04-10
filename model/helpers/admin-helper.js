@@ -1,7 +1,6 @@
 
 const db = require('../connection');
 const collection = require('../collections');
-const { response } = require('express');
 const objectId = require('mongodb').ObjectId
 
 module.exports = {
@@ -125,9 +124,10 @@ module.exports = {
     getAllProducts: () => {
         return new Promise(async (resolve, reject) => {
             console.log('All products');
+            console.log(db.get());
             let products = await db.get().collection(collection.PRODUCTCOLLECTION).find().toArray();
                 resolve(products);
-            
+
         })
     },
 
@@ -434,6 +434,7 @@ module.exports = {
             .collection(collection.ORDERCOLLECTION)
             .find({ status: "Delivered" })
             .count();
+         
           Data.CanceledCount = await db
             .get()
             .collection(collection.ORDERCOLLECTION)

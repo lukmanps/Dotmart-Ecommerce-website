@@ -70,14 +70,14 @@
     </div>
 
     <div class="row">
-        <div class="col-6">
+        {{!-- <div class="col-6">
             <div class="card mb-4">
                 <article class="card-body">
                     <h5 class="card-title">Sale statistics</h5>
                     <canvas id="myChart" style="width:auto; height: 100%;"></canvas>
                 </article>
             </div>
-        </div>
+        </div> --}}
 
         <div class="col-6">
             <div class="card mb-4">
@@ -102,7 +102,7 @@
 </section> <!-- content-main end// -->
 
 
-<script>
+{{!-- <script>
 
     console.log([{{dashboardData.onlinePay}}, {{dashboardData.PlacedCount}}])
     let xValues = ['Men', 'Women', 'Accessories'];
@@ -129,10 +129,10 @@
         legend: { display: true }
     }
 });
-</script>
+</script> --}}
 
 <script>
-    let orderStatus = ["Delivered", "Placed", "Cancelled", "Shipped"];
+    let orderStatus = ["Delivered", "Placed", "Cancelled", "Shipped", "Returned"];
     let orderCount = [{{dashboardData.DeliveredCount}}, {{dashboardData.PlacedCount}}, {{dashboardData.CanceledCount}}, {{dashboardData.PendingCount}}];
     var barColors = [
         "#b91d47",

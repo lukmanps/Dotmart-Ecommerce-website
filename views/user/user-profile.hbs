@@ -83,30 +83,33 @@
                                                     <div id="collapse-2" class="collapse" aria-labelledby="heading-2"
                                                         data-parent="#accordion-1">
                                                         <div class="card-body">
-                                                            <label><b>Current Password</b><small class="form-text">(Leave
+                                                            <label><b>Current Password</b><small
+                                                                    class="form-text">(Leave
                                                                     blank to leave
                                                                     unchanged)</small></label>
                                                             <input type="password" class="form-control mb-2"
-                                                                id="currentPassword" name="currentPassword">
+                                                                id="current-password" name="currentPassword">
 
 
                                                             <label><b>New password </b><small class="form-text">(Leave
                                                                     blank to leave
                                                                     unchanged)</small></label>
-                                                            <input type="password" class="form-control" id="newPassword"
-                                                                onblur="validatePassword()">
+                                                            <input type="password" class="form-control"
+                                                                id="new-password" onblur="validatePassword()">
                                                             <small class="form-text">First Letter Capital, 8 characters,
                                                                 1 Number, atleast 1 lowercase</small>
                                                             <label id="password-error" class="errorLabel text-danger"
-                                                                for="registerPassword"></label>
+                                                                for="new-password"></label>
 
                                                             <label><b>Confirm new password</b></label>
                                                             <input type="password" class="form-control mb-2"
-                                                                id="confirmPassword" onblur="passwordMatch()"
+                                                                id="confirm-password" onblur="passwordMatch()"
                                                                 name="updatedPassword">
+
+
                                                             <label id="confirmPassword-error"
                                                                 class="errorLabel text-danger"
-                                                                for="confirmPassword"></label>
+                                                                for="confirm-password"></label>
                                                         </div><!-- End .card-body -->
                                                     </div><!-- End .collapse -->
                                                 </div><!-- End .card -->
@@ -114,12 +117,14 @@
 
                                             </div><!-- End .accordion -->
                                         </div><!-- End .col-md-6 -->
-                                        
+
 
                                         <button type="submit" class="btn btn-outline-primary-2">
                                             <span>SAVE CHANGES</span>
                                             <i class="icon-long-arrow-right"></i>
                                         </button>
+                                        <label id="submit-error" class="errorLabel text-danger"
+                                            for="registerPassword"></label>
                                         {{#if pwdErr}}
                                         <label class="errorLabel text-danger">Enter Correct Password</label>
                                         {{/if}}
@@ -140,39 +145,41 @@
 </section>
 
 <script>
-    let passwordError = document.getElementById('password-error')
-    let confirmPasswordError = document.getElementById('confirmPassword-error');
-
+    let passwordError = document.getElementById('password-error');
+     let confirmPasswordError = document.getElementById('confirmPassword-error');
     function validatePassword() {
-        var password = document.getElementById('newPassword').value;
-        if (!password[0].match(/^(?=.*[A-Z])/)) {
-            passwordError.innerHTML = 'First letter should be capital'
-            return false
+        let newPassword = document.getElementById('new-password').value;
+        let confirmPassword = document.getElementById('confirm-password').value;
+        
+
+        if (!newPassword[0].match(/^(?=.*[A-Z])/)) {
+            passwordError.innerHTML = 'First letter should be capital';
+            return false;
         }
 
-        if (password.length < 8) {
-            passwordError.innerHTML = 'Atleast 8 characters'
-            return false
+        if (newPassword.length < 8) {
+            passwordError.innerHTML = 'Atleast 8 characters';
+            return false;
         }
 
-        if (!password.match(/^(?=.*[0-9])/)) {
-            passwordError.innerHTML = 'Atleast use one number'
-            return false
+        if (!newPassword.match(/^(?=.*[0-9])/)) {
+            passwordError.innerHTML = 'Atleast use one number';
+            return false;
         }
 
-        if (!password.match(/^(?=.*[a-z])/)) {
-            passwordError.innerHTML = 'Use atleast one lowercase letter'
-            return false
+        if (!newPassword.match(/^(?=.*[a-z])/)) {
+            passwordError.innerHTML = 'Use atleast one lowercase letter';
+            return false;
         }
         passwordError.innerHTML = "";
-        return true
-
-
+        return true;
     }
 
+
     function passwordMatch() {
-        let newPassword = document.getElementById('newPassword').value;
-        let confirmPassword = document.getElementById('confirmPassword').value;
+        let newPassword = document.getElementById('new-password').value;
+        let confirmPassword = document.getElementById('confirm-password').value;
+        
 
         if (newPassword != confirmPassword) {
             confirmPasswordError.innerHTML = 'Password does not match!';
@@ -181,4 +188,23 @@
         confirmPasswordError.innerHTML = "";
         return true;
     }
+
 </script>
+{{!-- <script>
+    function validateForm() {
+        let confirmPasswordError = document.getElementById('confirmPassword-error');
+        let currentPassword = document.getElementById('current-password').value
+        let newPassword = document.getElementById('new-password').value;
+        let confirmPassword = document.getElementById('confirm-password').value;
+        let passwordError = document.getElementById('password-error');
+
+        if (currentPassword) {
+            if (confirmPassword === "" || confirmPassword.length < 8) {
+                document.getElementById('submit-error').innerHTML = 'Password should contain atleast 8 charatacters'.
+                return false;
+            }
+        }
+        document.getElementById('submit-error').innerHTML = ''.
+        return true;
+    }
+</script> --}}

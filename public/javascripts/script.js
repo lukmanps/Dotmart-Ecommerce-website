@@ -68,39 +68,39 @@ let addToWishlist = (proId) => {
     })
 }
 
-let removeFromWishlist = (wishlistId, proId)=>{
+let removeFromWishlist = (wishlistId, proId) => {
     console.log(proId);
-            Swal.fire({
-                title: "Are you sure want to remove this item from wishlist?",
-                text: "You won't be able to revert this!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3c0d51',
-                cancelButtonColor: '#bb321f',
-                confirmButtonText: 'Remove',
-            }).then((result)=>{
-                if(result.isConfirmed){
-                    $.ajax({
-                        url: '/remove-wishlist-product',
-                        method: 'post',
-                        data: {
-                            wishlist: wishlistId,
-                            product: proId
-                        },
-                        success: (response)=>{
-                            if(response){
-                                Swal.fire({
-                                    title: 'Removed!',
-                                    text: 'Your product has been removed.',
-                                    icon: 'success',
-                                }).then((result) => {
-                                    location.reload();
-                                });
-                            }
-                        }
-                    }) 
+    Swal.fire({
+        title: "Are you sure want to remove this item from wishlist?",
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3c0d51',
+        cancelButtonColor: '#bb321f',
+        confirmButtonText: 'Remove',
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: '/remove-wishlist-product',
+                method: 'post',
+                data: {
+                    wishlist: wishlistId,
+                    product: proId
+                },
+                success: (response) => {
+                    if (response) {
+                        Swal.fire({
+                            title: 'Removed!',
+                            text: 'Your product has been removed.',
+                            icon: 'success',
+                        }).then((result) => {
+                            location.reload();
+                        });
+                    }
                 }
             })
+        }
+    })
 }
 
 let changeQuantity = (userId, cartId, productId, count) => {
@@ -175,36 +175,40 @@ let removeCartProduct = (cartId, productId, productName) => {
 }
 
 let selectAddress = (addressID) => {
-    console.log(addressID, 'address id in select address');
-    $.ajax({
-        url: '/select-address',
-        method: 'post',
-        data: {
-            addressId: addressID
-        },
-        success: (response) => {
-            if (response.status) {
-                Swal.fire({
-                    title: 'Address Changed!',
-                    text: 'Your address has been changed.',
-                    icon: 'success',
-                }).then((result) => {
-                    location.reload();
-                });
-            }else{
-                Swal.fire({
-                    title: 'Address could not change!',
-                    text: 'Your address has not changed.',
-                    icon: 'error',
-                }).then((result) => {
-                    location.reload();
-                });
-            }
+    Swal.fire({
+        title: "Do you want to change the address?",
+        text: "Changing delivery Address!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3c0d51',
+        cancelButtonColor: '#bb321f',
+        confirmButtonText: 'Select',
+    }).then((result) => {
+        if (result.isConfirmed) {
+            console.log(addressID, 'address id in select address');
+            $.ajax({
+                url: '/select-address',
+                method: 'post',
+                data: {
+                    addressId: addressID
+                },
+                success: (response) => {
+                    Swal.fire({
+                        title: 'Address Changed!',
+                        text: 'Your address has been changed.',
+                        icon: 'success',
+                    }).then((result) => {
+                        location.reload();
+                    });
+                }
+            })
         }
     })
+
 }
 
-let returnOrder = (orderId)=>{
+
+let returnOrder = (orderId) => {
     console.log(orderId);
     Swal.fire({
         title: "Are you Sure want to Return this Order?",
@@ -213,16 +217,16 @@ let returnOrder = (orderId)=>{
         showCancelButton: true,
         confirmButtonColor: '#3c0d51',
         cancelButtonColor: '#bb321f',
-        confirmButtonText: 'Remove',
+        confirmButtonText: 'Return',
     }).then((result) => {
-        if(result.isConfirmed){
+        if (result.isConfirmed) {
             $.ajax({
                 url: '/return-order',
                 method: 'post',
                 data: {
                     orderId: orderId
                 },
-                success: (response)=>{
+                success: (response) => {
                     Swal.fire({
                         title: 'Order Returned!',
                         text: 'Your order has been returned.',
@@ -236,7 +240,7 @@ let returnOrder = (orderId)=>{
     })
 }
 
-let cancelOrder = (orderId)=>{
+let cancelOrder = (orderId) => {
     console.log(orderId);
     Swal.fire({
         title: "Are you Sure want to cancel this Order?",
@@ -247,14 +251,14 @@ let cancelOrder = (orderId)=>{
         cancelButtonColor: '#bb321f',
         confirmButtonText: 'Remove',
     }).then((result) => {
-        if(result.isConfirmed){
+        if (result.isConfirmed) {
             $.ajax({
                 url: '/cancel-order',
                 method: 'post',
                 data: {
                     orderId: orderId
                 },
-                success: (response)=>{
+                success: (response) => {
                     Swal.fire({
                         title: 'Order Cancelled!',
                         text: 'Your order has been cancelled.',
@@ -433,14 +437,14 @@ let removeBanner = () => {
             }
 
         })
-    }else{
+    } else {
         alert('Banner could not remove')
     }
 }
 
 
 
-let updateOrderStatus = (status, orderId) =>{
+let updateOrderStatus = (status, orderId) => {
     console.log(status, 'ORder Statsu scchaggerd');
     $.ajax({
         url: '/admin/update-order-status',
@@ -449,8 +453,8 @@ let updateOrderStatus = (status, orderId) =>{
             status: status,
             orderId: orderId
         },
-        success: (response)=>{
-            if(response.status){
+        success: (response) => {
+            if (response.status) {
                 Swal.fire({
                     title: 'Updated!',
                     text: 'Order status has been updated.',
@@ -458,7 +462,7 @@ let updateOrderStatus = (status, orderId) =>{
                 }).then((result) => {
                     location.reload();
                 });
-            }else{
+            } else {
                 Swal.fire({
                     title: 'Oops!',
                     text: 'Order status could not update.',

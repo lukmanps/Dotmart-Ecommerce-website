@@ -7,47 +7,47 @@
 
 
                     <form action="/edit-address" method="post" id="checkout-form" onsubmit="return validateAddress()">
-                        <input type="text" name="userId" id="" value="{{user._id}}" hidden>
+                        <input type="text" name="addressId" id="" value="{{editAddress.ID}}" hidden>
                         <div class="row">
                             <div class="col-lg-9">
                                 <h1 class="checkout-title">Edit Address</h1><!-- End .checkout-title -->
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <label>Full Name *</label>
-                                        <input type="text" id="address-name" class="form-control" name="addressName" value="">
+                                        <input type="text" id="address-name" class="form-control" name="addressName" value="{{editAddress.name}}">
                                     </div><!-- End .col-sm-6 -->
                                 </div><!-- End .row -->
 
 
                                 <label>Personal Address *</label>
                                 <input type="text" id="address" class="form-control" placeholder="House number and Appartments"
-                                    name="addressHouseName" required>
+                                    name="addressHouseName" value="{{editAddress.address}}" required>
                                 
                                 <div class="row">
                                     <div class="col-sm-4">
                                         <label>Town / City *</label>
-                                        <input type="text" class="form-control" name="addressTown" required>
+                                        <input type="text" class="form-control" name="addressTown" value="{{editAddress.town}}" required>
                                     </div><!-- End .col-sm-6 -->
 
                                     <div class="col-sm-4">
                                         <label>State *</label>
-                                        <input type="text" class="form-control" name="addressState" required>
+                                        <input type="text" class="form-control" name="addressState" value="{{editAddress.country}}" required>
                                     </div><!-- End .col-sm-6 -->
                                     <div class="col-sm-4">
                                         <label>Country *</label>
-                                        <input type="text" class="form-control" name="addressCountry" required>
+                                        <input type="text" class="form-control" name="addressCountry" value="{{editAddress.country}}" required>
                                     </div><!-- End .col-sm-6 -->
                                 </div><!-- End .row -->
 
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <label>Postcode / ZIP *</label>
-                                        <input type="text" id="address-pin" class="form-control" name="addressPIN" required>
+                                        <input type="text" id="address-pin" class="form-control" name="addressPIN" value="{{editAddress.pin}}" required>
                                     </div><!-- End .col-sm-6 -->
 
                                     <div class="col-sm-6">
                                         <label>Phone *</label>
-                                        <input type="text" id="address-phone" class="form-control" name="addressMob" required>
+                                        <input type="text" id="address-phone" class="form-control" name="addressMob" value="{{editAddress.phone}}" required>
 
                                     </div><!-- End .col-sm-6 -->
                                 </div><!-- End .row -->
@@ -57,7 +57,10 @@
                         </div><!-- End .row -->
                         <div class="btn-wrap mt-3">
                             <button type="submit" class="btn btn-outline-primary-2 mx-3"><span>SAVE</span><i
-                                    class="icon"></i></a>
+                                    class="icon"></i></button>
+                        {{#if updated}}
+                        <label class="errorLabel text-success">Updated Successfully!</label>
+                        {{/if}}
                         </div><!-- End .btn-wrap -->
 
                     </form>

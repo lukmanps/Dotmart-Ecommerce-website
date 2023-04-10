@@ -370,10 +370,10 @@ module.exports = {
       const cartCount = req.session.cartCount;
       const total = await userHelper.getTotalAmount(user._id);
       const products = await userHelper.getCartProducts(user._id);
-      const address = req.session.user.address;
+      const address = await userHelper.selectDefaultAddress(user._id);
       const totalUSD = total / 81;
 
-      console.log(Math.round(totalUSD));
+      console.log(address,'default address');
 
       if (!products === 0) {
         res.redirect('/cart');
@@ -599,7 +599,7 @@ module.exports = {
               channel: "sms",
             }).then(verification => console.log(verification.status));
           // => console.log(data, 'Data After'));
-          res.render('user/verify-changePwd-otp');
+          res.render('user/verify-changePwd-otp', {mobNo});
 
         } else {
           res.render('user/forgot-password', { otpErr: true });
@@ -614,16 +614,17 @@ module.exports = {
   verifyForgotPwdOtpPost: (req, res) => {
     try {
       const otp = req.body.loginotp;
+      const mobNo = req.body.mobNo;
       console.log(otp);
-      client.verify.v2.services(serviceSID)
+      client.verify.v2.services(process.env.SERVICE_SID)
         .verificationChecks
         .create({
-          to: '+919072901837',
+          to: `+91${mobNo}`,
           code: otp,
         }).then((data) => {
           console.log(data, "data in postOTP Verification");
         });
-      res.render('user/change-password');
+      res.render('user/change-password', {mobNo});
     } catch (error) {
       res.render('error', { message: error.message });
     }
@@ -632,10 +633,13 @@ module.exports = {
 
   changePasswordPost: async (req, res) => {
     try {
-      let user = req.session.user;
-      await userHelper.changePassword(req.body, user._id).then((response) => {
+      let mobNo = req.body.mobNo;
+      console.log(req.body, 'Details in change password');
+      await userHelper.changePassword(req.body).then((response) => {
         if (response.status) {
-          res.render('index', { user });
+          res.render('user/change-password', {passwordChanged: true});
+        }else{
+          res.render('user/change-password', {mobNo, passwordChangeErr: true});
         }
       });
     } catch (error) {
@@ -658,13 +662,15 @@ module.exports = {
 
   updateProfile: (req, res) => {
     try {
+      console.log(req.body, 'Details in update Profile');
       let user = req.session.user;
+      
       userHelper.updateProfile(req.params.id, req.body).then((response) => {
         let cartCount = req.session.cartCount;
         if (response.status) {
           res.render('user/user-profile', { user, cartCount, updated: true });
         } else {
-          res.render('user/user-profile', { user, pwdErr: true });
+          res.render('user/user-profile', { user, cartCount, pwdErr: true });
         }
       })
     } catch (error) {
@@ -711,29 +717,45 @@ module.exports = {
     res.render('error', { message: error.message });
   },
 
-  selectAddress: (req, res) => {
-    try {
+  selectAddress: async(req, res) => {
       console.log(req.body, 'Select Address bUtton clicked');
       let addressId = req.body.addressId;
       let user = req.session.user;
-      userHelper.selectAddress(user._id, addressId).then((response) => {
-        res.json(response);
+      await userHelper.selectAddress(user._id, addressId).then((response) => {
+        if(response){
+          console.log(response, 'Response in user controller when select address');
+          res.json(response);
+        }else{
+          res.json({status: false});
+        }
       })
-    } catch (error) { }
-    res.render('error', { message: error.message });
+
   },
 
   editAddress: async (req, res) => {
     try {
       console.log(req.params.id, "Address ID in edit address");
       let user = req.session.user;
-      await userHelper.getEditAddress(user._id, req.params.id).then((response) => {
-        console.log(response, " address in response")
-        res.render('user/edit-address', { user });
+      let cartCount = req.session.cartCount;
+      await userHelper.getEditAddress(user._id, req.params.id).then((editAddress) => {
+        console.log(editAddress, " address in response")
+        res.render('user/edit-address', { user, cartCount, editAddress});
       })
     } catch (error) {
       res.render('error', { message: error.message });
     }
+  },
+
+  updateAddress: (req, res)=>{
+    console.log(req.body, 'Update Address');
+    let user = req.session.user;
+    let cartCount = req.session.cartCount;
+
+    userHelper.updateAddress(user._id, req.body).then((response)=>{
+      if(response.status){
+        res.render('user/edit-address', { user, cartCount, updated: true});
+      }
+    });
   },
 
 

@@ -93,12 +93,15 @@ module.exports = {
         })
     },
 
-    changePassword: (changedPwd, userId) => {
-        return new Promise((resolve, reject) => {
-            db.get().collection(collection.USERCOLLECTION).updateOne({ _id: objectId(userId) },
+    changePassword: (data) => {
+        let mobileNo = data.mobNo;
+        return new Promise(async(resolve, reject) => {
+            data.password = await bcrypt.hash(data.changedPassword, 10);
+            db.get().collection(collection.USERCOLLECTION).updateOne({ registerMobileno: mobileNo },
                 {
                     $set: {
-                        registerPassword: changedPwd.changedPassword
+                        registerPassword: data.changedPassword,
+                        Password: data.password
                     }
                 })
             resolve({ status: true });
@@ -631,20 +634,22 @@ module.exports = {
         console.log(userData, " USER DETAILS from update Profile");
 
         return new Promise(async (resolve, reject) => {
+            let response ={}
 
             if (userData.currentPassword) {
                 let validUser = await db.get().collection(collection.USERCOLLECTION).findOne({ _id: objectId(userId) });
                 let currentPassword = userData.currentPassword;
 
-                if (validUser.registerPassword === currentPassword) {
-                    let newPassword = await bcrypt.hash(validUser.Password, 10);
-                    db.get().collection(collection.USERCOLLECTION).updateOne({ _id: objectId(userId) },
+                if (validUser.registerPassword === userData.currentPassword) {
+                    console.log(validUser, 'Valid User in userproffile');
+                    let newPassword = await bcrypt.hash(userData.updatedPassword, 10);
+                    await db.get().collection(collection.USERCOLLECTION).updateOne({ _id: objectId(userId) },
                         {
                             $set: {
                                 registerName: userData.updateName,
                                 registerEmail: userData.updateEmail,
                                 registerMobileno: userData.updateMobileno,
-                                registerPassword: currentPassword,
+                                registerPassword: userData.updatedPassword,
                                 Password: newPassword,
                                 gender: userData.gender
                             }
@@ -663,8 +668,10 @@ module.exports = {
                             registerMobileno: userData.updateMobileno,
                             gender: userData.gender
                         }
+                    }).then((response)=>{
+                        response.status = true;
                     })
-                response.status = true;
+                
             }
             resolve(response);
         })
@@ -817,22 +824,55 @@ module.exports = {
                 {
                     $set: { 'address.$.default': true }
                 }).then((response) => {
-                    console.log(response, ' Response from updating address...');
                     response.status = true;
                     resolve(response);
-                }).catch((response) => {
-                    response.status = false;
-                    reject(response);
                 })
+        })
+    },
 
+    selectDefaultAddress: (userId)=>{
+        return new Promise(async(resolve, reject)=>{
+         let user = await db.get().collection(collection.USERCOLLECTION).findOne({_id: objectId(userId)});
+
+        let addIndex = user.address.findIndex((address) => address.default == true);
+        if(addIndex !== -1){
+            const defaultAddress = user.address[addIndex];
+            resolve(defaultAddress);
+        }
+          
         })
     },
 
     getEditAddress: (userId, addressId) => {
         console.log(addressId, 'AddressID in adminn helper')
         return new Promise(async (resolve, reject) => {
-            await db.get().collection(collection.USERCOLLECTION).findOne({ _id: objectId(userId), 'address.ID': addressId }).then((response) => {
-                console.log(response, " REsponse in Edit address");
+            let user = await db.get().collection(collection.USERCOLLECTION).findOne({ _id: objectId(userId)});
+
+            let addIndex = user.address.findIndex((address)=> address.ID == addressId);
+            console.log(addIndex);
+            if(addIndex !== -1){
+                let editAddress = user.address[addIndex];
+                console.log(editAddress);
+                resolve(editAddress);
+            }
+        })
+    },
+
+    updateAddress: (userId, addDetails)=>{
+        let addressId = addDetails.addressId;
+        return new Promise((resolve, reject)=>{
+            db.get().collection(collection.USERCOLLECTION).updateOne({_id: objectId(userId), 'address.ID': addressId}, {
+                $set: {
+                    'address.$.name': addDetails.addressName,
+                    'address.$.address': addDetails.addressHouseName,
+                    'address.$.town': addDetails.addressTown,
+                    'address.$.state': addDetails.addressState,
+                    'address.$.country': addDetails.addressCountry,
+                    'address.$.pin': addDetails.addressPIN,
+                    'address.$.phone': addDetails.addressMob
+                }
+            }).then((response)=>{
+                response.status = true;
                 resolve(response);
             })
         })

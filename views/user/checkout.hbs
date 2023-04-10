@@ -27,56 +27,56 @@
 
 						<div class="row">
 							{{#if address}}
-							{{#each address}}
-							{{#if this.default}}
 							<div class="col-lg-9">
 								<h2 class="checkout-title">Billing Details</h2><!-- End .checkout-title -->
 								<div class="row">
 									<div class="col-sm-6">
 										<label>Full Name</label>
-										<input type="text" class="form-control" id="order-name" name="orderName" value="{{this.name}}">
+										<input type="text" class="form-control" id="order-name" name="orderName"
+											value="{{address.name}}">
 									</div><!-- End .col-sm-6 -->
 
 								</div><!-- End .row -->
 
 
 								<label>Address *</label>
-								<input type="text" class="form-control" id="order-address" placeholder="House number and Street name"
-									name="orderAddress" value="{{this.address}}">
+								<input type="text" class="form-control" id="order-address"
+									placeholder="House number and Street name" name="orderAddress"
+									value="{{address.address}}">
 
 								<div class="row">
 									<div class="col-sm-4">
 										<label>Town / City </label>
-										<input type="text" class="form-control" value="{{this.town}}">
+										<input type="text" class="form-control" value="{{address.town}}">
 									</div><!-- End .col-sm-6 -->
 
 									<div class="col-sm-4">
 										<label>State</label>
-										<input type="text" class="form-control" value="{{this.state}}">
+										<input type="text" class="form-control" value="{{address.state}}">
 									</div><!-- End .col-sm-6 -->
 									<div class="col-sm-4">
 										<label>County </label>
-										<input type="text" class="form-control" value="{{this.country}}">
+										<input type="text" class="form-control" value="{{address.country}}">
 									</div><!-- End .col-sm-6 -->
 								</div><!-- End .row -->
 
 								<div class="row">
 									<div class="col-sm-6">
 										<label>Postcode / ZIP *</label>
-										<input type="text" class="form-control" id="order-pin" name="orderPIN" value="{{this.pin}}">
+										<input type="text" class="form-control" id="order-pin" name="orderPIN"
+											value="{{address.pin}}">
 									</div><!-- End .col-sm-6 -->
 
 									<div class="col-sm-6">
 										<label>Phone *</label>
-										<input type="tel" class="form-control" id="order-mob" name="orderMob" value="{{this.phone}}">
+										<input type="tel" class="form-control" id="order-mob" name="orderMob"
+											value="{{address.phone}}">
 
 									</div><!-- End .col-sm-6 -->
 								</div><!-- End .row -->
 
 								<div class="link"><a href="/address">Change Address?</a></div>
 							</div><!-- End .col-lg-9 -->
-							{{/if}}
-							{{/each}}
 							{{else}}
 							<div class="col-lg-9">
 								<h2 class="checkout-title">Billing Details</h2><!-- End .checkout-title -->
@@ -92,7 +92,7 @@
 
 								<label>Address *</label>
 								<input type="text" class="form-control" placeholder="House number and Street name"
-									name="orderAddress" id="order-address" value="" >
+									name="orderAddress" id="order-address" value="">
 
 								<div class="row">
 									<div class="col-sm-4">
@@ -113,12 +113,14 @@
 								<div class="row">
 									<div class="col-sm-6">
 										<label>Postcode / ZIP *</label>
-										<input type="text" class="form-control" id="order-pin" name="orderPIN" value="" required>
+										<input type="text" class="form-control" id="order-pin" name="orderPIN" value=""
+											required>
 									</div><!-- End .col-sm-6 -->
 
 									<div class="col-sm-6">
 										<label>Phone *</label>
-										<input type="tel" class="form-control" id="order-mob" name="orderMob" value="" required>
+										<input type="tel" class="form-control" id="order-mob" name="orderMob" value=""
+											required>
 
 									</div><!-- End .col-sm-6 -->
 								</div><!-- End .row -->
@@ -190,24 +192,29 @@
 									<div class="accordion-summary" id="accordion-payment">
 										<h5>Payment method</h5>
 										<div class="custom-control custom-radio">
-											<input class="custom-control-input" id="COD" type="radio" value="COD" name="paymentMethod" >
+											<input class="custom-control-input" id="COD" type="radio" value="COD"
+												name="paymentMethod">
 											<label class="custom-control-label" for="COD">Cash On Delivery</label>
 										</div>
 
 										<div class="custom-control custom-radio">
-											<input class="custom-control-input" id="wallet" type="radio" value="wallet" name="paymentMethod" >
+											<input class="custom-control-input" id="wallet" type="radio" value="wallet"
+												name="paymentMethod">
 											<label class="custom-control-label" for="wallet">Wallet</label>
-											<span><p class="text-right" for="wallet">&#x20B9;{{user.wallet}}</p></span>
+											<span>
+												<p class="text-right" for="wallet">&#x20B9;{{user.wallet}}</p>
+											</span>
 										</div>
 
 										<div class="custom-control custom-radio">
-											<input class="custom-control-input" id="online-payment" type="radio" value="Paypal" name="paymentMethod">
+											<input class="custom-control-input" id="online-payment" type="radio"
+												value="Paypal" name="paymentMethod">
 											<label class="custom-control-label" for="online-payment">Paypal</label>
 
 											<input type="text" class="form-control" id="paypalAmount" name="totalAmount"
 												value="{{total}}" readonly>
 
-												
+
 										</div>
 
 
@@ -217,7 +224,8 @@
 											<span class="btn-hover-text">Proceed to Checkout</span>
 										</button>
 										{{#if paymentErr}}
-										<p style="color:rgb(180, 17, 17)">Please Choose a payment method to place order.</p>
+										<p style="color:rgb(180, 17, 17)">Please Choose a payment method to place order.
+										</p>
 										{{/if}}
 										{{#if walletErr}}
 										<p style="color:rgb(180, 17, 17)">Insufficient balance in wallet.</p>
@@ -241,7 +249,7 @@
 		let orderPIN = document.getElementById('order-pin').value;
 		let orderMob = document.getElementById('order-mob').value;
 
-		if (!orderName || orderName === "" || orderName.length<5) {
+		if (!orderName || orderName === "" || orderName.length < 5) {
 			alert('Name Should contain atleast 5 characters');
 			return false;
 		} else if (!orderAddress || orderAddress === "" || orderAddress.length < 7) {

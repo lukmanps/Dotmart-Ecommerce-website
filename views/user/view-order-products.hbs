@@ -100,15 +100,8 @@
 
                                 {{#if delivered}}
                                 <button class="btn btn-outline-primary-2 btn-order btn-block" onclick="returnOrder('{{orderDetails.orderId}}')">Return</button>
-                                {{/if}}
-                                {{#if placed}}
+                                {{else}}
                                 <button class="btn btn-outline-primary-2 btn-order btn-block" onclick="cancelOrder('{{orderDetails.orderId}}')">Cancel</button>
-                                {{/if}}
-                                {{#if returned}}
-
-                                {{/if}}
-                                {{#if cancelled}}
-
                                 {{/if}}
                                
                                

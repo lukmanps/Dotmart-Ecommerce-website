@@ -8,7 +8,7 @@
         </div>
         <div>
 
-            <button type="button" class="btn btn-md rounded font-sm" id="rep" value="Download as Pdf">Download
+            <button type="button" class="btn btn-md rounded font-sm btn_print" id="rep" value="Download as Pdf">Download
                 PDF</button>
             <button type="button" class="btn btn-md rounded font-sm" onclick="export_data()"
                 value="Export to excel">Download as Excel</button>
@@ -33,6 +33,7 @@
         </header> <!-- card-header end// -->
         <div class="card-body">
             <div class="table-responsive">
+                <div id="container_content">
                 <table class="table table-hover">
                     <thead>
                         <tr>
@@ -57,6 +58,7 @@
                         {{/each}}
                     </tbody>
                 </table>
+                </div>
             </div> <!-- table-responsive //end -->
         </div> <!-- card-body end// -->
     </div> <!-- card end// -->
@@ -78,6 +80,8 @@
             html2pdf().set(opt).from(element).save();
         });
     });
+
+
     function export_data() {
         let data = document.getElementById('container_content');
         var fp = XLSX.utils.table_to_book(data, { sheet: 'vishal' });
