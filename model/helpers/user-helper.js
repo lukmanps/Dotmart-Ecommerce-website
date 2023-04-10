@@ -28,6 +28,7 @@ module.exports = {
                 // console.log('Into the Collection' + userData);
                 userData.status = true;
                 userData.address = [];
+                userData.wallet = 0;
                 userData.Password = await bcrypt.hash(userData.registerPassword, 10);
                 db.get().collection(collection.USERCOLLECTION).insertOne(userData);
 
@@ -668,9 +669,8 @@ module.exports = {
                             registerMobileno: userData.updateMobileno,
                             gender: userData.gender
                         }
-                    }).then((response)=>{
-                        response.status = true;
                     })
+                    response.status = true;
                 
             }
             resolve(response);

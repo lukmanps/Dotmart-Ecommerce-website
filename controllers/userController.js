@@ -201,9 +201,9 @@ module.exports = {
       const pageNum = parseInt(pageCount);
       const pages = [];
       const limit = 8;
-      const products = await adminHelper.getAllProducts();
+      let products = await adminHelper.getAllProducts();
 
-      for (const i = 1; i <= Math.ceil(products.length / limit); i++) {
+      for (let i = 1; i <= Math.ceil(products.length / limit); i++) {
         pages.push(i);
       }
       const cartCount = req.session.cartCount;
@@ -278,7 +278,7 @@ module.exports = {
       const totalPrice = await userHelper.getTotalAmount(req.session.user._id);
       const cartCount = req.session.cartCount;
       console.log(products, 'Cart Products');
-      if (!products) {
+      if (!products || products.length === 0) {
         res.render('user/cart', { user, cartCount, cartEmpty: true });
       } else {
         res.render('user/cart', { user, cartCount, products, totalPrice });
@@ -371,11 +371,10 @@ module.exports = {
       const total = await userHelper.getTotalAmount(user._id);
       const products = await userHelper.getCartProducts(user._id);
       const address = await userHelper.selectDefaultAddress(user._id);
-      const totalUSD = total / 81;
 
       console.log(address,'default address');
 
-      if (!products === 0) {
+      if (!products || products.length === 0) {
         res.redirect('/cart');
       } else {
         res.render('user/checkout', { user, total, products, address, cartCount });
@@ -390,7 +389,8 @@ module.exports = {
     try {
       console.log(req.body, 'Checkout Details');
       const user = req.session.user;
-      const address = user.address;
+      // const address = user.address;
+      const address = await userHelper.selectDefaultAddress(user._id);
       const total = parseInt(req.body.totalAmount);
       const products = await userHelper.getCartProducts(user._id);
 
