@@ -44,10 +44,11 @@
                                     <label id="email-error" class="errorLabel text-danger" for="registerEmail"></label>
                                 </div><!-- End .form-group -->
 
-                                <div class="form-group">
+                                <div>
                                     <label for="registerMobileno">Mobile Number</label>
                                     <input type="tel" class="form-control" id="registerMobileno" name="registerMobileno"
-                                        required onblur="validateMobileno()">
+                                        required onblur="validateMobileno()"><span><a><button type="button" class="btn btn-outline-primary-2 mr-5" onclick="validateMobileNo()">Send OTP</button></a></span>
+                                        
                                     <label id="mobile-error" class="errorLabel text-danger"
                                         for="registerMobileno"></label>
                                 </div><!-- End .form-group -->
@@ -256,18 +257,7 @@
 
     }
 
-    function validateForm() {
-
-        if (!validateEmail() || !validateName() || !validatePassword() || !validateMobileno()) {
-
-            submitError.innerHTML = 'Please fix all errors to submit.';
-            setTimeout(function () { submitError.style.display = 'none'; }, 3000);
-            return false;
-        }
-        else {
-            document.getElementById('userForm').submit();
-        }
-    }
+    
 
 
 

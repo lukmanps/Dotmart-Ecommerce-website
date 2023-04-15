@@ -3,28 +3,16 @@ var express = require('express');
 var router = express.Router();
 const userController = require('../controllers/userController');
 const userHelper = require('../model/helpers/user-helper');
+const {verifyUser} = require('../controllers/authentication');
 
-
-const verifyLogin = async(req, res, next) => {
-  if (req.session.loggedIn) {
-    let user = await userHelper.getUser(req.session.user._id);
-    if (user.status) {
-      console.log(true, 'USer STauts flasdkrekjkfksdjf')
-      next();
-    } else {
-      req.session.loggedIn = false;
-      req.session.user = null;
-      res.redirect('/login');
-    }
-  } else {
-    res.redirect('/login');
-  }
-}
 
 //**** SIGNUP ****
 router.route('/signup')
   .get(userController.signupPage)
   .post(userController.signupPost);
+
+router.post('/validate-mobileno', userController.validateMobile);  
+router.post('/validate-otp', userController.validateOTP);
 
 //**** LOGIN ****
 router.route('/login') //Login Pag
@@ -61,68 +49,68 @@ router.get('/product-view/:id', userController.productView); //Product View Page
 router.get('/product-search', userController.productSearch); //Product Search
 
 //**** WISHLIST ****/
-router.get('/add-to-wishlist/:id', verifyLogin, userController.addToWishlist);
+router.get('/add-to-wishlist/:id', verifyUser, userController.addToWishlist);
 
-router.get('/wishlist', verifyLogin, userController.wishlistPage);
+router.get('/wishlist', verifyUser, userController.wishlistPage);
 
-router.post('/remove-wishlist-product', verifyLogin, userController.removeWishlistProduct);
+router.post('/remove-wishlist-product', verifyUser, userController.removeWishlistProduct);
 
 //**** CART ****
 
-router.get('/add-to-cart/:id', verifyLogin, userController.addToCart); //Add to Cart Button
+router.get('/add-to-cart/:id', verifyUser, userController.addToCart); //Add to Cart Button
 
-router.get('/cart', verifyLogin, userController.cartPage); //Cart Page
+router.get('/cart', verifyUser, userController.cartPage); //Cart Page
 
-router.post('/change-product-quantity', verifyLogin, userController.changeQuantity); //Change Cart Product Quantity
+router.post('/change-product-quantity', verifyUser, userController.changeQuantity); //Change Cart Product Quantity
 
-router.post('/remove-cart-product', verifyLogin, userController.removeCartPost) //Remove Cart Product
+router.post('/remove-cart-product', verifyUser, userController.removeCartPost) //Remove Cart Product
 
 //**** CHECKOUT *****/
 router.route('/checkout')
-  .get(verifyLogin, userController.checkout)
-  .post(verifyLogin, userController.checkoutPost)
+  .get(verifyUser, userController.checkout)
+  .post(verifyUser, userController.placeOrder)
 
-router.post('/place-order', verifyLogin, userController.placeOrder)
 
-router.get('/order-success', verifyLogin, userController.orderSuccess)
 
-router.get('/orders', verifyLogin, userController.ordersPage)// Order Page
+router.get('/order-success', verifyUser, userController.orderSuccess)
 
-router.get('/view-order-products/:id', verifyLogin, userController.viewOrder);
+//******** ORDERS **********/
 
-router.post('/return-order', verifyLogin, userController.returnOrder);
+router.get('/orders', verifyUser, userController.ordersPage)// Order Page
 
-router.post('/cancel-order', verifyLogin, userController.cancelOrder);
+router.get('/view-order-products/:id', verifyUser, userController.viewOrder);
+
+router.post('/return-order', verifyUser, userController.returnOrder);
+
+router.post('/cancel-order', verifyUser, userController.cancelOrder);
 
 
 //**** ACCOUNT INFO *****/
 router.post('/change-password', userController.changePasswordPost);
 
-router.get('/user-profile', verifyLogin, userController.userProfile); //User Profile Page
+router.get('/user-profile', verifyUser, userController.userProfile); //User Profile Page
 
-router.post('/update-profile/:id', verifyLogin, userController.updateProfile);
+router.post('/update-profile', verifyUser, userController.updateProfile);
 
-router.get('/address', verifyLogin, userController.addressPage); //Address Page
+//******** ADDRESS ********/
+
+router.get('/address', verifyUser, userController.addressPage); //Address Page
 
 router.route('/add-address')
-  .get(verifyLogin, userController.addAddress)
+  .get(verifyUser, userController.addAddress)
   .post(userController.addAddressPost);
 
-router.post('/select-address', verifyLogin, userController.selectAddress);
+router.post('/select-address', verifyUser, userController.selectAddress);
 
-router.get('/edit-address/:id', verifyLogin, userController.editAddress);
+router.get('/edit-address/:id', verifyUser, userController.editAddress);
 
-router.post('/edit-address', verifyLogin, userController.updateAddress);
+router.post('/edit-address', verifyUser, userController.updateAddress);
 
-router.get('/all-coupons', verifyLogin, userController.allCoupons);
+//******** COUPON ********/
 
-router.post('/apply-coupon', verifyLogin, userController.applyCoupon);
+router.get('/all-coupons', verifyUser, userController.allCoupons);
 
-
-
-
-// router.get('/error', userController.errorPage);
-
+router.post('/apply-coupon', verifyUser, userController.applyCoupon);
 
 
 

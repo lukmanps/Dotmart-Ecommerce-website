@@ -70,19 +70,19 @@
     </div>
 
     <div class="row">
-        {{!-- <div class="col-6">
+        <div class="col-6">
             <div class="card mb-4">
                 <article class="card-body">
-                    <h5 class="card-title">Sale statistics</h5>
-                    <canvas id="myChart" style="width:auto; height: 100%;"></canvas>
+                    <h5 class="card-title">Products Statistics</h5>
+                    <canvas id="myChart" style="width:100%;max-width:600px"></canvas>
                 </article>
             </div>
-        </div> --}}
+        </div>
 
         <div class="col-6">
             <div class="card mb-4">
                 <article class="card-body">
-                    <h5 class="card-title">Orders statistics</h5>
+                    <h5 class="card-title">Orders Statistics</h5>
                     <canvas id="pieChart" style="width: auto; height: 5rem"></canvas>
                 </article>
             </div>
@@ -104,7 +104,7 @@
 
 {{!-- <script>
 
-    console.log([{{dashboardData.onlinePay}}, {{dashboardData.PlacedCount}}])
+    console.log([{{productData.menCount}}, {{productData.womenCount}}, {{productData.accessoriesCount}}])
     let xValues = ['Men', 'Women', 'Accessories'];
 
     new Chart("myChart", {
@@ -112,9 +112,9 @@
         data: {
             labels: xValues,
             datasets: [{
-                data: [12, 25, 8, 7, 2, 55, 62, 2, 33],
+                data: [{{productData.menCount}}, {{productData.womenCount}}, {{productData.accessoriesCount}}],
                 borderColor: "red",
-                fill: false
+                fill: true
             }, {
                 data: {{ dashboardData.PendingCount }},
         borderColor: "green",
@@ -126,10 +126,34 @@
     }]
   },
         options: {
-        legend: { display: true }
+        legend: { display: true}
     }
 });
 </script> --}}
+
+<script>
+var categories = ["Men", "Women", "Accessories"];
+var count = [{{productData.menCount}}, {{productData.womenCount}}, {{productData.accessoriesCount}}];
+var barColors = ["red", "green","blue"];
+
+new Chart("myChart", {
+  type: "bar",
+  data: {
+    labels: categories,
+    datasets: [{
+      backgroundColor: barColors,
+      data: count
+    }]
+  },
+  options: {
+    title: {
+      display: true,
+      text: "Dotmart Product Statistics"
+    }
+  }
+});
+</script>
+</script>
 
 <script>
     let orderStatus = ["Delivered", "Placed", "Cancelled", "Shipped", "Returned"];
@@ -154,7 +178,7 @@
         options: {
             title: {
                 display: true,
-                text: "World Wide Wine Production 2018"
+                text: "Dotmart Order Statistics"
             }
         }
     });

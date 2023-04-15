@@ -3,7 +3,7 @@
     <main class="main">
         <div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
             <div class="container">
-                <h1 class="page-title">Shop.</h1>
+                <h1 class="page-title" style="font-weight: 500;">Shop.</h1>
             </div><!-- End .container -->
         </div><!-- End .page-header -->
         <nav aria-label="breadcrumb" class="breadcrumb-nav mb-2">
@@ -72,20 +72,12 @@
 
                     <nav aria-label="Page navigation example">
                         <ul class="pagination justify-content-center">
-                            <li class="page-item">
-                                <a class="page-link" href="#" aria-label="Previous">
-                                    <span aria-hidden="true">&laquo;</span>
-                                </a>
-                            </li>
+                           
                             {{#each pages}}
-                            <li class="page-item"><a class="page-link" href="/admin/adminorders?page={{this}}"
+                            <li class="page-item"><a class="page-link" href="/shop?page={{this}}"
                                     aria-label="page {{this}}">{{this}}</a></li>
                             {{/each}}
-                            <li class="page-item">
-                                <a class="page-link" href="#" aria-label="Next">
-                                    <span aria-hidden="true">&raquo;</span>
-                                </a>
-                            </li>
+                            
                         </ul>
                     </nav>
 

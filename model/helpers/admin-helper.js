@@ -7,19 +7,23 @@ module.exports = {
 
     adminLogin: (adminData) => {
         return new Promise(async (resolve, reject) => {
-            let response = {}
-            let validAdmin = await db.get().collection(collection.ADMINCOLLECTION).findOne({ adminEmail: adminData.adLogEmail, adminPassword: adminData.adLogPassword });
-            if (validAdmin) {
-                console.log("login success")
-                response.validAdmin = validAdmin;
-                response.status = true;
-                resolve(response);
+            try {
+                let response = {}
+                let validAdmin = await db.get().collection(collection.ADMINCOLLECTION).findOne({ adminEmail: adminData.adLogEmail, adminPassword: adminData.adLogPassword });
+                if (validAdmin) {
+                    console.log("login success")
+                    response.validAdmin = validAdmin;
+                    response.status = true;
+                    resolve(response);
 
-            }
-            else {
-                console.log("login failed");
-                response.status = false;
-                resolve(response);
+                }
+                else {
+                    console.log("login failed");
+                    response.status = false;
+                    resolve(response);
+                }
+            } catch {
+                reject()
             }
         })
     },
@@ -27,8 +31,10 @@ module.exports = {
 
     getAllUsers: () => {
         return new Promise(async (resolve, reject) => {
-            let users = await db.get().collection(collection.USERCOLLECTION).find().toArray()
-            resolve(users)
+            try {
+                let users = await db.get().collection(collection.USERCOLLECTION).find().toArray()
+                resolve(users)
+            } catch { reject() }
         })
     },
 
@@ -66,24 +72,30 @@ module.exports = {
 
     addCategory: (category) => {
         return new Promise(async (resolve, reject) => {
-            let oldCategory = {}
-            let validCategory = await db.get().collection(collection.CATEGORYCOLLECTION).findOne({ catName: category.catName })
-
-            if (validCategory) {
-                oldCategory.status = true
-                resolve(oldCategory);
-            }
-            else {
-                db.get().collection(collection.CATEGORYCOLLECTION).insertOne(category);
-                resolve({ status: false })
-            }
+            try{
+                let oldCategory = {}
+                let validCategory = await db.get().collection(collection.CATEGORYCOLLECTION).findOne({ catName: category.catName })
+    
+                if (validCategory) {
+                    oldCategory.status = true
+                    resolve(oldCategory);
+                }
+                else {
+                    db.get().collection(collection.CATEGORYCOLLECTION).insertOne(category);
+                    resolve({ status: false })
+                }
+            }catch{reject()}
         })
     },
 
     getCategory: () => {
         return new Promise(async (resolve, reject) => {
-            let category = await db.get().collection(collection.CATEGORYCOLLECTION).find().toArray()
-            resolve(category);
+            try {
+                let category = await db.get().collection(collection.CATEGORYCOLLECTION).find().toArray()
+                resolve(category);
+            } catch {
+                reject()
+            }
         })
     },
 
@@ -126,7 +138,7 @@ module.exports = {
             console.log('All products');
             console.log(db.get());
             let products = await db.get().collection(collection.PRODUCTCOLLECTION).find().toArray();
-                resolve(products);
+            resolve(products);
 
         })
     },
@@ -167,19 +179,19 @@ module.exports = {
 
     updateProduct: (proId, proDetails, image) => {
         console.log(proDetails);
-        return new Promise(async(resolve, reject) => {
+        return new Promise(async (resolve, reject) => {
 
-            let product =await db.get().collection(collection.PRODUCTCOLLECTION).findOne({_id:objectId(proId)});
-            if(image.productImage0){
+            let product = await db.get().collection(collection.PRODUCTCOLLECTION).findOne({ _id: objectId(proId) });
+            if (image.productImage0) {
                 product.productImage[0] = image.productImage0[0].filename;
             }
-            if(image.productImage1){
+            if (image.productImage1) {
                 product.productImage[1] = image.productImage1[0].filename;
             }
-            if(image.productImage2){
+            if (image.productImage2) {
                 product.productImage[2] = image.productImage2[0].filename;
             }
-            if(image.productImage3){
+            if (image.productImage3) {
                 product.productImage[3] = image.productImage3[0].filename;
             }
             db.get().collection(collection.PRODUCTCOLLECTION).updateOne({ _id: objectId(proId) }, {
@@ -190,11 +202,13 @@ module.exports = {
                     productColor: proDetails.productColor,
                     productSize: proDetails.productSize,
                     productDescription: proDetails.productDescription,
-                    productPrice: proDetails.productPrice, 
+                    productPrice: proDetails.productPrice,
                     productImage: product.productImage
                 }
             }).then((response) => {
                 resolve();
+            }).catch(() => {
+                reject();
             });
         })
     },
@@ -211,15 +225,15 @@ module.exports = {
 
     getAllOrders: () => {
         return new Promise(async (resolve, reject) => {
-            let orders = await db.get().collection(collection.ORDERCOLLECTION).find().sort({'date': -1}).toArray();
+            let orders = await db.get().collection(collection.ORDERCOLLECTION).find().sort({ 'date': -1 }).toArray();
             resolve(orders);
         })
     },
 
-    orderPagenation : (pageNum, limit)=>{
-        let skipNum = parseInt((pageNum-1) * limit);
-        return new Promise(async(resolve, reject)=>{
-            let orders = await db.get().collection(collection.ORDERCOLLECTION).find().sort({'date': -1}).skip(skipNum).limit(limit).toArray();
+    orderPagenation: (pageNum, limit) => {
+        let skipNum = parseInt((pageNum - 1) * limit);
+        return new Promise(async (resolve, reject) => {
+            let orders = await db.get().collection(collection.ORDERCOLLECTION).find().sort({ 'date': -1 }).skip(skipNum).limit(limit).toArray();
             resolve(orders);
         })
     },
@@ -276,17 +290,19 @@ module.exports = {
 
     updateOrderStatus: (orderId, orderStatus) => {
         console.log(orderStatus, ' ORDER STATUS');
+
         return new Promise((resolve, reject) => {
+
             db.get().collection(collection.ORDERCOLLECTION).updateOne({ _id: objectId(orderId) }, {
                 $set: {
                     status: orderStatus
                 }
-            }).then((response)=>{
+            }).then((response) => {
                 response.status = true;
                 resolve(response);
-            }).catch((response)=>{
+            }).catch((response) => {
                 response.status = false;
-                resolve(response);
+                reject(response);
             })
         })
     },
@@ -319,9 +335,9 @@ module.exports = {
         })
     },
 
-    removeCoupon: (couponId)=>{
-        return new Promise(async(resolve, reject)=>{
-            db.get().collection(collection.COUPONCOLLECTION).deleteOne({_id: objectId(couponId)}).then((response)=>{
+    removeCoupon: (couponId) => {
+        return new Promise(async (resolve, reject) => {
+            db.get().collection(collection.COUPONCOLLECTION).deleteOne({ _id: objectId(couponId) }).then((response) => {
                 console.log(response, "Response when removing coupon");
                 response.status = true;
                 resolve(response);
@@ -350,118 +366,140 @@ module.exports = {
                 }
             ]).toArray();
             console.log(revenue, 'Revenue in Get Revenue');
-            if(revenue.length!==0){
+            if (revenue.length !== 0) {
                 resolve(revenue[0].totalAmount);
-            }else{
+            } else {
                 resolve(0);
             }
         })
     },
 
 
-    addBanner: (banner)=>{
+    addBanner: (banner) => {
         console.log(banner, 'Banner details in helper');
-        return new Promise(async(resolve, reject)=>{
-                let validBanner = await db.get().collection(collection.BANNER_COLLECTION).findOne({bannerTitle: banner.bannerTitle});
-                if(validBanner ===  null){
-                    db.get().collection(collection.BANNER_COLLECTION).insertOne(banner).then((response)=>{
+        return new Promise(async (resolve, reject) => {
+            try {
+                let validBanner = await db.get().collection(collection.BANNER_COLLECTION).findOne({ bannerTitle: banner.bannerTitle });
+                if (validBanner === null) {
+                    db.get().collection(collection.BANNER_COLLECTION).insertOne(banner).then((response) => {
                         console.log(response.insertedId, 'Response When Banner added to DB');
                         response.status = true;
                         resolve(response);
+                    }).catch(() => {
+                        reject();
                     })
-                }else{
+                } else {
                     response.status = false;
                     resolve(response);
                 }
+            } catch {
+                reject()
+            }
+
         })
     },
 
-    getAllBanners: ()=>{
-        return new Promise((resolve, reject)=>{
-            db.get().collection(collection.BANNER_COLLECTION).find().toArray().then((response)=>{
+    getAllBanners: () => {
+        return new Promise((resolve, reject) => {
+            db.get().collection(collection.BANNER_COLLECTION).find().toArray().then((response) => {
                 resolve(response);
             })
         })
     },
 
-    deleteBanner: (bannerId)=>{
+    deleteBanner: (bannerId) => {
         console.log(bannerId, 'Banner ID in adminHelper');
-        return new Promise((resolve, reject)=>{
-            db.get().collection(collection.BANNER_COLLECTION).deleteOne({_id: objectId(bannerId)}).then((response)=>{
+        return new Promise((resolve, reject) => {
+            db.get().collection(collection.BANNER_COLLECTION).deleteOne({ _id: objectId(bannerId) }).then((response) => {
                 console.log(response);
                 resolve(response);
             })
         })
     },
 
-    reportList:()=>{
-        return new Promise((resolve,reject)=>{
+    reportList: () => {
+        return new Promise((resolve, reject) => {
             db.get().collection(collection.ORDERCOLLECTION)
-            .find({status:'Delivered'})
-            .sort({'date':-1})
-            .toArray().then((response)=>{
-                resolve(response)
-            })
+                .find({ status: 'Delivered' })
+                .sort({ 'date': -1 })
+                .toArray().then((response) => {
+                    resolve(response)
+                })
         })
-        
+
     },
 
     adminSalesGraph: () => {
         return new Promise(async (resolve, reject) => {
-          let Data = {};
-          Data.codCount = await db
-            .get()
-            .collection(collection.ORDERCOLLECTION)
-            .find({ paymentmethod: "COD" })
-            .count();
-          Data.onlinePay = await db
-            .get()
-            .collection(collection.ORDERCOLLECTION)
-            .find({ paymentmethod: "Paypal"})
-            .count();
-          Data.PlacedCount = await db
-            .get()
-            .collection(collection.ORDERCOLLECTION)
-            .find({ status: "Placed" })
-            .count();
-          Data.PendingCount = await db
-            .get()
-            .collection(collection.ORDERCOLLECTION)
-            .find({ status: "Payment Pending" })
-            .count();
-          Data.DeliveredCount = await db
-            .get()
-            .collection(collection.ORDERCOLLECTION)
-            .find({ status: "Delivered" })
-            .count();
-         
-          Data.CanceledCount = await db
-            .get()
-            .collection(collection.ORDERCOLLECTION)
-            .find({ status: "Cancelled" })
-            .count();
-          Data.ProductsCount = await db
-            .get()
-            .collection(collection.PRODUCTCOLLECTION)
-            .find({})
-            .count();
-          Data.CategoryCount = await db
-            .get()
-            .collection(collection.CATEGORYCOLLECTION)
-            .find({})
-            .count();
-          Data.TotalDeliveredPrice = await db
-            .get()
-            .collection(collection.ORDERCOLLECTION)
-            .aggregate([
-              { $match: { status: "Delivered" } },
-              { $group: { _id: null, TotalRevenue: { $sum: "$totalAmount" } } },
-            ])
-            .toArray();
-    
-          resolve(Data);
+            let Data = {};
+            Data.codCount = await db
+                .get()
+                .collection(collection.ORDERCOLLECTION)
+                .find({ paymentmethod: "COD" })
+                .count();
+            Data.onlinePay = await db
+                .get()
+                .collection(collection.ORDERCOLLECTION)
+                .find({ paymentmethod: "Paypal" })
+                .count();
+            Data.PlacedCount = await db
+                .get()
+                .collection(collection.ORDERCOLLECTION)
+                .find({ status: "Placed" })
+                .count();
+            Data.PendingCount = await db
+                .get()
+                .collection(collection.ORDERCOLLECTION)
+                .find({ status: "Payment Pending" })
+                .count();
+            Data.DeliveredCount = await db
+                .get()
+                .collection(collection.ORDERCOLLECTION)
+                .find({ status: "Delivered" })
+                .count();
+
+            Data.CanceledCount = await db
+                .get()
+                .collection(collection.ORDERCOLLECTION)
+                .find({ status: "Cancelled" })
+                .count();
+            Data.ProductsCount = await db
+                .get()
+                .collection(collection.PRODUCTCOLLECTION)
+                .find({})
+                .count();
+            Data.CategoryCount = await db
+                .get()
+                .collection(collection.CATEGORYCOLLECTION)
+                .find({})
+                .count();
+            Data.TotalDeliveredPrice = await db
+                .get()
+                .collection(collection.ORDERCOLLECTION)
+                .aggregate([
+                    { $match: { status: "Delivered" } },
+                    { $group: { _id: null, TotalRevenue: { $sum: "$totalAmount" } } },
+                ])
+                .toArray();
+
+            resolve(Data);
         });
-      },
+    },
+
+    productData: () => {
+        return new Promise(async (resolve, reject) => {
+            try {
+                let data = {};
+                data.menCount = await db.get().collection(collection.PRODUCTCOLLECTION).find({ productCategory: "men" }).count();
+                data.womenCount = await db.get().collection(collection.PRODUCTCOLLECTION).find({ productCategory: "women" }).count();
+                data.accessoriesCount = await db.get().collection(collection.PRODUCTCOLLECTION).find({ productCategory: "accessories" }).count();
+                console.log(data, 'data in admin helper');
+                resolve(data);
+            } catch {
+                reject();
+            }
+        })
+    }
 
 
 

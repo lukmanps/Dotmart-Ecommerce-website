@@ -1,14 +1,12 @@
 const MongoClient = require("mongodb").MongoClient;
+require('dotenv').config();
 const state = {
     db: null
 }
 
-
 //mongodb://0.0.0.0:27017/
-//mongodb+srv://lukman:Lukmanps6@dotmart.sw6jazg.mongodb.net/?retryWrites=true&w=majority
-//mongodb+srv://lukman:Lukmanps6@dotmart.sw6jazg.mongodb.net/?retryWrites=true&w=majority
 module.exports.connect = function (done) {
-    const url = "mongodb+srv://lukman:Lukmanps6@dotmart.sw6jazg.mongodb.net/?retryWrites=true&w=majority";
+    const url = process.env.MONGODB_LINK;
     const dbname = "Dotmart";
 
     MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true }, (err, data) => {

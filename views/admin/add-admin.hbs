@@ -1,0 +1,60 @@
+<section class="content-main">
+    <div class="row">
+        <form action="" id="add-coupon">
+            <div class="col-9">
+                <div class="content-header">
+                    <div>
+                        <h2 class="content-title card-title">Add Admin.</h2>
+                    </div>
+                    <div>
+                        <button class="btn btn-md rounded font-sm hover-up" onclick="checkForErrors()" type="button">Publish</button><br>
+                        {{#if couponNotAdded}}
+                        <label class="text-center" style="color:rgb(180, 17, 17)">Coupon added already!</label>
+                        {{/if}}
+                        {{#if couponAdded}}
+                        <label class="text-center" style="color:rgb(22, 131, 22)">Coupon added Successfully!</label>
+                        {{/if}}
+                        <div class="text-center">
+                            <span class="text-danger text-center" id="addCouponError"></span>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="mb-4">
+                            <label for="couponCode" class="form-label">Admin Name</label>
+                            <input type="text" placeholder="Admin Name" class="form-control" id="couponCode"
+                                name="adminName">
+                        </div>
+                        <div class="mb-4">
+                            <label for="couponDiscount" class="form-label">Admin Email</label>
+                            <input type="number" placeholder="Admin Email" class="form-control" id="couponDiscount"
+                                name="adminEmail">
+                        </div>
+                        <div class="mb-4">
+                            <label for="maxDiscount" class="form-label">Admin Password</label>
+                            <input type="password" placeholder="Admin Password" class="form-control" id="maxDiscount"
+                                name="adminPassword">
+                        </div>
+                        
+                    </div>
+                </div> <!-- card end// -->
+
+            </div>
+
+        </form>
+    </div>
+</section>
+<script>
+    function TDate() {
+    if (new Date(UserDate).getTime() <= ToDate.getTime()) {
+          swal("The Date must be Bigger or Equal to today's date");
+          return false;
+     }
+    return true;
+}
+</script>

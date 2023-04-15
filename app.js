@@ -33,7 +33,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public/adminassets')));
-// app.use(fileUpload());
+// app.use(fileUpload());d
 
 
 app.use(function (req, res, next) {

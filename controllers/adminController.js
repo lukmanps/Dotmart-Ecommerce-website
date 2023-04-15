@@ -25,14 +25,16 @@ module.exports = {
       const users = await adminHelper.getAllUsers();
       const usersCount = users.length;
       const dashboardData = await adminHelper.adminSalesGraph();
+      const productData = await adminHelper.productData();
       let codCount = dashboardData.codCount;
       let onlinePay = dashboardData.onlinePay;
 
       console.log(dashboardData, 'DashboardData');
+      console.log(productData, 'Product Data');
 
-      res.render('admin/dashboard', { layout: 'adminlayout', orderCount, productCount, totalRevenue, usersCount, dashboardData, codCount, onlinePay });
-    } catch (error) {
-      res.render('error', { layout: 'adminlayout', message: error.message });
+      res.render('admin/dashboard', { layout: 'adminlayout', orderCount, productCount, totalRevenue, usersCount, dashboardData, productData, codCount, onlinePay });
+    } catch (err) {
+      res.render('error', { layout: 'adminlayout', message: err });
     }
   },
 
@@ -42,7 +44,6 @@ module.exports = {
     } catch (error) {
       res.render('error', { layout: 'adminlayout', message: error.message });
     }
-
   },
 
   loginPage: function (req, res) {
@@ -69,6 +70,8 @@ module.exports = {
           res.render('admin/admin-login', { layout: 'adminlayout', loginPage: true, adLogErr: true });
           // res.redirect('/admin/login');
         }
+      }).catch(()=>{
+        res.render('error', { layout: 'adminlayout'});
       })
     } catch (error) {
       res.render('error', { layout: 'adminlayout', message: error.message });
@@ -88,8 +91,9 @@ module.exports = {
       if (req.session.loggedInad) {
         adminHelper.getAllUsers().then((users) => {
           res.render('admin/view-users', { layout: 'adminlayout', users });
+        }).catch(()=>{
+          res.render('admin/view-users', { layout: 'adminlayout' })
         })
-
       }
       else {
         res.redirect('/admin');
@@ -108,8 +112,9 @@ module.exports = {
         // })
         adminHelper.getCategory().then((category) => {
           res.render('admin/category', { layout: 'adminlayout', category });
+        }).catch(()=>{
+          res.render('error', {layout: 'adminlayout'});
         })
-
       }
       else {
         res.redirect('/admin');
@@ -130,6 +135,8 @@ module.exports = {
         } else {
           res.redirect('/admin/category');
         }
+      }).catch(()=>{
+        res.render('error', {layout:'adminlayout'});
       })
     } catch (error) {
       res.render('error', { layout: 'adminlayout', message: error.message });
@@ -321,7 +328,9 @@ module.exports = {
       console.log(req.files, 'Image files content in product');
       let image = req.files;
       adminHelper.updateProduct(req.params.id, req.body, image).then(() => {
-        res.render('admin/edit-product', { layout: 'adminlayout' });
+        res.render('admin/edit-product', { layout: 'adminlayout', updated: true });
+      }).catch(()=>{
+        res.render('admin/edit-product', { layout: 'adminlayout'});
       })
     } catch (error) {
       res.render('error', { layout: 'adminlayout', message: error.message });
@@ -460,7 +469,7 @@ module.exports = {
   },
 
   addBannerPost: (req, res) => {
-    console.log(req.file.filename);
+    console.log(req.file.filename, 'Banner Image');
     try {
       const file = req.file.filename;
       const banner = req.body;
@@ -474,6 +483,8 @@ module.exports = {
           } else {
             res.render('admin/add-banner', { layout: 'adminlayout', bannerUploaded: true });
           }
+        }).catch(()=>{
+          res.render('admin/add-banner', { layout: 'adminlayout' });
         });
     } catch (error) {
       res.render('error', { layout: 'adminlayout', message: error.message });

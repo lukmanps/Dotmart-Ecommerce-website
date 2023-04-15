@@ -3,50 +3,18 @@ var router = express.Router();
 const adminController = require('../controllers/adminController');
 const multer = require('multer');
 const path = require('path');
-const storage = multer.diskStorage({
-                destination: (req, file, cb)=>{
-                    cb(null, './public/db/product-images');
-                },
-                
-                filename: (req, file, cb)=>{
-                    console.log(file);
-                    let uniqueFileName = Date.now() + '-' + Math.round(Math.random() * 1E9) + '.jpg';
-                    cb(null, uniqueFileName);
-                }
-
-                // Math.round(Math.random() * 1E9
-});
-
-const bannerStorage = multer.diskStorage({
-                      destination: (req, file, cb)=>{
-                        cb(null, './public/db/banner-images');
-                      },
-
-                      filename: (req, file, cb)=>{
-                        console.log(file);
-                        let uniqueFileName = Date.now() + '-' + Math.round(Math.random() * 1E9) + '.jpg';
-                        cb(null, uniqueFileName); 
-                      }
-});
-const upload = multer({storage: storage});
-const bannerUpload = multer({storage: bannerStorage});
-
-
-
-const verifyLogin = (req, res, next)=>{
-    if(req.session.loggedInad){
-      next();
-    }else{
-      res.redirect('/admin/login');
-    }
-    }
+const {storage} = require('../model/multer');
+const {bannerStorage} = require('../model/multer');
+const {verifyAdmin} = require('../controllers/authentication');
+const upload = multer({storage});
+const bannerUpload = multer({bannerStorage});
 
 /* GET home page. */
-router.get('/', adminController.adminPage);
+router.get('/', verifyAdmin, adminController.adminPage);
 
-router.get('/dashboard', verifyLogin, adminController.dashboard);
+router.get('/dashboard', verifyAdmin, adminController.dashboard);
 
-router.get('/products', verifyLogin, adminController.productView);
+router.get('/products', verifyAdmin, adminController.productView);
 
 router.get('/login', adminController.loginPage);
 
@@ -54,70 +22,74 @@ router.post('/login', adminController.loginPost);
 
 router.get('/logout', adminController.logout);
 
-router.get('/view-users', verifyLogin, adminController.viewUsers);
+//USER MANAGEMENT
 
-router.get('/block-user/:id', verifyLogin, adminController.blockUser);
+router.get('/view-users', verifyAdmin, adminController.viewUsers);
 
-router.get('/unblock-user/:id', verifyLogin, adminController.unblockUser);
+router.get('/block-user/:id', verifyAdmin, adminController.blockUser);
 
-router.get('/delete-user/:id',verifyLogin,  adminController.deleteUser);
+router.get('/unblock-user/:id', verifyAdmin, adminController.unblockUser);
 
-router.get('/category', verifyLogin, adminController.category);
+router.get('/delete-user/:id',verifyAdmin,  adminController.deleteUser);
 
-router.post('/add-category', adminController.categoryPost);
+//CATEGORY MANAGEMENT
 
-router.get('/delete-category/:id', verifyLogin, adminController.deleteCategory);
+router.get('/category', verifyAdmin, adminController.category);
 
-// router.get('/edit-user/:id', adminController.editUser);
+router.post('/add-category', verifyAdmin, adminController.categoryPost);
 
-// router.post('/edit-user/:id', adminController.editUserPost);
+router.get('/delete-category/:id', verifyAdmin, adminController.deleteCategory);
 
-router.get('/add-products', verifyLogin, adminController.addProduct); //Add Products Page
+//PRODUCT MANAGEMENT
+
+router.get('/add-products', verifyAdmin, adminController.addProduct); //Add Products Page
 
 router.post('/add-products', upload.array('productImage', 4), adminController.addProductPost); //Added Product
 
-router.get('/products-list', verifyLogin, adminController.productsList);
+router.get('/products-list', verifyAdmin, adminController.productsList);
 
-router.get('/unlist-product/:id', verifyLogin, adminController.unlistProduct);
+router.get('/unlist-product/:id', verifyAdmin, adminController.unlistProduct);
 
-router.get('/listBack-product/:id',verifyLogin, adminController.listBackProduct);
+router.get('/listBack-product/:id',verifyAdmin, adminController.listBackProduct);
 
-router.get('/edit-product/:id', verifyLogin, adminController.editProduct); //Edit Product Page
+router.get('/edit-product/:id', verifyAdmin, adminController.editProduct); //Edit Product Page
 
-router.post('/edited-product/:id', upload.fields([{name: 'productImage0', maxCount: 1},
-                                                  {name: 'productImage1', maxCount: 1},
-                                                  {name: 'productImage2', maxCount: 1},
-                                                  {name: 'productImage3', maxCount: 1}]),
+router.post('/edited-product/:id', verifyAdmin, upload.fields([{name: 'productImage0', maxCount: 1},
+                                                   {name: 'productImage1', maxCount: 1},
+                                                   {name: 'productImage2', maxCount: 1},
+                                                   {name: 'productImage3', maxCount: 1}]),
                                                    adminController.editProductPost);
 
-router.get('/delete-product/:id', verifyLogin, adminController.deleteProduct);
+router.get('/delete-product/:id', verifyAdmin, adminController.deleteProduct);
 
-router.get('/order-management', verifyLogin, adminController.orderManagement);
+//ORDER MANAGEMENT
 
-router.get('/view-order/:id', verifyLogin, adminController.viewOrder);
+router.get('/order-management', verifyAdmin, adminController.orderManagement);
 
-router.post('/update-order-status', adminController.updateOrderStatus);
+router.get('/view-order/:id', verifyAdmin, adminController.viewOrder);
+
+router.post('/update-order-status', verifyAdmin, adminController.updateOrderStatus);
 
 
-//COUPON
+//COUPON MANAGEMENT
 router.route('/add-coupon')
-      .get(verifyLogin, adminController.addCouponPage)
-      .post(adminController.addCouponPost);
+      .get(verifyAdmin, adminController.addCouponPage)
+      .post(verifyAdmin, adminController.addCouponPost);
 
-router.get('/view-coupon', verifyLogin, adminController.couponViewPage); //Coupon 
+router.get('/view-coupon', verifyAdmin, adminController.couponViewPage); //Coupon 
 
-router.post('/remove-coupon', adminController.removeCoupon);
+router.post('/remove-coupon', verifyAdmin, adminController.removeCoupon);
 
 
-//BANNER
-router.get('/add-banner', verifyLogin, adminController.addBannerPage);
+//BANNER MANAGEMENT
+router.get('/add-banner', verifyAdmin, adminController.addBannerPage);
 
 router.post('/add-banner', bannerUpload.single('bannerImage'),  adminController.addBannerPost);
 
-router.get('/banner-list', verifyLogin, adminController.bannerViewPage);
+router.get('/banner-list', verifyAdmin, adminController.bannerViewPage);
 
-router.post('/remove-banner', adminController.deleteBanner);
+router.post('/remove-banner', verifyAdmin, adminController.deleteBanner);
 
-router.get('/report', verifyLogin, adminController.reportPage);
+router.get('/report', verifyAdmin, adminController.reportPage);
 
 module.exports = router;

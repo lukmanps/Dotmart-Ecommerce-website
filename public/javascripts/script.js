@@ -16,6 +16,10 @@ let addToCart = (proId) => {
 
                     },
                 }).showToast();
+                // let count = $('#cartCount').html();
+                // count = parseInt(count) + 1;
+                // $('#cartCount').html(count)
+                document.getElementById('cartCount').innerHTML = response.cartCount;
             } else {
                 Toastify({
                     text: "Please Login to Shop",
@@ -28,9 +32,7 @@ let addToCart = (proId) => {
                     },
                 }).showToast();
             }
-            let count = $('#cartCount').html();
-            count = parseInt(count) + 1;
-            document.getElementById('cartCount').innerHTML = count;
+
         }
 
     })
@@ -296,6 +298,79 @@ let applyCoupon = (totalAmount) => {
         }
 
     })
+}
+
+let validateMobileno = () =>{
+    console.log('Send OTP Button CLicked');
+    let mobileNo = document.getElementById('registerMobileno').value;
+
+    if(!mobileNo || mobileNo.length === 0 || mobileNo.length < 10){
+        Swal.fire({
+            title: 'Mobile Number not valid!',
+            text: 'Enter Valid Mobile Number',
+            icon: 'warning',
+        })
+    } else {
+    $.ajax({
+        url: '/validate-mobileno',
+        method: 'post', 
+        data: {
+            mobileNo: mobileNo
+        },
+        success: (response) =>{
+            if(response.otpSend){
+                Swal.fire({
+                    title: 'OTP Sent!',
+                    text: 'OTP is sent to ' +mobileNo,
+                    icon: 'success',
+                }).then(async()=>{
+                    const { otp } = await Swal.fire({
+                        title: 'Enter your OTP',
+                        input: 'text',
+                        inputLabel: 'Enter OTP to validate Mobile number',
+                        inputPlaceholder: 'Enter your OTP'
+                      })
+                      validateOTP(otp, mobileNo);
+                })
+                
+            }else{
+                Swal.fire({
+                    title: 'Mobile Number Exists!',
+                    text: 'This Mobile Number already Exists.',
+                    icon: 'error',
+                })
+            }
+        }
+    })
+}
+    
+}
+
+let validateOTP = (otp, mobileNo) =>{
+      console.log(otp, mobileNo, "Entered OTP in dialogue box");
+      $.ajax({
+        url: '/validate-otp',
+        method: 'post',
+        data: {
+            otp: otp,
+            mobileNo: mobileNo
+        },
+        success: (response)=>{
+            if(response.status){
+                Swal.fire({
+                    title: 'Mobile Number Verified!',
+                    text: 'Your Mobile Number has been verified.',
+                    icon: 'success',
+                })
+            }else{
+                Swal.fire({
+                    title: 'Mobile Number could not Verify!',
+                    text: 'You may have entered wrong OTP.',
+                    icon: 'error',
+                })
+            }
+        }
+      })
 }
 
 
