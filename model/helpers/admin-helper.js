@@ -139,7 +139,6 @@ module.exports = {
             console.log(db.get());
             let products = await db.get().collection(collection.PRODUCTCOLLECTION).find().toArray();
             resolve(products);
-
         })
     },
 

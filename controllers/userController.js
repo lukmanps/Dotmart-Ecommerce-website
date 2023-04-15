@@ -257,7 +257,7 @@ module.exports = {
       for (let i = 1; i <= Math.ceil(products.length / limit); i++) {
         pages.push(i);
       }
-      const cartCount = req.session.cartCount;
+      const cartCount = await userHelper.getCartCount(req.session.user._id);;
       userHelper.productsViewLimit(pageNum, limit).then((products) => {
         res.render('user/shop', { user, products, pages, cartCount });
       }).catch((err)=>{
@@ -270,10 +270,10 @@ module.exports = {
 
   mensPage: async (req, res) => {
     try {
-      userHelper.getMensProducts().then((response) => {
+      userHelper.getMensProducts().then(async(response) => {
         const user = req.session.user;
         const mensProducts = response;
-        const cartCount = req.session.cartCount
+        const cartCount = await userHelper.getCartCount(req.session.user._id);
         res.render('user/men', { user, cartCount, mensProducts })
       }).catch((err)=>{
         res.render('error', {message: err});
@@ -285,10 +285,10 @@ module.exports = {
 
   womenPage: (req, res) => {
     try {
-      userHelper.getWomenProducts().then((response) => {
+      userHelper.getWomenProducts().then(async(response) => {
         const user = req.session.user;
         const womenProducts = response;
-        const cartCount = req.session.cartCount
+        const cartCount = await userHelper.getCartCount(req.session.user._id);
         res.render('user/women', { user, cartCount, womenProducts });
       }).catch((err)=>{
         res.render('error', {message: err});
@@ -300,10 +300,10 @@ module.exports = {
 
   accessoriesPage: (req, res) => {
     try {
-      userHelper.getAccessories().then((response) => {
+      userHelper.getAccessories().then(async(response) => {
         const user = req.session.user;
         const accessories = response;
-        const cartCount = req.session.cartCount
+        const cartCount = await userHelper.getCartCount(req.session.user._id);
         res.render('user/accessories', { user, cartCount, accessories });
       }).catch((err)=>{
         res.render('error', {message: err});
@@ -406,7 +406,7 @@ module.exports = {
     try {
       const user = req.session.user;
       const products = await userHelper.getWishlistProducts(user._id);
-      const cartCount = req.session.cartCount;
+      const cartCount = await userHelper.getCartCount(req.session.user._id);;
       console.log(products);
       if (products.length === 0) {
         res.render('user/wishlist', { user, cartCount, wishlistEmpty: true });
@@ -432,7 +432,7 @@ module.exports = {
     console.log('Checkout page reached');
     try {
       const user = req.session.user;
-      const cartCount = req.session.cartCount;
+      const cartCount = await userHelper.getCartCount(req.session.user._id);;
       const total = await userHelper.getTotalAmount(user._id);
       const products = await userHelper.getCartProducts(user._id)
       const address = await userHelper.selectDefaultAddress(user._id);
@@ -588,9 +588,10 @@ module.exports = {
 
   },
 
-  orderSuccess: (req, res) => {
+  orderSuccess: async(req, res) => {
     try {
-      res.render('user/order-success', { user: req.session.user });
+      const cartCount = await userHelper.getCartCount(req.session.user._id);
+      res.render('user/order-success', { user: req.session.user, cartCount });
     } catch (error) {
       res.render('error', { message: error.message });
     }
@@ -602,7 +603,7 @@ module.exports = {
     try {
       const date = new Date().toLocaleDateString('en-US');
       const user = req.session.user;
-      const cartCount = req.session.cartCount;
+      const cartCount = await userHelper.getCartCount(req.session.user._id);;
       const orders = await userHelper.getUserOrders(req.session.user._id);
     
       res.render('user/orders', { user, orders, cartCount })
@@ -615,10 +616,11 @@ module.exports = {
     try {
       const user = req.session.user;
       const products = await userHelper.getOrderProducts(req.params.id);
+      const cartCount = await userHelper.getCartCount(req.session.user._id);
       console.log(products, 'Order Details');
       let orderDetails = products[0];
       if (orderDetails.status === 'Delivered') {
-        res.render('user/view-order-products', { user, products, orderDetails, delivered: true });
+        res.render('user/view-order-products', { user, products, cartCount, orderDetails, delivered: true });
       } else {
         res.render('user/view-order-products', { user, products, orderDetails });
       }
@@ -727,10 +729,10 @@ module.exports = {
 
   },
 
-  userProfile: (req, res) => {
+  userProfile: async(req, res) => {
     try {
       let user = req.session.user;
-      let cartCount = req.session.cartCount;
+      let cartCount = await userHelper.getCartCount(req.session.user._id);;
       res.render('user/user-profile', { user, cartCount })
     } catch (error) {
       res.render('error', { message: error.message });
@@ -738,11 +740,11 @@ module.exports = {
 
   },
 
-  updateProfile: (req, res) => {
+  updateProfile: async(req, res) => {
     try {
       console.log(req.body, 'Details in update Profile');
       let user = req.session.user;
-      let cartCount = req.session.cartCount;
+      let cartCount = await userHelper.getCartCount(req.session.user._id);;
 
       userHelper.updateProfile(user._id, req.body).then((response) => {
         if (response.status) {
@@ -766,7 +768,7 @@ module.exports = {
     try {
       const user = await userHelper.getUser(req.session.user._id);
       const address = user.address;
-      const cartCount = req.session.cartCount;
+      const cartCount = await userHelper.getCartCount(req.session.user._id);;
       res.render('user/addresses', { user, address, cartCount });
     } catch (error) {
       res.render('error', { message: error.message });
@@ -774,10 +776,10 @@ module.exports = {
 
   },
 
-  addAddress: (req, res) => {
+  addAddress: async(req, res) => {
     try {
       let user = req.session.user;
-      const cartCount = req.session.cartCount;
+      const cartCount = await userHelper.getCartCount(req.session.user._id);;
       res.render('user/add-new-address', { user, cartCount });
     } catch (error) {
       res.render('error', { message: error.message });
@@ -875,11 +877,11 @@ module.exports = {
     });
   },
 
-  productSearch: (req, res) => {
+  productSearch: async(req, res) => {
     try {
       let data = req.query.search;
       let user = req.session.user;
-      let cartCount = req.session.cartCount;
+      let cartCount = await userHelper.getCartCount(req.session.user._id);;
       userHelper.searchProduct(data).then((searchResult) => {
         console.log(searchResult, 'Search Result Found!');
         res.render('user/search-product-list', { user, searchResult, cartCount })
