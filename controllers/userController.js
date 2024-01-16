@@ -2,7 +2,8 @@ const userHelper = require('../model/helpers/user-helper');
 const adminHelper = require('../model/helpers/admin-helper');
 const paypal = require('paypal-rest-sdk');
 require('dotenv').config();
-const client = require('twilio')(process.env.ACCOUNT_SID, process.env.AUTH_TOKEN);
+const { TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, TWILIO_SERVICE_SID } = process.env;
+const client = require('twilio')(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN);
 
 
 paypal.configure({
@@ -109,7 +110,7 @@ module.exports = {
       if (response.status) {
         req.session.loggedIn = true;
         req.session.user = response.validUser;
-        client.verify.v2.services(process.env.SERVICE_SID)
+        client.verify.v2.services(TWILIO_SERVICE_SID)
           .verifications
           .create({
             to: `+91${mobNo}`,
