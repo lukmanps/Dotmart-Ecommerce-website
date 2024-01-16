@@ -10,7 +10,7 @@
         </nav><!-- End .breadcrumb-nav -->
 
         <div class="login-page bg-image pt-8 pb-8 pt-md-12 pb-md-12 pt-lg-17 pb-lg-17"
-            style="background-image: url('assets/images/backgrounds/login-bg.jpg')">
+            style="background-image: url('assets/images/backgrounds/register-bg.jpg')">
             <div class="container">
                 <div class="form-box">
                     <div class="form-tab">
@@ -47,8 +47,7 @@
                                 <div>
                                     <label for="registerMobileno">Mobile Number</label>
                                     <input type="tel" class="form-control" id="registerMobileno" name="registerMobileno"
-                                        required onblur="validateMobileno()"><span><a><button type="button" class="btn btn-outline-primary-2 mr-5" onclick="validateMobileNo()">Send OTP</button></a></span>
-                                        
+                                        required onblur="validateMobileno()">
                                     <label id="mobile-error" class="errorLabel text-danger"
                                         for="registerMobileno"></label>
                                 </div><!-- End .form-group -->
@@ -61,11 +60,18 @@
                                         for="registerPassword"></label>
                                 </div><!-- End .form-group -->
 
+                                <div class="form-group">
+                                    <label for="confirmPassword">Confirm Password</label>
+                                    <input type="password" class="form-control" id="confirmPassword"
+                                        name="confirmPassword" required onblur="confirmPassword()">
+                                    <label id="confirm-password-error" class="errorLabel text-danger"
+                                        for="confirmPassword"></label>
+                                </div><!-- End .form-group -->
+
                                 <div class="form-footer">
-                                        <button id="button" type="submit"
-                                            class="btn btn-outline-primary-2"
-                                            onclick="return validateForm()">Register</button>
-                                        <label id="submit-error" class="errorLabel text-danger" for="button"></label>
+                                    <button id="button" type="submit" class="btn btn-outline-primary-2"
+                                        onclick="return validateForm()">Register</button>
+                                    <label id="submit-error" class="errorLabel text-danger" for="button"></label>
                                     </button>
 
                                     {{#if registered}}
@@ -78,90 +84,16 @@
                                     <p class="text-center" style="color:red">user already exists!
                                     </p>
                                     {{/if}}
-                                    {{!-- <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="register-policy-2"
-                                            required>
-                                        <label class="custom-control-label" for="register-policy-2"
-                                            style="font-size: smaller;">I agree to the
-                                            <a href="#">privacy policy</a> *</label>
-                                    </div><!-- End .custom-checkbox --> --}}
+
                                 </div><!-- End .form-footer -->
 
 
 
                             </form>
-                            {{!-- <div class="form-choice">
-                                <p class="text-center">or sign in with</p>
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                        <a href="#" class="btn btn-login btn-g">
-                                            <i class="icon-google"></i>
-                                            Login With Google
-                                        </a>
-                                    </div><!-- End .col-6 -->
-                                    <div class="col-sm-6">
-                                        <a href="#" class="btn btn-login  btn-f">
-                                            <i class="icon-facebook-f"></i>
-                                            Login With Facebook
-                                        </a>
-                                    </div><!-- End .col-6 -->
-                                </div><!-- End .row -->
-                            </div><!-- End .form-choice --> --}}
+
                         </div><!-- .End .tab-pane -->
 
-                        {{!-- LOGIN FORM --}}
-                        {{!-- <div class="tab-content">
-                            <div class="tab-pane fade" id="signin-2" role="tabpanel" aria-labelledby="signin-tab-2">
 
-
-                                <form action="/login" method="post">
-                                    <div class="form-group">
-                                        <label for="login-email-2">Username or email address *</label>
-                                        <input type="text" class="form-control" id="login-email-2" name="login-email"
-                                            required>
-                                    </div><!-- End .form-group -->
-
-                                    <div class="form-group">
-                                        <label for="login-password-2">Password *</label>
-                                        <input type="password" class="form-control" id="login-password-2"
-                                            name="login-password" required>
-                                    </div><!-- End .form-group -->
-
-                                    <div class="form-footer">
-                                        <button type="submit" class="btn btn-outline-primary-2">
-                                            <span>LOG IN</span>
-                                            <i class="icon-long-arrow-right"></i>
-                                        </button>
-
-                                        <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" id="signin-remember-2">
-                                            <label class="custom-control-label" for="signin-remember-2">Remember
-                                                Me</label>
-                                        </div><!-- End .custom-checkbox -->
-
-                                        <a href="#" class="forgot-link">Forgot Your Password?</a>
-                                    </div><!-- End .form-footer -->
-                                </form>
-                                <div class="form-choice">
-                                    <p class="text-center">or sign in with</p>
-                                    <div class="row">
-                                        <div class="col-sm-6">
-                                            <a href="#" class="btn btn-login btn-g">
-                                                <i class="icon-google"></i>
-                                                Login With Google
-                                            </a>
-                                        </div><!-- End .col-6 -->
-                                        <div class="col-sm-6">
-                                            <a href="#" class="btn btn-login btn-f">
-                                                <i class="icon-facebook-f"></i>
-                                                Login With Facebook
-                                            </a>
-                                        </div><!-- End .col-6 -->
-                                    </div><!-- End .row -->
-                                </div><!-- End .form-choice -->
-                            </div><!-- .End .tab-pane -->
-
-                        </div><!-- End .tab-content --> --}}
                     </div><!-- End .form-tab -->
                 </div><!-- End .form-box -->
             </div><!-- End .container -->
@@ -172,11 +104,13 @@
 </section>
 
 <script>
+    console.log(typeof confirmPassword, 'TYpe OF COnfirm PAsowwrd');
     var nameError = document.getElementById('name-error');
     var emailError = document.getElementById('email-error');
     var mobileError = document.getElementById('mobile-error');
     var passwordError = document.getElementById('password-error');
     var submitError = document.getElementById('submit-error');
+    var confirmPasswordError = document.getElementById('confirm-password-error');
 
 
 
@@ -195,6 +129,7 @@
         nameError.innerHTML = '';
         return true;
     }
+
     function validateEmail() {
         var email = document.getElementById('registerEmail').value;
 
@@ -210,18 +145,15 @@
         return true;
     }
 
-    //function validateMobileno() {
-//var mobileValue = document.getElementById('registerMobileno').value;
-
-    //    if (mobileValue == "") {
-     //       error6.innerText = "This field is required"
-      //      flag = 2
-     //   }
-    //    else if (!mobileValue.match(/^(\+\d{1,3}[- ]?)?\d{10}$/) && !(mobileValue.match(/0{5,}/))) {
-     //       error6.innerText = "Enter a valid mobile number"
-     //       flag = 2
-    //    }
-   // }
+    function validateMobileno() {
+        var mobileNo = document.getElementById('registerMobileno').value;
+        if (mobileNo === " " || mobileNo.length < 10 || mobileNo.length > 10 || isNaN(mobileNo)) {
+            mobileError.innerHTML = 'Mobile Number should contain 10 Digits';
+            return false;
+        }
+        mobileError.innerHTML = "";
+        return true;
+    }
 
     function validatePassword() {
         var password = document.getElementById('registerPassword').value;
@@ -243,10 +175,6 @@
             passwordError.innerHTML = 'Atleast use one number'
             return false
         }
-        if (!password.match(/^(?=.*[!@#$%^&*])/)) {
-            passwordError.innerHTML = 'Atleast use one special character'
-            return false
-        }
         if (!password.match(/^(?=.*[a-z])/)) {
             passwordError.innerHTML = 'Use atleast one lowercase letter'
             return false
@@ -254,10 +182,28 @@
         passwordError.innerHTML = "";
         return true
 
-
     }
 
-    
+    function confirmPassword() {
+        var confirmPassword = document.getElementById('confirmPassword').value;
+        var password = document.getElementById('registerPassword').value;
+        console.log(confirmPassword, password, 'Password Entered');
+        if (confirmPassword !== password) {
+            confirmPasswordError.innerHTML = 'Password does not match'
+            return false;
+        }
+        confirmPasswordError.innerHTML = "";
+        return true;
+    }
+
+    function validateForm() {
+        if(!validateName() || !validateEmail() || !validateMobileno() || !validatePassword()){
+            submitError.innerHTML = 'Please Enter valid Details'
+            return false;
+        }
+        return true;
+    }
+
 
 
 

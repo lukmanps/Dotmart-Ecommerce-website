@@ -21,6 +21,6 @@
     "path": "^0.12.7",
     "paypal-rest-sdk": "^1.8.1",
     "Promise": "^1.0.5",
-    "twilio": "^4.10.0"
+    "twilio": "^4.20.1"
   }
 }
