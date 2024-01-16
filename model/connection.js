@@ -1,29 +1,27 @@
 const MongoClient = require("mongodb").MongoClient;
 require('dotenv').config();
+
+const { MONGODB_LINK } = process.env;
+
 const state = {
     db: null
-}
+};
 
-//mongodb://0.0.0.0:27017/
 module.exports.connect = function (done) {
-    const url = process.env.MONGODB_LINK;
     const dbname = "Dotmart";
 
-    MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true }, (err, data) => {
+    MongoClient.connect(MONGODB_LINK, { useNewUrlParser: true, useUnifiedTopology: true }, (err, client) => {
         if (err) {
+            console.error('Error connecting to MongoDB:', err.message);
             return done(err);
         }
 
-        state.db = data.db(dbname);
+        state.db = client.db(dbname);
+        console.log('Connected to MongoDB successfully!');
         done();
-    })
-
-}
+    });
+};
 
 module.exports.get = function () {
-    return state.db
-}
-
-
-
-
+    return state.db;
+};
